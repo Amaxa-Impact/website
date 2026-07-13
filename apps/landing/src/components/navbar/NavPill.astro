@@ -1,0 +1,24 @@
+---
+interface Props {
+  applyHref?: string;
+}
+const { applyHref = "/apply" } = Astro.props;
+---
+
+<div class="bg-neutral-1-500 h-[104px] w-full flex items-center px-12">
+  <nav class="w-full bg-white border border-border h-[64px] rounded-[56px] px-10 flex items-center justify-between">
+    <a href="/" class="text-xl font-semibold text-purple-dark-500">ámaxa</a>
+    <div class="flex items-center gap-8">
+      <a href="/project" class="text-base text-purple-dark-500/80 font-medium hover:text-purple-dark-500 transition-colors">Projects</a>
+      <a href="/pathway" class="text-base text-purple-dark-500/80 font-medium hover:text-purple-dark-500 transition-colors">Pathways</a>
+      <a href="/stories" class="text-base text-purple-dark-500/80 font-medium hover:text-purple-dark-500 transition-colors">Stories</a>
+      <a href="/contact" class="text-base text-purple-dark-500/80 font-medium hover:text-purple-dark-500 transition-colors">Contact</a>
+      <a
+        href={applyHref}
+        class="bg-coral-dark-500 hover:bg-coral-dark-600 text-white text-sm font-semibold px-5 py-2 rounded-full transition-colors"
+      >
+        Apply now
+      </a>
+    </div>
+  </nav>
+</div>

@@ -1,0 +1,118 @@
+---
+import AppLayout from "@/layouts/app-layout.astro";
+import Hero from "@/components/sections/Hero.astro";
+import StatementBar from "@/components/sections/StatementBar.astro";
+import { FeatureSlider3 } from "@/components/sections/FeatureSlider3";
+import { FeatureSlider2 } from "@/components/sections/FeatureSlider2";
+import Testimonials from "@/components/sections/Testimonials.astro";
+import SplitMedia from "@/components/sections/SplitMedia.astro";
+import { ProjectFeatureSlider } from "@/components/sections/ProjectFeatureSlider";
+import { NewsletterCta } from "@/components/sections/NewsletterCta";
+import ContactForm from "@/components/sections/ContactForm.astro";
+
+const APPLY = "https://airtable.com/appPR9mkslbn3U8YZ/shrHHUtRzK4DqKt3F";
+---
+
+<AppLayout>
+  <main>
+
+    <Hero
+      title="What change do you want to make in the world?"
+      subhead="Through our programs, we take you there."
+      ctaLabel="Apply today"
+      ctaHref={APPLY}
+    />
+
+    <StatementBar
+      eyebrow="OUR MISSION"
+      statement={`We champion grassroots projects around the globe and empower individuals—across age, location, and skillset—to lead the change that pushes them forward, through fully remote, structured programs.`}
+    />
+
+    <FeatureSlider3
+      client:load
+      heading="Our Programs"
+      subhead="Equipping you with the team, tools, & knowledge to succeed"
+      items={[
+        { id: "1", title: "Cohorts — for high school students", href: "/pathways/cohorts", imageSrc: "/images/programs/cohorts.png" },
+        { id: "2", title: "Research — for university students", href: "/pathways/research", imageSrc: "/images/programs/research.png" },
+        { id: "3", title: "Partnerships — for professionals", href: "/pathways/partnerships", imageSrc: "/images/programs/partnerships.png" },
+      ]}
+    />
+
+    <!-- By The Numbers -->
+    <section class="bg-neutral-1-500 w-full px-12 py-24 flex flex-col gap-12">
+      <h2 class="font-semibold text-[40px] text-purple-dark-500">By The Numbers</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <p class="font-normal text-[32px] text-purple-dark-500 leading-[1.2]"><span class="font-bold">300+</span> applications from 52 countries</p>
+        <p class="font-normal text-[32px] text-purple-dark-500 leading-[1.2]"><span class="font-bold">120+</span> students to complete program</p>
+        <p class="font-normal text-[32px] text-purple-dark-500 leading-[1.2]"><span class="font-bold">8</span> ongoing projects in 6 countries</p>
+      </div>
+      <a
+        href="/who-we-are"
+        class="inline-flex items-center gap-2 border-[1.5px] border-purple-dark-500 rounded-full px-6 py-3 text-base font-semibold text-purple-dark-500 hover:bg-purple-dark-500 hover:text-white transition-colors w-fit"
+      >
+        Learn More ↗
+      </a>
+    </section>
+
+    <Testimonials heading="Voices from our cohorts" />
+
+    <FeatureSlider2
+      client:load
+      heading="Our Projects"
+      subhead="Where change happens"
+      items={[
+        { id: "1", title: "Our Community Partners — across Uganda, Liberia, & Palestine", href: "/project" },
+        { id: "2", title: "Our Original Initiatives — mental health, book bans, climate, & more", href: "/project" },
+      ]}
+    />
+
+    <SplitMedia
+      heading="The Cross-Border Access Program"
+      subhead="A student-led international virtual exchange program, bringing extracurricular learning to students without access around the globe."
+      ctaLabel="Explore the map"
+      ctaHref="/project/cross-border-access"
+      mediaSrc="/images/programs/cross-border-access.png"
+      mediaAlt="Cross-Border Access Program"
+      panelSide="left"
+      large={true}
+    />
+
+    <ProjectFeatureSlider
+      client:load
+      heading="Stories of Our Impact"
+      subhead="Every project we take on is a chance to learn and share — explore more of the work created alongside our partners."
+      slides={[
+        {
+          title: "How Isabella and Zobia's Love for Music Changed Lives in Gaza",
+          ctaLabel: "Read the story",
+          ctaHref: "/stories/isabella-and-zobia-music-gaza",
+          imageSrc: "https://i.vimeocdn.com/video/1998508960-e287b921ab19e39fddebdc288e869b3b6dc4bf34f76346ffae1a7ad8db086b3e-d_1280x720?region=us",
+        },
+        {
+          title: "How An Nhi Sequestered Carbon by Planting Trees",
+          ctaLabel: "Read the story",
+          ctaHref: "/stories/an-nhi-carbon-trees",
+          imageSrc: "https://i.vimeocdn.com/video/1998318368-6efeb691943e0074562f7674d93fdefea13719b5bbe909efbad5f2b9596dadef-d_1280x720?region=us",
+        },
+        {
+          title: "How Damira and Aamna Launched Hoops4Hope in Qatar to Send Crucial Aid to Gazans",
+          ctaLabel: "Read the story",
+          ctaHref: "/stories/damira-aamna-hoops4hope",
+          imageSrc: "/images/stories/damira-aamna-hoops4hope/hoops4hope.jpg",
+        },
+        {
+          title: "How Panshul, Jad, and Yueqi Founded a Platform for Educational Accessibility",
+          ctaLabel: "Read the story",
+          ctaHref: "/stories/panshul-jad-yueqi-education",
+          imageSrc: "/images/stories/panshul-jad-yueqi-education/accessifyed.png",
+        },
+      ]}
+    />
+
+    <NewsletterCta client:load />
+
+    <ContactForm />
+
+  </main>
+</AppLayout>

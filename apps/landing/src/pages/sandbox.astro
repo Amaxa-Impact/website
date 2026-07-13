@@ -1,0 +1,48 @@
+---
+import AppLayout from "@/layouts/app-layout.astro";
+import { ArticleCard2 } from "@/components/card/article-card-2";
+
+// Figma asset (expires in 7 days — swap with a real hosted image)
+const figmaPhoto =
+  "https://www.figma.com/api/mcp/asset/d6e24780-731d-4dcf-8d7a-173884545758";
+---
+
+<AppLayout seo={{ title: "Card Sandbox — Ámaxa" }}>
+  <main class="container py-20">
+    <h1 class="mb-4 text-4xl font-semibold">Card sandbox</h1>
+    <p class="mb-12 text-neutral-500">
+      Previewing <code>components/card/article/2</code> — each card uses a
+      different <code>bgColor</code> and <code>imageSrc</code>.
+    </p>
+
+    <!-- Responsive grid: 1 col → 2 col → 3 col -->
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <!-- Instance 1: salmon/peach (matches Figma) -->
+      <ArticleCard2
+        client:visible
+        imageSrc={figmaPhoto}
+        bgColor="#f5c4b0"
+        title="How Isabella and Zobia's Love for Music Aided Gaza"
+        href="#"
+      />
+
+      <!-- Instance 2: sky blue -->
+      <ArticleCard2
+        client:visible
+        imageSrc={figmaPhoto}
+        bgColor="#b5d9f5"
+        title="How Students Across Ukraine Found Connection Through Art"
+        href="#"
+      />
+
+      <!-- Instance 3: brand green -->
+      <ArticleCard2
+        client:visible
+        imageSrc={figmaPhoto}
+        bgColor="#bcd96c"
+        title="The Young Leaders Rebuilding Local Communities One Step at a Time"
+        href="#"
+      />
+    </div>
+  </main>
+</AppLayout>

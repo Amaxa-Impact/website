@@ -1,0 +1,41 @@
+---
+interface Props {
+  title: string;
+  partner: string;
+  href?: string;
+  imageSrc?: string;
+  imageAlt?: string;
+  ctaLabel?: string;
+}
+
+const {
+  title,
+  partner,
+  href = "#",
+  imageSrc,
+  imageAlt = "",
+  ctaLabel = "Projects",
+} = Astro.props;
+---
+
+<div class="relative rounded-[56px] overflow-hidden w-[420px] h-[577px] flex flex-col justify-end pb-10 pt-7 px-7">
+  <!-- Card background -->
+  <div class="absolute inset-0 bg-neutral-2-500 border-[5px] border-white rounded-[56px]" />
+  {imageSrc && (
+    <img src={imageSrc} alt={imageAlt} class="absolute inset-0 w-full h-full object-cover" />
+  )}
+  <!-- Gradient overlay for legibility -->
+  <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+
+  <!-- Content -->
+  <div class="relative flex flex-col gap-3">
+    <p class="font-bold text-3xl text-white leading-[1.18]">{title}</p>
+    <p class="font-semibold text-lg text-white tracking-[1.08px]">{partner}</p>
+  </div>
+  <a
+    href={href}
+    class="relative inline-flex items-center gap-2 mt-6 bg-coral-dark-500 hover:bg-coral-dark-600 text-white rounded-full px-6 py-3 text-base font-semibold transition-colors w-fit"
+  >
+    {ctaLabel} →
+  </a>
+</div>

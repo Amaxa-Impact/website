@@ -1,0 +1,77 @@
+---
+import AppLayout from "@/layouts/app-layout.astro";
+import ArticleHeader from "@/components/blog/ArticleHeader.astro";
+import BlogImage from "@/components/blog/BlogImage.astro";
+import BlogHeading from "@/components/blog/BlogHeading.astro";
+import BlogParagraph from "@/components/blog/BlogParagraph.astro";
+import BlogShare from "@/components/blog/BlogShare.astro";
+import { ArticleSlider } from "@/components/sections/ArticleSlider";
+import { NewsletterCta } from "@/components/sections/NewsletterCta";
+import ContactForm from "@/components/sections/ContactForm.astro";
+
+const url = "https://www.amaxaimpact.org/blog-article-template";
+const title = "Article title goes here — make it bold and specific";
+
+const relatedArticles = [
+  {
+    id: "1",
+    title: "Three lessons for investors looking to measure impact on income",
+    href: "#",
+  },
+  {
+    id: "2",
+    title: "How investors can help build climate resilience for smallholder farmers",
+    href: "#",
+  },
+  {
+    id: "3",
+    title: "Smallholder farmers need holistic climate solutions, not 'quick fixes'",
+    href: "#",
+  },
+];
+---
+
+<AppLayout
+  seo={{
+    title,
+    description: "A one or two sentence standfirst that summarizes the story for the reader.",
+  }}
+>
+  <ArticleHeader
+    title={title}
+    dek="A one or two sentence standfirst that summarizes the story for the reader."
+    date="Jan 1, 2026"
+    tag1="Blog"
+    tag2="Category"
+    tag3="Region"
+  />
+
+  <div class="bg-neutral-1-500 w-full px-[200px] py-16 flex flex-col gap-12">
+    <BlogImage caption="Optional caption" />
+
+    <BlogHeading heading="Section heading goes here?" />
+
+    <BlogParagraph body="Body copy goes here. This paragraph is the main text of the article — write in plain, clear language that any reader can follow. Aim for two to four sentences per paragraph, and break ideas into their own blocks rather than cramming everything together. Links can be styled with the purple link token." />
+
+    <BlogParagraph body="Continue the story here. Each paragraph should move the narrative forward — introduce a new detail, a quote, or a piece of context that builds on what came before. Keep the reader oriented by starting paragraphs with a clear topic sentence." />
+
+    <BlogHeading heading="Another section heading goes here?" />
+
+    <BlogParagraph body="Add more body copy here. Use this block to introduce a new angle on the story — a different voice, a statistic, or a moment that surprised you. The best stories have a turn somewhere in the middle that reframes what the reader thought they knew." />
+
+    <BlogParagraph body="Final paragraph. This is a good place to zoom out and connect the individual story back to Ámaxa's broader mission. End with something that stays with the reader — a detail, a quote, or a question worth thinking about." />
+  </div>
+
+  <BlogShare url={url} title={title} />
+
+  <ArticleSlider
+    heading="More from our Knowledge Hub"
+    tagline="Read the latest insights and news on our blog."
+    items={relatedArticles}
+    client:load
+  />
+
+  <NewsletterCta client:load />
+
+  <ContactForm />
+</AppLayout>

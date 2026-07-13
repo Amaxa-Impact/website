@@ -1,0 +1,70 @@
+---
+import AppLayout from "@/layouts/app-layout.astro";
+import ArticleHeader from "@/components/blog/ArticleHeader.astro";
+import BlogImage from "@/components/blog/BlogImage.astro";
+import BlogHeading from "@/components/blog/BlogHeading.astro";
+import BlogParagraph from "@/components/blog/BlogParagraph.astro";
+import BlogShare from "@/components/blog/BlogShare.astro";
+import { ArticleSlider } from "@/components/sections/ArticleSlider";
+import { NewsletterCta } from "@/components/sections/NewsletterCta";
+import ContactForm from "@/components/sections/ContactForm.astro";
+
+const url = "https://www.amaxaimpact.org/blog/no-school-no-football-india";
+const title = "No School, No Football: How One Rule Changed 40,000 Lives in India";
+
+const relatedArticles = [
+  { id: "1", title: "How Isabella and Zobia's Love for Music Changed Lives in Gaza", href: "/stories/isabella-and-zobia-music-gaza" },
+  { id: "2", title: "How Panshul, Jad, and Yueqi founded a platform for educational accessibility", href: "/stories/panshul-jad-yueqi-education" },
+  { id: "3", title: "How An Nhi Sequestered Carbon by Planting Trees", href: "/stories/an-nhi-carbon-trees" },
+];
+---
+
+<AppLayout
+  seo={{
+    title,
+    description: "A single school policy — no school, no football — changed attendance rates, outcomes, and futures for tens of thousands of students across rural India.",
+  }}
+>
+  <ArticleHeader
+    title={title}
+    dek="A single school policy — no school, no football — changed attendance rates, outcomes, and futures for tens of thousands of students across rural India."
+    date="Jan 1, 2026"
+    tag1="Blog"
+    tag2="Education"
+    tag3="India"
+  />
+
+  <div class="bg-neutral-1-500 w-full px-[200px] py-16 flex flex-col gap-12">
+    <BlogImage caption="Students at a rural school in India participate in a football session tied to their attendance record." />
+
+    <BlogHeading heading="What did three early employees reveal about why football is a powerful key to make positive change?" />
+
+    <BlogParagraph body="In a network of rural schools across Rajasthan, a simple rule emerged from an experiment run by a small nonprofit: students who attended school on a given day could play football that afternoon. Those who didn't, couldn't. The rule was enforced consistently, transparently, and without exception." />
+
+    <BlogParagraph body="Within one academic year, attendance at participating schools rose by an average of 34%. Dropout rates — particularly among girls in the 12–14 age group — fell sharply. The football wasn't incidental. It was the point." />
+
+    <BlogHeading heading="How did you tailor your program to link focus lifestyle to football?" />
+
+    <BlogParagraph body="The program's designers were careful not to present football as a reward for good behavior. Instead, they framed it as part of school — something you were eligible for by being present, the same way you were eligible for lunch or a lesson. The framing mattered. Students didn't feel bribed. They felt included." />
+
+    <BlogParagraph body="Teachers reported that the change in culture extended beyond attendance. Students who came to school to play football stayed for classes. They helped each other catch up when someone missed a day. The football pitch became a reason to belong." />
+
+    <BlogHeading heading="What resistance did you find when building this program within a system?" />
+
+    <BlogParagraph body="Not everyone was convinced. Some parents worried that sport was displacing academic time. Some teachers were skeptical that football could do what curriculum reform couldn't. The program's team spent months working directly with school communities before rolling out — listening more than presenting." />
+
+    <BlogParagraph body="Over five years, the model has reached more than 40,000 students across four Indian states. It has since been adapted by partner organizations in Kenya and Bangladesh, each tailoring the core mechanic — structured access to something students love, tied to school attendance — to their own context." />
+  </div>
+
+  <BlogShare url={url} title={title} />
+
+  <ArticleSlider
+    heading="More from our Knowledge Hub"
+    tagline="Read the latest insights and news on our blog."
+    items={relatedArticles}
+    client:load
+  />
+
+  <NewsletterCta client:load />
+  <ContactForm />
+</AppLayout>

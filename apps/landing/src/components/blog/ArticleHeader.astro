@@ -1,0 +1,41 @@
+---
+interface Props {
+  title: string;
+  dek?: string;
+  date?: string;
+  tag1?: string;
+  tag2?: string;
+  tag3?: string;
+}
+
+const {
+  title,
+  dek,
+  date,
+  tag1,
+  tag2,
+  tag3,
+} = Astro.props;
+
+const tags = [tag1, tag2, tag3].filter(Boolean);
+---
+
+<header class="bg-neutral-1-500 w-full px-[200px] pt-24 pb-11 flex flex-col gap-6">
+  <h1 class="font-semibold text-[56px] text-purple-dark-500 leading-[1.08] w-full">
+    {title}
+  </h1>
+  {dek && (
+    <p class="font-normal text-2xl text-purple-dark-500 leading-[1.4] max-w-[760px]">{dek}</p>
+  )}
+  {date && (
+    <p class="font-semibold text-sm text-purple-dark-500 leading-[1.2]">{date}</p>
+  )}
+  <div class="bg-border h-px w-full" />
+  {tags.length > 0 && (
+    <div class="flex gap-7">
+      {tags.map((tag) => (
+        <span class="font-normal text-base text-purple-dark-500 leading-[1.2]">{tag}</span>
+      ))}
+    </div>
+  )}
+</header>

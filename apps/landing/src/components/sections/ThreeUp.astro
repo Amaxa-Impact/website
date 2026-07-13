@@ -1,0 +1,45 @@
+---
+interface ThreeUpItem {
+  imageSrc?: string;
+  imageAlt?: string;
+  title: string;
+  body: string;
+  linkHref?: string;
+  linkLabel?: string;
+}
+
+interface Props {
+  heading: string;
+  items: [ThreeUpItem, ThreeUpItem, ThreeUpItem];
+}
+const { heading, items } = Astro.props;
+---
+
+<section class="bg-neutral-1-500 w-full px-12 py-[72px]">
+  <h2 class="text-[36px] font-semibold text-purple-dark-500 mb-14">{heading}</h2>
+
+  <div class="flex gap-[72px] items-start">
+    {items.map((item) => (
+      <div class="flex flex-col gap-[18px] flex-1 min-w-0">
+        <!-- Image placeholder -->
+        <div class="w-full h-[253px] rounded-[32px] bg-neutral-2-500 border-[5px] border-white overflow-hidden shrink-0">
+          {item.imageSrc && (
+            <img src={item.imageSrc} alt={item.imageAlt ?? item.title} class="w-full h-full object-cover" />
+          )}
+        </div>
+
+        <p class="text-[30px] font-normal text-purple-dark-500 leading-normal">{item.title}</p>
+        <p class="text-base text-purple-dark-400 leading-[1.5]">{item.body}</p>
+
+        {item.linkHref && (
+          <a
+            href={item.linkHref}
+            class="text-base font-semibold text-purple-dark-500 hover:text-coral-dark-500 transition-colors"
+          >
+            {item.linkLabel ?? "Learn more"} →
+          </a>
+        )}
+      </div>
+    ))}
+  </div>
+</section>

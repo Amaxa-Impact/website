@@ -1,0 +1,86 @@
+---
+interface TeamMember {
+  name: string;
+  role: string;
+  imageSrc?: string;
+  imageAlt?: string;
+  linkedinHref?: string;
+  tone?: "coral" | "lavender";
+  joinCard?: boolean;
+}
+
+interface Props {
+  heading?: string;
+  subhead?: string;
+  members: TeamMember[];
+}
+const { heading = "Our Team", subhead = "Meet the people behind our work.", members } = Astro.props;
+---
+
+<section class="bg-white w-full px-14 py-[72px]">
+  <div class="flex flex-col gap-12">
+    <!-- Header -->
+    <div class="flex flex-col gap-2">
+      <h2 class="text-[36px] font-semibold text-purple-dark-500">{heading}</h2>
+      {subhead && <p class="text-base text-muted-foreground">{subhead}</p>}
+    </div>
+
+    <!-- Grid -->
+    <div class="flex flex-wrap gap-x-12 gap-y-14">
+      {members.map((member) => {
+        if (member.joinCard) {
+          return (
+            <div class="relative w-[410px] h-[631px] shrink-0 bg-neutral-2-500 rounded-[36px] p-10 flex flex-col justify-between">
+              <div class="flex flex-col gap-5">
+                <p class="font-bold text-[22px] text-purple-dark-500 uppercase tracking-[0.04em]">JOIN THE TEAM</p>
+                <p class="text-base text-purple-dark-500 leading-relaxed">
+                  Passionate about education, human rights, and equity? We are looking for <strong>Partnership Leads</strong> to take on exciting new projects and push our impact further.
+                </p>
+              </div>
+              <a
+                href="https://airtable.com/appPR9mkslbn3U8YZ/shrHHUtRzK4DqKt3F"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 bg-purple-dark-500 hover:bg-purple-dark-600 text-white text-sm font-semibold px-6 py-3 rounded-full transition-colors w-fit tracking-[0.04em]"
+              >
+                GET INVOLVED ↗
+              </a>
+            </div>
+          );
+        }
+
+        const bgColor = member.tone === "lavender" ? "bg-neutral-2-500" : "bg-coral-light-500";
+        return (
+          <div class="relative w-[410px] h-[631px] shrink-0">
+            <!-- Photo area -->
+            <div class:list={["absolute top-0 left-0 right-0 h-[465px] rounded-[36px] overflow-hidden", bgColor]}>
+              {member.imageSrc && (
+                <img
+                  src={member.imageSrc}
+                  alt={member.imageAlt ?? member.name}
+                  class="absolute inset-0 w-full h-full object-cover object-top"
+                />
+              )}
+            </div>
+
+            <!-- Description card -->
+            <div class="absolute bottom-0 left-0 right-0 bg-white rounded-[36px] px-8 py-6 flex items-center justify-between gap-4">
+              <div class="flex flex-col gap-1">
+                <p class="text-[22px] font-bold text-purple-dark-500 leading-[1.3]">{member.name}</p>
+                <p class="text-sm text-muted-foreground">{member.role}</p>
+              </div>
+              {member.linkedinHref && (
+                <a href={member.linkedinHref} target="_blank" rel="noopener noreferrer" class="shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                    <rect width="32" height="32" rx="6" fill="#2e1f54" fill-opacity="0.08"/>
+                    <path d="M9 12h3v9H9V12Zm1.5-4.5a1.75 1.75 0 1 1 0 3.5 1.75 1.75 0 0 1 0-3.5ZM14 12h2.9v1.5c.5-.9 1.7-1.7 3.3-1.7 2.8 0 3.8 1.8 3.8 4.5V21h-3v-4.3c0-1.4-.1-3.2-1.9-3.2s-2 1.5-2 2.8V21H14V12Z" fill="#2e1f54"/>
+                  </svg>
+                </a>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>

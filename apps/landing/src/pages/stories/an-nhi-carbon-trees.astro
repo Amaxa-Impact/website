@@ -1,0 +1,64 @@
+---
+import AppLayout from "@/layouts/app-layout.astro";
+import ArticleHeader from "@/components/blog/ArticleHeader.astro";
+import BlogVideo from "@/components/blog/BlogVideo.astro";
+import BlogHeading from "@/components/blog/BlogHeading.astro";
+import BlogParagraph from "@/components/blog/BlogParagraph.astro";
+import BlogShare from "@/components/blog/BlogShare.astro";
+import { ArticleSlider } from "@/components/sections/ArticleSlider";
+import { NewsletterCta } from "@/components/sections/NewsletterCta";
+import ContactForm from "@/components/sections/ContactForm.astro";
+
+const url = "https://www.amaxaimpact.org/stories/an-nhi-carbon-trees";
+const title = "How An Nhi Sequestered Carbon by Planting Trees";
+
+const relatedArticles = [
+  { id: "1", title: "How Isabella and Zobia's Love for Music Changed Lives in Gaza", href: "/stories/isabella-and-zobia-music-gaza" },
+  { id: "2", title: "How Panshul, Jad, and Yueqi founded a platform for educational accessibility", href: "/stories/panshul-jad-yueqi-education" },
+  { id: "3", title: "How Damira and Aamna Launched Hoops4Hope in Qatar", href: "/stories/damira-aamna-hoops4hope" },
+];
+---
+
+<AppLayout
+  seo={{
+    title,
+    description: "An Nhi partnered with a reforestation nonprofit to run a tree-planting campaign that sequestered measurable carbon and engaged her entire school community.",
+  }}
+>
+  <ArticleHeader
+    title={title}
+    dek="An Nhi partnered with a reforestation nonprofit to run a tree-planting campaign that sequestered measurable carbon and engaged her entire school community."
+    date="Jan 1, 2026"
+    tag1="Story"
+    tag2="Climate"
+    tag3="Vietnam"
+  />
+
+  <div class="bg-neutral-1-500 w-full px-[200px] py-16 flex flex-col gap-12">
+    <BlogVideo vimeoId="1069899673" vimeoHash="0ef231b81a" title="An Nhi and volunteers at a tree-planting site in her region" />
+
+    <BlogHeading heading="A project grounded in data" />
+
+    <BlogParagraph body="An Nhi had been interested in climate action since middle school, but she wanted her Ámaxa project to be measurable — not just meaningful. When she found a local reforestation nonprofit that tracked carbon sequestration by species and location, she knew she had found her partner." />
+
+    <BlogParagraph body="Over three months, An Nhi organized four tree-planting events at sites identified by the nonprofit. She recruited volunteers from her school and trained them on proper planting technique before each session. By the end of the cohort, her team had planted 340 trees — enough to sequester an estimated 17 tonnes of CO₂ over their lifetimes." />
+
+    <BlogHeading heading="Making the invisible visible" />
+
+    <BlogParagraph body="The part An Nhi is most proud of isn't the number of trees. It's the data dashboard she built to make the project's impact visible to her school community. Students can look up the exact GPS coordinates of trees they planted and see the projected carbon impact update each year as the trees grow." />
+
+    <BlogParagraph body={`"A lot of climate projects end and then nothing happens afterward," she says. "I wanted ours to keep doing something after I stopped watching it." The dashboard is still live, still updating, and the nonprofit has since used An Nhi's model to design similar tracking tools for other volunteer campaigns.`} />
+  </div>
+
+  <BlogShare url={url} title={title} />
+
+  <ArticleSlider
+    heading="More from our Knowledge Hub"
+    tagline="Read the latest insights and news on our blog."
+    items={relatedArticles}
+    client:load
+  />
+
+  <NewsletterCta client:load />
+  <ContactForm />
+</AppLayout>

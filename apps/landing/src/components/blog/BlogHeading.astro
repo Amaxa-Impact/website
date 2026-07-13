@@ -1,0 +1,12 @@
+---
+interface Props {
+  heading: string;
+}
+const { heading } = Astro.props;
+---
+
+<div class="w-full max-w-[880px]">
+  <h2 class="font-semibold text-[32px] text-purple-dark-500 leading-[1.22] w-full">
+    {heading}
+  </h2>
+</div>

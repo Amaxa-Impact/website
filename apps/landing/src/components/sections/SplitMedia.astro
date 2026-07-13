@@ -1,0 +1,59 @@
+---
+interface Props {
+  heading?: string;
+  subhead?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  mediaSrc?: string;
+  mediaAlt?: string;
+  /** "right" puts the content panel on the right (default), "left" flips it */
+  panelSide?: "left" | "right";
+  /** large variant increases height */
+  large?: boolean;
+}
+
+const {
+  heading = "Locally rooted, globally connected",
+  subhead = "Our regional teams guide our work, shape our strategies, and lead us to solutions to global poverty.",
+  ctaLabel = "Explore the map",
+  ctaHref = "/project",
+  mediaSrc,
+  mediaAlt = "",
+  panelSide = "right",
+  large = false,
+} = Astro.props;
+
+const heightMd = large ? "md:h-[691px]" : "md:h-[491px]";
+const rowDir = panelSide === "left" ? "md:flex-row-reverse" : "md:flex-row";
+---
+
+<section class="bg-neutral-1-500 w-full px-4 py-8 md:px-12 md:py-[67px]">
+  <div class={`flex flex-col ${rowDir} rounded-[36px] md:rounded-[56px] overflow-hidden ${heightMd}`}>
+    <!-- Media panel -->
+    <div class="relative h-[240px] md:h-auto md:flex-1 bg-purple-dark-500">
+      {mediaSrc ? (
+        <img src={mediaSrc} alt={mediaAlt} class="absolute inset-0 w-full h-full object-cover" />
+      ) : (
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div class="size-[76px] rounded-full border-2 border-white/60 flex items-center justify-center">
+            <span class="text-white text-2xl ml-1">▶</span>
+          </div>
+        </div>
+      )}
+    </div>
+
+    <!-- Content panel -->
+    <div class="md:flex-1 bg-purple-light-500 flex flex-col gap-6 md:gap-11 justify-center px-8 py-10 md:pl-14 md:pr-12 md:py-14">
+      <div class="flex flex-col gap-4 text-white">
+        <h2 class="font-semibold text-3xl md:text-4xl leading-[1.18] max-w-[560px]">{heading}</h2>
+        <p class="font-normal text-lg md:text-xl leading-[1.42] max-w-[450px]">{subhead}</p>
+      </div>
+      <a
+        href={ctaHref}
+        class="inline-flex items-center gap-2 border-[1.5px] border-white rounded-full px-6 py-3 text-base font-semibold text-white hover:bg-white hover:text-purple-dark-500 transition-colors w-fit"
+      >
+        {ctaLabel}
+      </a>
+    </div>
+  </div>
+</section>

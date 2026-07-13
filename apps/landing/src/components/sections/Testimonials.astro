@@ -1,0 +1,101 @@
+---
+import { testimonials as defaultTestimonials, type Testimonial } from "@/data/testimonials";
+
+interface Props {
+  heading?: string;
+  testimonials?: Testimonial[];
+}
+const { heading = "Voices from our cohorts", testimonials = defaultTestimonials } = Astro.props;
+
+const items = testimonials;
+// Duplicate the list so the marquee can loop seamlessly (translateX -50%).
+const loop = [...items, ...items];
+// Scale speed to the number of cards so it always reads at a comfortable pace.
+const duration = Math.max(24, items.length * 8);
+
+const meta = (t: Testimonial) => [t.age, t.country].filter(Boolean).join(", ");
+---
+
+<section class="bg-neutral-1-500 w-full py-24 flex flex-col gap-12 overflow-hidden">
+  <h2 class="text-[40px] font-semibold text-purple-dark-500 px-12">{heading}</h2>
+
+  <div class="testi-marquee" role="region" aria-label={heading}>
+    <div class="testi-track" style={`--dur:${duration}s`}>
+      {loop.map((t, i) => {
+        const isClone = i >= items.length;
+        return (
+          <div
+            class:list={["testi-card", { "is-clone": isClone }]}
+            aria-hidden={isClone ? "true" : undefined}
+          >
+            <p class="text-[20px] font-normal text-purple-dark-500 leading-normal flex-1">
+              &ldquo;{t.quote}&rdquo;
+            </p>
+            <div class="flex flex-col gap-0.5">
+              {t.name && <p class="text-base font-semibold text-purple-dark-500">{t.name}</p>}
+              {meta(t) && <p class="text-sm text-purple-dark-500/70">{meta(t)}</p>}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<style>
+  .testi-marquee {
+    overflow: hidden;
+    width: 100%;
+    /* fade the edges so cards ease in/out */
+    -webkit-mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent);
+  }
+
+  .testi-track {
+    display: flex;
+    gap: 24px;
+    width: max-content;
+    padding-inline: 48px;
+    animation: testi-scroll var(--dur, 40s) linear infinite;
+  }
+
+  .testi-marquee:hover .testi-track,
+  .testi-track:focus-within {
+    animation-play-state: paused;
+  }
+
+  .testi-card {
+    position: relative;
+    flex: 0 0 auto;
+    width: 420px;
+    border-radius: 56px;
+    background: var(--color-neutral-2-500);
+    border: 5px solid #fff;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  @keyframes testi-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      /* move exactly one copy (half the track) minus one gap so the loop is seamless */
+      transform: translateX(calc(-50% - 12px));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .testi-marquee {
+      overflow-x: auto;
+    }
+    .testi-track {
+      animation: none;
+    }
+    .testi-card.is-clone {
+      display: none;
+    }
+  }
+</style>

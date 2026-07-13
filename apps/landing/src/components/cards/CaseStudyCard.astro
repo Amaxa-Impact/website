@@ -1,0 +1,91 @@
+---
+interface Stat {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  category?: string;
+  location?: string;
+  year?: string;
+  summary?: string;
+  stats?: [Stat, Stat];
+  ctaLabel?: string;
+  ctaHref?: string;
+  imageSrc?: string;
+  imageAlt?: string;
+}
+const {
+  eyebrow = "Featured Project",
+  title,
+  category,
+  location,
+  year,
+  summary,
+  stats,
+  ctaLabel = "Read case study",
+  ctaHref = "#",
+  imageSrc,
+  imageAlt = "",
+} = Astro.props;
+---
+
+<div class="relative w-full rounded-[56px] overflow-hidden bg-purple-light-500 min-h-[600px]">
+  {imageSrc && (
+    <img
+      src={imageSrc}
+      alt={imageAlt}
+      class="absolute inset-0 w-full h-full object-cover opacity-30"
+    />
+  )}
+
+  <div class="relative z-10 p-16 flex flex-col gap-6 h-full">
+    <!-- Eyebrow -->
+    <div class="flex items-center gap-2">
+      <span class="text-white">✦</span>
+      <p class="text-base font-semibold text-white">{eyebrow}</p>
+    </div>
+
+    <h2 class="text-[48px] font-semibold text-white leading-normal">{title}</h2>
+
+    <!-- Divider -->
+    <div class="h-px w-full bg-white/25"></div>
+
+    <!-- Meta row -->
+    {(category || location || year) && (
+      <div class="flex items-center gap-6 flex-wrap">
+        {category && <p class="text-base text-white/95">{category}</p>}
+        {location && <p class="text-base text-white/95">{location}</p>}
+        {year && <p class="text-base text-white/95">{year}</p>}
+      </div>
+    )}
+
+    {summary && (
+      <p class="text-[30px] text-white leading-[1.22]">{summary}</p>
+    )}
+
+    <!-- Divider -->
+    <div class="h-px w-full bg-white/25"></div>
+
+    <!-- Stats -->
+    {stats && (
+      <div class="flex gap-8">
+        {stats.map((stat) => (
+          <div class="flex flex-col gap-1.5 flex-1">
+            <p class="text-[36px] font-semibold text-white">{stat.value}</p>
+            <p class="text-sm text-white/85 leading-[1.35]">{stat.label}</p>
+          </div>
+        ))}
+      </div>
+    )}
+
+    <a
+      href={ctaHref}
+      class="inline-flex items-center border-[1.5px] border-white text-white text-base font-semibold px-6 py-3 rounded-full hover:bg-white hover:text-purple-light-500 transition-colors w-fit"
+    >
+      {ctaLabel}
+    </a>
+  </div>
+</div>

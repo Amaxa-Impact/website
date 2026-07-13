@@ -1,0 +1,64 @@
+---
+import AppLayout from "@/layouts/app-layout.astro";
+import ArticleHeader from "@/components/blog/ArticleHeader.astro";
+import BlogVideo from "@/components/blog/BlogVideo.astro";
+import BlogHeading from "@/components/blog/BlogHeading.astro";
+import BlogParagraph from "@/components/blog/BlogParagraph.astro";
+import BlogShare from "@/components/blog/BlogShare.astro";
+import { ArticleSlider } from "@/components/sections/ArticleSlider";
+import { NewsletterCta } from "@/components/sections/NewsletterCta";
+import ContactForm from "@/components/sections/ContactForm.astro";
+
+const url = "https://www.amaxaimpact.org/stories/isabella-and-zobia-music-gaza";
+const title = "How Isabella and Zobia's Love for Music Changed Lives in Gaza";
+
+const relatedArticles = [
+  { id: "1", title: "How Panshul, Jad, and Yueqi founded a platform for educational accessibility", href: "/stories/panshul-jad-yueqi-education" },
+  { id: "2", title: "How Maltha Organized a Remote Cultural Exchange between Palestine & the UAE", href: "/stories/maltha-cultural-exchange" },
+  { id: "3", title: "How Damira and Aamna Launched Hoops4Hope in Qatar", href: "/stories/damira-aamna-hoops4hope" },
+];
+---
+
+<AppLayout
+  seo={{
+    title,
+    description: "Isabella and Zobia used their shared love of music to create real impact for communities in Gaza through their Ámaxa cohort project.",
+  }}
+>
+  <ArticleHeader
+    title={title}
+    dek="Isabella and Zobia used their shared love of music to create real impact for communities in Gaza through their Ámaxa cohort project."
+    date="Jan 1, 2026"
+    tag1="Story"
+    tag2="Gaza"
+    tag3="Arts & Culture"
+  />
+
+  <div class="bg-neutral-1-500 w-full px-[200px] py-16 flex flex-col gap-12">
+    <BlogVideo vimeoId="1069887902" vimeoHash="acd24c8d11" title="Isabella and Zobia performing at a benefit concert for Gaza" />
+
+    <BlogHeading heading="A shared passion becomes a project" />
+
+    <BlogParagraph body="When Isabella and Zobia first joined an Ámaxa cohort, they knew they wanted to do something meaningful — but they weren't sure what form it would take. Both had been playing music since childhood, and it wasn't long before they realized their instruments could be more than a hobby." />
+
+    <BlogParagraph body="Their project, which they called Sounds for Gaza, brought together musicians from across three countries to record and release an album, with all proceeds going directly to a Gaza-based partner nonprofit. Within their first month, they had recruited twelve musicians and set a release date." />
+
+    <BlogHeading heading="What they built — and what they learned" />
+
+    <BlogParagraph body={`The logistics were harder than either of them expected. Coordinating recording sessions across time zones meant early mornings and late nights. But Isabella says the challenge made the work feel real: "We weren't just raising awareness. We were actually building something that had to work."`} />
+
+    <BlogParagraph body={`By the end of their cohort, Sounds for Gaza had raised over $4,000 — enough to fund three months of music lessons for children displaced by conflict. Zobia credits their Ámaxa coach for keeping them focused when the scope felt overwhelming: "She reminded us that one good thing, done well, is more powerful than ten things done halfway."`} />
+  </div>
+
+  <BlogShare url={url} title={title} />
+
+  <ArticleSlider
+    heading="More from our Knowledge Hub"
+    tagline="Read the latest insights and news on our blog."
+    items={relatedArticles}
+    client:load
+  />
+
+  <NewsletterCta client:load />
+  <ContactForm />
+</AppLayout>

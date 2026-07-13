@@ -1,0 +1,658 @@
+---
+import AppLayout from "@/layouts/app-layout.astro";
+
+// ── Existing components ──────────────────────────────────────────────────────
+import { Banner } from "@/components/ui/Banner";
+import { FilterChips } from "@/components/ui/FilterChips";
+import Hero from "@/components/sections/Hero.astro";
+import StatementBar from "@/components/sections/StatementBar.astro";
+import StatementDark from "@/components/sections/StatementDark.astro";
+import SplitMedia from "@/components/sections/SplitMedia.astro";
+import HowItWorks from "@/components/sections/HowItWorks.astro";
+import ImpactStats from "@/components/sections/ImpactStats.astro";
+import PartnerLogos from "@/components/sections/PartnerLogos.astro";
+import ProjectTypes from "@/components/sections/ProjectTypes.astro";
+import { Faq } from "@/components/sections/Faq";
+import { NewsletterCta } from "@/components/sections/NewsletterCta";
+import { ProjectFeatureSlider } from "@/components/sections/ProjectFeatureSlider";
+import FeatureCard from "@/components/cards/FeatureCard.astro";
+
+// ── Blog components ──────────────────────────────────────────────────────────
+import ArticleHeader from "@/components/blog/ArticleHeader.astro";
+import BlogHeading from "@/components/blog/BlogHeading.astro";
+import BlogParagraph from "@/components/blog/BlogParagraph.astro";
+import BlogImage from "@/components/blog/BlogImage.astro";
+import BlogShare from "@/components/blog/BlogShare.astro";
+
+// ── 2026 Navbar ───────────────────────────────────────────────────────────────
+import NavDark from "@/components/navbar/NavDark.astro";
+import NavPill from "@/components/navbar/NavPill.astro";
+
+// ── 2026 Cards ───────────────────────────────────────────────────────────────
+import BasicCard from "@/components/cards/BasicCard.astro";
+import ProfileCard from "@/components/cards/ProfileCard.astro";
+import ProfileDescriptionCard from "@/components/cards/ProfileDescriptionCard.astro";
+import ProjectCard from "@/components/cards/ProjectCard.astro";
+import CaseStudyCard from "@/components/cards/CaseStudyCard.astro";
+
+// ── 2026 Sections (static) ────────────────────────────────────────────────────
+import IntroMedia from "@/components/sections/IntroMedia.astro";
+import StatementMedia from "@/components/sections/StatementMedia.astro";
+import ImageOverlay from "@/components/sections/ImageOverlay.astro";
+import PhotoBanner from "@/components/sections/PhotoBanner.astro";
+import ThreeUp from "@/components/sections/ThreeUp.astro";
+import Measuring from "@/components/sections/Measuring.astro";
+import ReportFeature from "@/components/sections/ReportFeature.astro";
+import ReportHighlight from "@/components/sections/ReportHighlight.astro";
+import TeamGrid from "@/components/sections/TeamGrid.astro";
+import Testimonials from "@/components/sections/Testimonials.astro";
+import ContactForm from "@/components/sections/ContactForm.astro";
+
+// ── 2026 Sections (interactive React) ────────────────────────────────────────
+import { ProjectSlider } from "@/components/sections/ProjectSlider";
+import { ArticleSlider } from "@/components/sections/ArticleSlider";
+import { CaseStudySlider } from "@/components/sections/CaseStudySlider";
+import { PartnerFeatureSlider } from "@/components/sections/PartnerFeatureSlider";
+import { ProjectsGrid } from "@/components/projects/ProjectsGrid";
+import { projectCards } from "@/lib/project-cards";
+
+const sections = [
+  { id: "tokens",           label: "Tokens" },
+  { id: "buttons",          label: "Buttons" },
+  { id: "nav",              label: "Navigation" },
+  { id: "cards-basic",      label: "Cards — Basic" },
+  { id: "cards-profile",    label: "Cards — Profile" },
+  { id: "cards-project",    label: "Cards — Project" },
+  { id: "cards-article",    label: "Cards — Article" },
+  { id: "cards-case-study", label: "Cards — Case Study" },
+  { id: "sections-intro",   label: "Sections — Intro" },
+  { id: "sections-media",   label: "Sections — Media" },
+  { id: "sections-content", label: "Sections — Content" },
+  { id: "sections-team",    label: "Sections — Team" },
+  { id: "sections-sliders", label: "Sections — Sliders" },
+  { id: "sections-contact", label: "Sections — Contact" },
+  { id: "blog",             label: "Blog" },
+  { id: "legacy",           label: "Legacy (Existing)" },
+];
+
+const colors = [
+  { token: "coral-dark",   steps: [100,200,300,400,500,600,700,800,900] },
+  { token: "coral-light",  steps: [100,200,300,400,500,600,700,800,900] },
+  { token: "purple-dark",  steps: [100,200,300,400,500,600,700,800,900] },
+  { token: "purple-light", steps: [100,200,300,400,500,600,700,800,900] },
+  { token: "neutral-1",    steps: [100,200,300,400,500,600,700,800,900] },
+  { token: "neutral-2",    steps: [100,200,300,400,500,600,700,800,900] },
+];
+---
+
+<AppLayout seo={{ title: "Design System — Ámaxa", noIndex: true }}>
+  <!-- Layout wrapper -->
+  <div class="flex min-h-screen bg-neutral-1-500">
+
+    <!-- Sidebar TOC -->
+    <aside class="hidden lg:flex flex-col sticky top-0 h-screen w-56 shrink-0 bg-white border-r border-border overflow-y-auto py-8 px-5 gap-1 z-40">
+      <p class="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground mb-3">Components</p>
+      {sections.map(s => (
+        <a
+          href={`#${s.id}`}
+          class="text-sm text-purple-dark-400 hover:text-coral-dark-500 py-1 transition-colors"
+        >
+          {s.label}
+        </a>
+      ))}
+    </aside>
+
+    <!-- Main content -->
+    <main class="flex-1 min-w-0">
+
+      <!-- Page header -->
+      <div class="bg-purple-dark-500 px-12 py-12">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-coral-dark-400 mb-3">Internal</p>
+        <h1 class="text-[48px] font-semibold text-white leading-[1.1] mb-4">Ámaxa Design System</h1>
+        <p class="text-xl text-white/70 max-w-xl">All components from the 2026 Figma file, live and interactive. Scroll or use the sidebar to jump between sections.</p>
+      </div>
+
+      <!-- ─── TOKENS ──────────────────────────────────────────────────────── -->
+      <section id="tokens" class="px-12 py-16 flex flex-col gap-12 bg-white border-b border-border">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground mb-2">Design tokens</p>
+          <h2 class="text-3xl font-semibold text-purple-dark-500">Color Ramps</h2>
+        </div>
+        {colors.map(({ token, steps }) => (
+          <div class="flex flex-col gap-2">
+            <p class="text-sm font-semibold text-purple-dark-400 font-mono">{token}</p>
+            <div class="flex gap-2 flex-wrap">
+              {steps.map(step => (
+                <div class="flex flex-col items-center gap-1">
+                  <div
+                    class={`w-12 h-12 rounded-lg bg-${token}-${step}`}
+                    title={`${token}-${step}`}
+                  />
+                  <span class="text-[10px] text-muted-foreground">{step}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+
+        <!-- Typography scale -->
+        <div>
+          <p class="text-sm font-semibold text-purple-dark-400 mb-4">Typography</p>
+          <div class="flex flex-col gap-4">
+            <p class="text-[60px] font-semibold text-purple-dark-500 leading-[1.08]">Display / 60px SemiBold</p>
+            <p class="text-[48px] font-semibold text-purple-dark-500 leading-[1.1]">Heading 1 / 48px SemiBold</p>
+            <p class="text-[40px] font-semibold text-purple-dark-500 leading-[1.1]">Heading 2 / 40px SemiBold</p>
+            <p class="text-[36px] font-semibold text-purple-dark-500 leading-[1.12]">Heading 3 / 36px SemiBold</p>
+            <p class="text-[30px] font-normal text-purple-dark-500 leading-[1.4]">Large body / 30px Regular</p>
+            <p class="text-[24px] font-normal text-purple-dark-400 leading-[1.4]">Subhead / 24px Regular</p>
+            <p class="text-[20px] font-normal text-purple-dark-500 leading-[1.4]">Body large / 20px Regular</p>
+            <p class="text-base font-normal text-purple-dark-500 leading-[1.5]">Body / 16px Regular</p>
+            <p class="text-sm font-normal text-muted-foreground leading-[1.5]">Small / 14px Regular</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── BUTTONS ─────────────────────────────────────────────────────── -->
+      <section id="buttons" class="px-12 py-16 bg-neutral-1-500 border-b border-border flex flex-col gap-8">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground mb-2">Interactive</p>
+          <h2 class="text-3xl font-semibold text-purple-dark-500">Buttons</h2>
+        </div>
+
+        <!-- Fill -->
+        <div class="flex flex-col gap-3">
+          <p class="text-sm font-semibold text-muted-foreground">Fill (coral)</p>
+          <div class="flex gap-4 flex-wrap items-center">
+            <button class="bg-coral-dark-500 hover:bg-coral-dark-600 text-white text-base font-semibold px-6 py-3 rounded-full transition-colors">
+              Apply now
+            </button>
+            <button class="bg-coral-dark-500 hover:bg-coral-dark-600 text-white text-base font-semibold px-6 py-3 rounded-full transition-colors flex items-center gap-2">
+              Apply now <span>↗</span>
+            </button>
+            <button disabled class="bg-neutral-2-500 text-muted-foreground text-base font-semibold px-6 py-3 rounded-full cursor-not-allowed">
+              Disabled
+            </button>
+          </div>
+        </div>
+
+        <!-- Outline -->
+        <div class="flex flex-col gap-3">
+          <p class="text-sm font-semibold text-muted-foreground">Outline (purple-dark)</p>
+          <div class="flex gap-4 flex-wrap items-center">
+            <button class="border border-purple-dark-500 text-purple-dark-500 hover:bg-purple-dark-500 hover:text-white text-base font-semibold px-6 py-3 rounded-full transition-colors">
+              Learn more
+            </button>
+            <button class="border border-purple-dark-500 text-purple-dark-500 hover:bg-purple-dark-500 hover:text-white text-base font-semibold px-6 py-3 rounded-full transition-colors flex items-center gap-2">
+              Learn more <span>↗</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Inverse (white on dark) -->
+        <div class="flex flex-col gap-3 bg-purple-dark-500 p-8 rounded-[32px]">
+          <p class="text-sm font-semibold text-white/60">Inverse / on dark background</p>
+          <div class="flex gap-4 flex-wrap items-center">
+            <button class="bg-white text-purple-dark-500 hover:bg-neutral-1-500 text-base font-semibold px-6 py-3 rounded-full transition-colors">
+              Get started
+            </button>
+            <button class="border border-white text-white hover:bg-white hover:text-purple-dark-500 text-base font-semibold px-6 py-3 rounded-full transition-colors">
+              Learn more
+            </button>
+            <button class="border border-white text-white hover:bg-white hover:text-purple-dark-500 text-base font-semibold px-6 py-3 rounded-full transition-colors flex items-center gap-2">
+              Read the report
+            </button>
+          </div>
+        </div>
+
+        <!-- Ghost / text -->
+        <div class="flex flex-col gap-3">
+          <p class="text-sm font-semibold text-muted-foreground">Ghost / text</p>
+          <div class="flex gap-6 flex-wrap items-center">
+            <button class="text-purple-dark-500 hover:text-coral-dark-500 text-base font-semibold transition-colors">
+              Learn more →
+            </button>
+            <button class="text-purple-dark-500 hover:text-coral-dark-500 text-base font-semibold transition-colors flex items-center gap-1">
+              View report now →
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter chips -->
+        <div class="flex flex-col gap-3">
+          <p class="text-sm font-semibold text-muted-foreground">Filter chips</p>
+          <div class="flex gap-3 flex-wrap">
+            <button class="bg-coral-dark-500 text-white text-sm font-semibold px-5 py-2 rounded-full">Active chip</button>
+            <button class="border border-border text-purple-dark-500 hover:border-coral-dark-500 hover:text-coral-dark-500 text-sm font-semibold px-5 py-2 rounded-full transition-colors">Default chip</button>
+            <button class="border border-border text-purple-dark-500 hover:border-coral-dark-500 hover:text-coral-dark-500 text-sm font-semibold px-5 py-2 rounded-full transition-colors">Another chip</button>
+            <button class="border border-dashed border-neutral-2-600 text-muted-foreground text-sm px-5 py-2 rounded-full hover:border-coral-dark-500 hover:text-coral-dark-500 transition-colors">Clear ×</button>
+          </div>
+        </div>
+
+        <!-- Arrow nav buttons -->
+        <div class="flex flex-col gap-3">
+          <p class="text-sm font-semibold text-muted-foreground">Navigation arrows (slider controls)</p>
+          <div class="flex gap-4 items-center">
+            <button class="w-14 h-14 rounded-[28px] bg-white border border-border flex items-center justify-center text-[22px] text-purple-dark-500 hover:border-coral-dark-500 transition-colors">←</button>
+            <button class="w-14 h-14 rounded-[28px] bg-coral-dark-500 flex items-center justify-center text-[22px] text-white hover:bg-coral-dark-600 transition-colors">→</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── NAVIGATION ───────────────────────────────────────────────────── -->
+      <section id="nav" class="flex flex-col gap-0 border-b border-border">
+        <div class="px-12 py-8 bg-white">
+          <p class="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground mb-2">Navigation</p>
+          <h2 class="text-3xl font-semibold text-purple-dark-500">Navbars</h2>
+        </div>
+        <div class="flex flex-col gap-0">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.1em] text-muted-foreground px-12 py-3 bg-white border-t border-border">nav/dark</p>
+            <NavDark />
+          </div>
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.1em] text-muted-foreground px-12 py-3 bg-white border-t border-border">nav/pill</p>
+            <NavPill />
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── CARDS — BASIC ────────────────────────────────────────────────── -->
+      <section id="cards-basic" class="px-12 py-16 bg-neutral-1-500 border-b border-border flex flex-col gap-8">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground mb-2">Cards</p>
+          <h2 class="text-3xl font-semibold text-purple-dark-500">Basic / Responsive Card</h2>
+        </div>
+        <div class="flex gap-8 flex-wrap">
+          <BasicCard class="w-[400px] h-[253px]" />
+          <BasicCard class="w-[532px] h-[253px]" />
+          <BasicCard class="w-[800px] h-[400px]" />
+        </div>
+      </section>
+
+      <!-- ─── CARDS — PROFILE ──────────────────────────────────────────────── -->
+      <section id="cards-profile" class="px-12 py-16 bg-white border-b border-border flex flex-col gap-8">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground mb-2">Cards</p>
+          <h2 class="text-3xl font-semibold text-purple-dark-500">Profile Cards</h2>
+        </div>
+        <div class="flex gap-8 flex-wrap items-start">
+          <!-- card/profile/description (standalone) -->
+          <div class="flex flex-col gap-2">
+            <p class="text-xs text-muted-foreground font-mono">card/profile/description</p>
+            <ProfileDescriptionCard name="Team Member" role="Team Role" linkedinHref="#" />
+          </div>
+
+          <!-- card/profile/card+description (coral) -->
+          <div class="flex flex-col gap-2">
+            <p class="text-xs text-muted-foreground font-mono">card/profile/card+description — coral</p>
+            <ProfileCard name="Amara Okonkwo" role="Executive Director" linkedinHref="#" tone="coral" />
+          </div>
+
+          <!-- card/profile/card+description (lavender) -->
+          <div class="flex flex-col gap-2">
+            <p class="text-xs text-muted-foreground font-mono">card/profile/card+description — lavender</p>
+            <ProfileCard name="Liam Bennett" role="Head of Programs" linkedinHref="#" tone="lavender" />
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── CARDS — PROJECT ──────────────────────────────────────────────── -->
+      <section id="cards-project" class="px-12 py-16 bg-neutral-1-500 border-b border-border flex flex-col gap-8">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground mb-2">Cards</p>
+          <h2 class="text-3xl font-semibold text-purple-dark-500">Project Cards</h2>
+        </div>
+        <div class="flex gap-8 flex-wrap items-start">
+          <div class="flex flex-col gap-2">
+            <p class="text-xs text-muted-foreground font-mono">card/project</p>
+            <ProjectCard
+              title="Feeding Gaza: Support for Families in Crisis"
+              partner="PARTNER: GAZA CHAMPIONS"
+              href="/project/gaza"
+              src="https://b47pkz22xs.ufs.sh/f/OxFTTzjZGToOVSuAZzWL0MYRHUetxwcyzJn3h7alsSdIDAKf"
+            />
+          </div>
+          <div class="flex flex-col gap-2">
+            <p class="text-xs text-muted-foreground font-mono">card/project (no image)</p>
+            <ProjectCard title="Placeholder Project" partner="PARTNER: EXAMPLE ORG" />
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <p class="text-xs text-muted-foreground font-mono mb-4">card/feature (existing)</p>
+          <div class="flex gap-8 flex-wrap">
+            <FeatureCard title="The Nyaka School" country="UGANDA" href="/project/nyaka" />
+            <FeatureCard title="Community Partner" country="KENYA" />
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── CARDS — ARTICLE ──────────────────────────────────────────────── -->
+      <section id="cards-article" class="px-12 py-16 bg-white border-b border-border flex flex-col gap-8">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground mb-2">Cards</p>
+          <h2 class="text-3xl font-semibold text-purple-dark-500">Article Card</h2>
+        </div>
+        <div class="flex gap-8 flex-wrap items-start">
+          <!-- Article card (manual recreation) -->
+          <a href="#" class="group bg-white w-[636px] rounded-[56px] overflow-hidden flex flex-col">
+            <div class="relative h-[400px] bg-coral-light-500 overflow-hidden shrink-0">
+              <img
+                src="https://b47pkz22xs.ufs.sh/f/OxFTTzjZGToOVSuAZzWL0MYRHUetxwcyzJn3h7alsSdIDAKf"
+                alt="Article"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+            </div>
+            <div class="flex flex-col gap-7 px-14 pt-10 pb-8 flex-1">
+              <h3 class="text-[42px] font-semibold text-purple-dark-500 leading-[1.1]">
+                How Isabella and Zobia's Love for Music Aided Gaza
+              </h3>
+              <div class="bg-coral-dark-500 flex items-center gap-2 px-6 py-2.5 rounded-full w-fit">
+                <span class="text-white font-normal text-base">Read more</span>
+                <span class="text-white text-sm">↗</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- ─── CARDS — CASE STUDY ───────────────────────────────────────────── -->
+      <section id="cards-case-study" class="px-12 py-16 bg-neutral-1-500 border-b border-border flex flex-col gap-8">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground mb-2">Cards</p>
+          <h2 class="text-3xl font-semibold text-purple-dark-500">Case Study Card</h2>
+        </div>
+        <CaseStudyCard
+          eyebrow="Featured Project"
+          title="Juhudi Kilimo"
+          category="Accessible Education"
+          location="Liberia"
+          year="2026"
+          summary="Investing in trust to unlock smallholder potential"
+          stats={[
+            { value: "70%", label: "of company revenue from agricultural loans" },
+            { value: "70%", label: "of customers are women" },
+          ]}
+          ctaLabel="Read case study"
+          ctaHref="#"
+        />
+      </section>
+
+      <!-- ─── SECTIONS — INTRO ─────────────────────────────────────────────── -->
+      <section id="sections-intro" class="flex flex-col gap-0 border-b border-border">
+        <div class="px-12 py-8 bg-white">
+          <p class="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground mb-2">Sections</p>
+          <h2 class="text-3xl font-semibold text-purple-dark-500">Intro / Hero Sections</h2>
+        </div>
+
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.1em] text-muted-foreground px-12 py-3 bg-white border-t border-border">intro-media</p>
+          <IntroMedia
+            heading="We are ámaxa."
+            subhead="Removing barriers for anyone who wants to change the world."
+          />
+        </div>
+
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.1em] text-muted-foreground px-12 py-3 bg-white border-t border-border">photo-banner</p>
+          <PhotoBanner
+            heading="Giving Light: Solar Solutions for Ugandan Grandmothers"
+            body="Partner with us to power communities and create lasting change."
+            eyebrow="FEATURED PROJECT"
+            imageSrc="https://b47pkz22xs.ufs.sh/f/OxFTTzjZGToOXM5a2R0BrawSs24LUuYDb5IoTiA7Feh0fPKW"
+            showButton={true}
+            showText={true}
+            buttonLabel="▶ Watch story"
+          />
+        </div>
+
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.1em] text-muted-foreground px-12 py-3 bg-white border-t border-border">image-overlay</p>
+          <ImageOverlay
+            heading="Projects that move the world forward."
+            body="We partner with nonprofits across Palestine, Liberia, Uganda, and beyond."
+            learnMoreHref="/project"
+            learnMoreLabel="Explore projects"
+            imageSrc="https://b47pkz22xs.ufs.sh/f/OxFTTzjZGToOFHSjHghMgGqJpRmLFNh4KsQWVrkiIwAYnPaz"
+          />
+        </div>
+      </section>
+
+      <!-- ─── SECTIONS — MEDIA ─────────────────────────────────────────────── -->
+      <section id="sections-media" class="flex flex-col gap-0 border-b border-border">
+        <div class="px-12 py-8 bg-white">
+          <p class="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground mb-2">Sections</p>
+          <h2 class="text-3xl font-semibold text-purple-dark-500">Media Sections</h2>
+        </div>
+
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.1em] text-muted-foreground px-12 py-3 bg-white border-t border-border">statement-media</p>
+          <StatementMedia
+            statement="We believe every young person deserves the chance to create real impact."
+            body="Ámaxa connects students with nonprofits worldwide, building skills, empathy, and lasting change."
+            learnMoreHref="/who-we-are"
+          />
+        </div>
+
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.1em] text-muted-foreground px-12 py-3 bg-white border-t border-border">three-up</p>
+          <ThreeUp
+            heading="A closer look at our work"
+            items={[
+              { title: "What we do", body: "We connect high-school students with nonprofits worldwide, turning passion into real, measurable impact.", linkHref: "/who-we-are", linkLabel: "Learn more" },
+              { title: "Our projects", body: "From Gaza to Uganda to Liberia, our cohorts work on the issues that matter most — right now.", linkHref: "/project", linkLabel: "See projects" },
+              { title: "Join a cohort", body: "Applications open each semester. Gain leadership experience and global connections in 12 weeks.", linkHref: "/pathway", linkLabel: "Apply today" },
+            ]}
+          />
+        </div>
+
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.1em] text-muted-foreground px-12 py-3 bg-white border-t border-border">measuring</p>
+          <Measuring
+            heading="Measuring what matters"
+            subhead="Impact measurement across our portfolio has three pillars: breadth, depth, and equity. These metrics help drive our work and build a more just world."
+            cards={[
+              { title: "Breadth of impact", body: "We measure breadth as the number of lives touched, partnerships formed, and communities reached across cohorts." },
+              { title: "Depth of change", body: "Depth captures how meaningfully participants grow — skills gained, perspectives shifted, and long-term commitments made." },
+              { title: "Equity in access", body: "We track who participates and ensure we remove barriers so students from all backgrounds can join and lead." },
+            ]}
+          />
+        </div>
+      </section>
+
+      <!-- ─── SECTIONS — CONTENT ───────────────────────────────────────────── -->
+      <section id="sections-content" class="flex flex-col gap-0 border-b border-border">
+        <div class="px-12 py-8 bg-white">
+          <p class="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground mb-2">Sections</p>
+          <h2 class="text-3xl font-semibold text-purple-dark-500">Content Sections</h2>
+        </div>
+
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.1em] text-muted-foreground px-12 py-3 bg-white border-t border-border">report-feature</p>
+          <ReportFeature
+            eyebrow="Report"
+            title="Kenya Education Market Research Summary"
+            body="Entrepreneurs and investors need reliable, clear market insights to inform decision-making. Ámaxa led a process to gather market-oriented insights on the desires, motivations, and willingness to pay for key education stakeholders."
+            ctaLabel="Read the report"
+            ctaHref="#"
+          />
+        </div>
+
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.1em] text-muted-foreground px-12 py-3 bg-white border-t border-border">report-highlight</p>
+          <ReportHighlight
+            eyebrow="Annual Report"
+            title="2024 Annual Report"
+            body="Ámaxa's 2024 report highlights how we rose to meet the year's toughest challenges — investing in bold ideas and students driving real change."
+            ctaLabel="View report now"
+            ctaHref="#"
+          />
+        </div>
+
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.1em] text-muted-foreground px-12 py-3 bg-white border-t border-border">testimonials</p>
+          <Testimonials
+            heading="Voices from our cohorts"
+            testimonials={[
+              { quote: "Ámaxa gave me the chance to lead a real project with teammates across three continents. I learned more in three months than I expected.", name: "Placeholder Student", age: "17", country: "Kenya" },
+              { quote: "Working with a nonprofit in Palestine showed me how much impact high schoolers can actually have when given the chance.", name: "Placeholder Student", age: "16", country: "USA" },
+              { quote: "My coach helped our team turn an idea into something tangible. It is the most meaningful thing I have done in school.", name: "Placeholder Student", age: "18", country: "India" },
+            ]}
+          />
+        </div>
+      </section>
+
+      <!-- ─── SECTIONS — TEAM ──────────────────────────────────────────────── -->
+      <section id="sections-team" class="flex flex-col gap-0 border-b border-border">
+        <div class="px-12 py-8 bg-white">
+          <p class="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground mb-2">Sections</p>
+          <h2 class="text-3xl font-semibold text-purple-dark-500">Team Grid</h2>
+        </div>
+        <TeamGrid
+          heading="Our Team"
+          subhead="Meet the people behind our work."
+          members={[
+            { name: "Amara Okonkwo", role: "Executive Director", tone: "coral", linkedinHref: "#" },
+            { name: "Liam Bennett", role: "Head of Programs", tone: "lavender", linkedinHref: "#" },
+            { name: "Sofia Rossi", role: "Research Lead", tone: "coral", linkedinHref: "#" },
+          ]}
+        />
+      </section>
+
+      <!-- ─── SECTIONS — SLIDERS ───────────────────────────────────────────── -->
+      <section id="sections-sliders" class="flex flex-col gap-0 border-b border-border">
+        <div class="px-12 py-8 bg-white">
+          <p class="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground mb-2">Sections — Interactive</p>
+          <h2 class="text-3xl font-semibold text-purple-dark-500">Sliders & Grids</h2>
+        </div>
+
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.1em] text-muted-foreground px-12 py-3 bg-white border-t border-border">section/project-slider</p>
+          <ProjectSlider
+            client:load
+            heading="Our Projects"
+            items={[
+              { id: "gaza", title: "Feeding Gaza: Support for Families in Crisis", partner: "PARTNER: GAZA CHAMPIONS", imageSrc: "https://b47pkz22xs.ufs.sh/f/OxFTTzjZGToOVSuAZzWL0MYRHUetxwcyzJn3h7alsSdIDAKf", href: "/project/gaza" },
+              { id: "nyaka", title: "Giving Light: Solar Solutions for Ugandan Grandmothers", partner: "PARTNER: NYAKA GLOBAL", imageSrc: "https://b47pkz22xs.ufs.sh/f/OxFTTzjZGToOXM5a2R0BrawSs24LUuYDb5IoTiA7Feh0fPKW", href: "/project/nyaka" },
+              { id: "ukraine", title: "Frontline Support: Urgent Medical Aid to Ukrainians", partner: "PARTNER: UKRAINIAN ACTION", imageSrc: "https://b47pkz22xs.ufs.sh/f/OxFTTzjZGToOFSqz9DhMgGqJpRmLFNh4KsQWVrkiIwAYnPaz", href: "/project/ukraine" },
+              { id: "karinas", title: "Karina's Library: Empowering Women, Fighting Censorship", partner: "ÁMAXA INITIATIVE", imageSrc: "https://b47pkz22xs.ufs.sh/f/OxFTTzjZGToOkD4GobRePnYWC5xuvVyLTmQRSKBf6hsFkHJO", href: "/project/karinas-library" },
+              { id: "forest", title: "Ámaxa Global Forest: Planting Trees & Tracking Carbon", partner: "ÁMAXA INITIATIVE", imageSrc: "https://b47pkz22xs.ufs.sh/f/OxFTTzjZGToOYEdEXWwlUs9XMErKJv7Faw8TpfmyuG5lVHhq", href: "/project/global-forest" },
+              { id: "isnad", title: "Opening the Window for Palestinian Students", partner: "PARTNER: ISNAD", imageSrc: "https://b47pkz22xs.ufs.sh/f/OxFTTzjZGToOFHSjHghMgGqJpRmLFNh4KsQWVrkiIwAYnPaz", href: "/project/isnad" },
+            ]}
+          />
+        </div>
+
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.1em] text-muted-foreground px-12 py-3 bg-white border-t border-border">section/article-slider</p>
+          <ArticleSlider
+            client:load
+            heading="Latest Stories"
+            tagline="Insights & stories from our community"
+            items={[
+              { id: "1", title: "How Isabella and Zobia's Love for Music Aided Gaza", imageSrc: "https://b47pkz22xs.ufs.sh/f/OxFTTzjZGToOVSuAZzWL0MYRHUetxwcyzJn3h7alsSdIDAKf", href: "#" },
+              { id: "2", title: "Solar Power Transforms Lives in Rural Uganda", imageSrc: "https://b47pkz22xs.ufs.sh/f/OxFTTzjZGToOXM5a2R0BrawSs24LUuYDb5IoTiA7Feh0fPKW", href: "#" },
+              { id: "3", title: "Frontline Voices: Medical Aid in Ukraine", imageSrc: "https://b47pkz22xs.ufs.sh/f/OxFTTzjZGToOFSqz9DhMgGqJpRmLFNh4KsQWVrkiIwAYnPaz", href: "#" },
+              { id: "4", title: "Karina's Library Hits 10,000 Books", imageSrc: "https://b47pkz22xs.ufs.sh/f/OxFTTzjZGToOkD4GobRePnYWC5xuvVyLTmQRSKBf6hsFkHJO", href: "#" },
+            ]}
+          />
+        </div>
+
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.1em] text-muted-foreground px-12 py-3 bg-white border-t border-border">section/case-study-slider</p>
+          <CaseStudySlider
+            client:load
+            items={[
+              { id: "1", eyebrow: "Featured Project", title: "Juhudi Kilimo", category: "Accessible Education", location: "Liberia", year: "2026", summary: "Investing in trust to unlock smallholder potential.", stats: [{ value: "70%", label: "of company revenue from agricultural loans" }, { value: "70%", label: "of customers are women" }], ctaLabel: "Read case study", ctaHref: "#" },
+              { id: "2", eyebrow: "Featured Project", title: "Gaza Champions", category: "Humanitarian Aid", location: "Palestine", year: "2025", summary: "Feeding families in crisis through community-led distribution.", stats: [{ value: "5,000+", label: "families reached" }, { value: "12", label: "student cohorts involved" }], ctaLabel: "Read case study", ctaHref: "#" },
+            ]}
+          />
+        </div>
+
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.1em] text-muted-foreground px-12 py-3 bg-white border-t border-border">section/partner-feature-slider</p>
+          <PartnerFeatureSlider
+            client:load
+            heading="Ámaxa Community Partners"
+            items={[
+              { id: "nyaka", name: "The Nyaka School", location: "UGANDA", imageSrc: "https://b47pkz22xs.ufs.sh/f/OxFTTzjZGToOXM5a2R0BrawSs24LUuYDb5IoTiA7Feh0fPKW", href: "/project/nyaka" },
+              { id: "isnad", name: "ISNAD Education Center", location: "PALESTINE", imageSrc: "https://b47pkz22xs.ufs.sh/f/OxFTTzjZGToOFHSjHghMgGqJpRmLFNh4KsQWVrkiIwAYnPaz", href: "/project/isnad" },
+              { id: "ukraine", name: "Ukrainian Action", location: "UKRAINE", imageSrc: "https://b47pkz22xs.ufs.sh/f/OxFTTzjZGToOFSqz9DhMgGqJpRmLFNh4KsQWVrkiIwAYnPaz", href: "/project/ukraine" },
+              { id: "educhildren", name: "EduChildren", location: "LIBERIA", imageSrc: "https://b47pkz22xs.ufs.sh/f/OxFTTzjZGToOaifCsCIBDGmcbISEzQYZx81iL0rWJ43h2T9d", href: "/project/educhildren" },
+            ]}
+          />
+        </div>
+
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.1em] text-muted-foreground px-12 py-3 bg-white border-t border-border">section/projects-grid (filterable)</p>
+          <div class="bg-neutral-1-500 px-12 py-16">
+            <ProjectsGrid client:load cards={projectCards} />
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── SECTIONS — CONTACT ───────────────────────────────────────────── -->
+      <section id="sections-contact" class="flex flex-col gap-0 border-b border-border">
+        <div class="px-12 py-8 bg-white">
+          <p class="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground mb-2">Sections</p>
+          <h2 class="text-3xl font-semibold text-purple-dark-500">Contact Form</h2>
+        </div>
+        <ContactForm
+          address="123 Example St, Suite 100"
+          addressLine2="New York, NY 10001"
+          hours="Mon–Fri: 9:00 AM – 5:00 PM"
+          hoursLine2="Sat–Sun: Closed"
+          email="hello@amaxaimpact.org"
+        />
+      </section>
+
+      <!-- ─── BLOG ─────────────────────────────────────────────────────────── -->
+      <section id="blog" class="flex flex-col gap-0 border-b border-border">
+        <div class="px-12 py-8 bg-white">
+          <p class="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground mb-2">Blog</p>
+          <h2 class="text-3xl font-semibold text-purple-dark-500">Blog Components</h2>
+        </div>
+        <div class="bg-neutral-1-500 flex flex-col gap-12 py-16">
+          <ArticleHeader
+            title="Article title goes here — make it bold and specific"
+            dek="A one or two sentence standfirst that summarizes the story for the reader."
+            date="Jan 1, 2026"
+            tag1="Blog"
+            tag2="Category"
+            tag3="Region"
+          />
+          <div class="px-[200px] flex flex-col gap-10">
+            <BlogHeading heading="Section heading goes here?" />
+            <BlogParagraph body="Body copy goes here. This paragraph is a text property — type or bind it to a CMS rich-text field. Links can be styled with the purple link token." />
+            <BlogImage caption="Optional image caption goes here — describe the photo." />
+          </div>
+          <BlogShare url="https://amaxaimpact.org" title="Article title" />
+        </div>
+      </section>
+
+      <!-- ─── LEGACY ───────────────────────────────────────────────────────── -->
+      <section id="legacy" class="flex flex-col gap-0">
+        <div class="px-12 py-8 bg-white border-b border-border">
+          <p class="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground mb-2">Existing components</p>
+          <h2 class="text-3xl font-semibold text-purple-dark-500">Legacy / Existing Sections</h2>
+        </div>
+        <Banner client:load />
+        <Hero />
+        <StatementBar />
+        <StatementDark />
+        <SplitMedia />
+        <SplitMedia panelSide="left" large />
+        <HowItWorks />
+        <ImpactStats />
+        <PartnerLogos />
+        <ProjectTypes />
+        <Faq client:load />
+        <div class="bg-neutral-1-500 px-12 py-8">
+          <FilterChips chips={["All","Education","Health","Environment"]} client:load />
+        </div>
+        <NewsletterCta client:load />
+        <ProjectFeatureSlider client:load />
+      </section>
+
+    </main>
+  </div>
+</AppLayout>

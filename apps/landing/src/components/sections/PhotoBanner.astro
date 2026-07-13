@@ -1,0 +1,54 @@
+---
+interface Props {
+  heading: string;
+  body?: string;
+  eyebrow?: string;
+  imageSrc?: string;
+  imageAlt?: string;
+  showButton?: boolean;
+  showText?: boolean;
+  buttonLabel?: string;
+  buttonHref?: string;
+}
+const {
+  heading,
+  body,
+  eyebrow = "FEATURED PROJECT",
+  imageSrc,
+  imageAlt = "",
+  showButton = true,
+  showText = true,
+  buttonLabel = "▶ Watch",
+  buttonHref = "#",
+} = Astro.props;
+---
+
+<section class="bg-purple-dark-500 relative w-full h-[720px] overflow-hidden">
+  {imageSrc && (
+    <img
+      src={imageSrc}
+      alt={imageAlt}
+      class="absolute inset-0 w-full h-full object-cover"
+    />
+  )}
+
+  <!-- Purple gradient scrim -->
+  <div class="absolute inset-0 bg-gradient-to-r from-purple-dark-500/75 via-purple-dark-500/15 to-transparent"></div>
+
+  <!-- Content -->
+  <div class="absolute left-16 top-1/2 -translate-y-1/2 flex flex-col gap-6 max-w-[640px]">
+    <p class="text-2xl font-semibold uppercase tracking-[0.1em] text-white/90">{eyebrow}</p>
+    <h2 class="text-[44px] font-bold text-white leading-[1.15]">{heading}</h2>
+    {showText && body && (
+      <p class="text-2xl text-white/85 leading-[1.4]">{body}</p>
+    )}
+    {showButton && (
+      <a
+        href={buttonHref}
+        class="mt-2 inline-flex items-center gap-2 bg-white text-purple-dark-500 text-base font-semibold px-6 py-3 rounded-full hover:bg-neutral-1-500 transition-colors w-fit"
+      >
+        {buttonLabel}
+      </a>
+    )}
+  </div>
+</section>

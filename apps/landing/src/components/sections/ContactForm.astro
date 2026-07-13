@@ -1,0 +1,137 @@
+---
+---
+
+<section class="bg-coral-dark-600 w-full rounded-t-3xl overflow-hidden">
+  <div class="px-20 py-16 flex flex-col items-center">
+    <!-- Header -->
+    <div class="flex flex-col gap-4 max-w-[580px] w-full mb-10">
+      <h2 class="text-[36px] font-bold text-white">Connect with ámaxa.</h2>
+      <p class="text-[18px] text-white/90 leading-[1.5]">
+        Send any questions, concerns, or proposals through the form below.<br />
+        We would love to hear from you.
+      </p>
+    </div>
+
+    <form id="contact-form" class="flex flex-col gap-4 max-w-[580px] w-full">
+      <!-- Select -->
+      <select
+        name="formType"
+        class="bg-white/[0.08] border border-white/[0.25] text-white/70 text-base px-4 py-3.5 rounded-xl w-full appearance-none focus:outline-none focus:border-white/50"
+      >
+        <option value="" disabled selected class="text-black">Select</option>
+        <option value="internship" class="text-black">Internship Inquiry</option>
+        <option value="high-school" class="text-black">High School Program</option>
+        <option value="general" class="text-black">General Inquiry</option>
+        <option value="demo" class="text-black">Request a Demo</option>
+      </select>
+
+      <!-- Name row -->
+      <div class="flex gap-4">
+        <input
+          type="text"
+          name="firstName"
+          placeholder="First Name"
+          class="bg-white/[0.08] border border-white/[0.25] text-white placeholder:text-white/70 text-base px-4 py-3.5 rounded-xl flex-1 focus:outline-none focus:border-white/50"
+        />
+        <input
+          type="text"
+          name="lastName"
+          placeholder="Last Name"
+          class="bg-white/[0.08] border border-white/[0.25] text-white placeholder:text-white/70 text-base px-4 py-3.5 rounded-xl flex-1 focus:outline-none focus:border-white/50"
+        />
+      </div>
+
+      <input
+        type="email"
+        name="email"
+        placeholder="Email"
+        class="bg-white/[0.08] border border-white/[0.25] text-white placeholder:text-white/70 text-base px-4 py-3.5 rounded-xl w-full focus:outline-none focus:border-white/50"
+      />
+      <input
+        type="text"
+        name="title"
+        placeholder="Title"
+        class="bg-white/[0.08] border border-white/[0.25] text-white placeholder:text-white/70 text-base px-4 py-3.5 rounded-xl w-full focus:outline-none focus:border-white/50"
+      />
+      <input
+        type="url"
+        name="website"
+        placeholder="Company website (or personal URL)"
+        class="bg-white/[0.08] border border-white/[0.25] text-white placeholder:text-white/70 text-base px-4 py-3.5 rounded-xl w-full focus:outline-none focus:border-white/50"
+      />
+      <textarea
+        name="message"
+        placeholder="Message"
+        rows={6}
+        class="bg-white/[0.08] border border-white/[0.25] text-white placeholder:text-white/70 text-base px-4 py-3.5 rounded-xl w-full resize-none focus:outline-none focus:border-white/50"
+      ></textarea>
+
+      <button
+        type="submit"
+        id="contact-submit"
+        class="bg-white text-coral-dark-600 font-semibold text-base py-4 rounded-full w-full transition-opacity hover:opacity-90 disabled:opacity-60"
+      >
+        Send
+      </button>
+    </form>
+
+    <p id="form-message" class="hidden mt-6 text-white text-center text-base"></p>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById("contact-form") as HTMLFormElement;
+  const submitBtn = document.getElementById("contact-submit") as HTMLButtonElement;
+  const formMessage = document.getElementById("form-message") as HTMLParagraphElement;
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Sending…";
+    formMessage.classList.add("hidden");
+
+    const data = new FormData(form);
+    const firstName = (data.get("firstName") as string)?.trim() ?? "";
+    const lastName = (data.get("lastName") as string)?.trim() ?? "";
+
+    const payload = {
+      name: [firstName, lastName].filter(Boolean).join(" "),
+      email: (data.get("email") as string)?.trim() ?? "",
+      message: (data.get("message") as string)?.trim() ?? "",
+      formType: data.get("formType") as string,
+      organization: (data.get("title") as string)?.trim() ?? "",
+      phone: undefined,
+      preferredDate: undefined,
+      preferredTime: undefined,
+      timezone: undefined,
+    };
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await res.json();
+
+      if (result.success) {
+        form.reset();
+        formMessage.textContent = "Your message has been sent! We'll be in touch soon.";
+        formMessage.classList.remove("hidden", "text-red-300");
+        formMessage.classList.add("text-white");
+      } else {
+        formMessage.textContent = result.message ?? "Something went wrong. Please try again.";
+        formMessage.classList.remove("hidden", "text-white");
+        formMessage.classList.add("text-red-300");
+      }
+    } catch {
+      formMessage.textContent = "Failed to send. Please try again.";
+      formMessage.classList.remove("hidden", "text-white");
+      formMessage.classList.add("text-red-300");
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Send";
+    }
+  });
+</script>

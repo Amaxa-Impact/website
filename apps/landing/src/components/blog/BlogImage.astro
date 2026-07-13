@@ -1,0 +1,30 @@
+---
+interface Props {
+  src?: string;
+  alt?: string;
+  caption?: string;
+  showCaption?: boolean;
+}
+
+const {
+  src,
+  alt = "",
+  caption,
+  showCaption = true,
+} = Astro.props;
+---
+
+<figure class="flex flex-col gap-3 w-full max-w-[1040px]">
+  <div class="bg-neutral-2-500 h-[470px] w-full overflow-hidden">
+    {src ? (
+      <img src={src} alt={alt} class="w-full h-full object-cover" />
+    ) : (
+      <span class="block p-4 text-base text-muted-foreground">Photo — replace</span>
+    )}
+  </div>
+  {showCaption && caption && (
+    <figcaption class="font-normal italic text-base text-muted-foreground leading-[1.4]">
+      {caption}
+    </figcaption>
+  )}
+</figure>

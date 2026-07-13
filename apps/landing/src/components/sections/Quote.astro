@@ -1,0 +1,20 @@
+---
+interface Props {
+  quote?: string;
+  attribution?: string;
+}
+
+const {
+  quote = "It's not every day I come across a program that treats students like global leaders.",
+  attribution = "Maitha, 16, from the UAE",
+} = Astro.props;
+---
+
+<section class="bg-purple-dark-500 w-full px-12 py-[88px] flex justify-center">
+  <div class="w-full max-w-[1190px] flex flex-col gap-8">
+    <p class="font-semibold text-[44px] text-white leading-[1.25]">
+      &ldquo;{quote}&rdquo;
+    </p>
+    <p class="font-normal text-lg text-white/80">-{attribution}</p>
+  </div>
+</section>

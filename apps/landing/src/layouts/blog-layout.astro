@@ -1,0 +1,76 @@
+---
+import JsonLd from "@/components/json-ld.astro";
+import Posthog from "@/components/posthog.astro";
+import SEO from "@/components/seo.astro";
+
+import "../styles/global.css";
+
+import Navbar from "@/components/navbar/index.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  articleSchema?: Record<string, unknown>;
+  breadcrumbSchema?: Record<string, unknown>;
+}
+
+const { title, description, image, articleSchema, breadcrumbSchema } =
+  Astro.props;
+
+// Organization schema (included on all blog pages)
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "amaxa",
+  url: "https://www.amaxaimpact.org",
+  logo: "https://www.amaxaimpact.org/icon.png",
+};
+---
+
+<html lang="en">
+  <head>
+    <SEO title={title} description={description} image={image} type="article" />
+    <JsonLd data={organizationSchema} />
+    {articleSchema && <JsonLd data={articleSchema} />}
+    {breadcrumbSchema && <JsonLd data={breadcrumbSchema} />}
+    <Posthog />
+  </head>
+  <body class="bg-background min-h-screen">
+    <Navbar />
+    <div
+      class="mx-auto w-full max-w-[1600px] px-4 py-8 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20"
+    >
+      <!-- Breadcrumb Area -->
+      <slot name="breadcrumb" />
+
+      <div class="flex gap-8">
+        <article
+          class="border-border bg-card flex-1 overflow-hidden rounded-2xl border shadow-xl"
+        >
+          <!-- Main Image -->
+          <slot name="image" />
+
+          <!-- Header / Meta -->
+          <header
+            class="border-border bg-card border-b px-6 py-8 sm:px-8 sm:py-10"
+          >
+            <slot name="header" />
+          </header>
+
+          <!-- Content Body -->
+          <div class="bg-card px-6 py-8 sm:px-8 sm:py-12">
+            <div class="article-content">
+              <slot />
+            </div>
+          </div>
+        </article>
+
+        <!-- Sidebar / TOC -->
+        <aside class="hidden lg:block lg:w-64">
+          <slot name="sidebar" />
+        </aside>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,70 @@
+---
+import AppLayout from "@/layouts/app-layout.astro";
+import IntroMedia from "@/components/sections/IntroMedia.astro";
+import StatementBar from "@/components/sections/StatementBar.astro";
+import PhotoBanner from "@/components/sections/PhotoBanner.astro";
+import { FeatureSlider3 } from "@/components/sections/FeatureSlider3";
+import StatementMedia from "@/components/sections/StatementMedia.astro";
+import { NewsletterCta } from "@/components/sections/NewsletterCta";
+import ContactForm from "@/components/sections/ContactForm.astro";
+---
+
+<AppLayout
+  seo={{
+    title: "Cross-Border Access — Ámaxa",
+    description: "Ámaxa students design and implement a custom cross-cultural international virtual exchange program.",
+    image: "https://b47pkz22xs.ufs.sh/f/OxFTTzjZGToOexh9L5yvrS3NH5LD0fGBOXwFydpiVbYzJMa1",
+    type: "website",
+    canonicalURL: "https://www.amaxaimpact.org/project/cross-border-access",
+    keywords: ["amaxa", "cross-border access", "virtual exchange"],
+    noIndex: false,
+  }}
+>
+  <main>
+
+    <IntroMedia
+      heading="Cross-Border Access"
+      subhead="A student-led international virtual exchange program, bringing extracurricular learning to students without access around the globe."
+      imageSrc="/images/programs/cross-border-access.png"
+      imageAlt="Cross-Border Access Program"
+    />
+
+    <StatementBar
+      eyebrow="ABOUT"
+      statement="Ámaxa students design and implement a custom cross-cultural, international virtual exchange program with a community partner."
+    />
+
+    <PhotoBanner
+      eyebrow="FEATURED PROGRAM"
+      heading="Young Delegates Program"
+      body="Raima, a 16 year old from Georgia, USA, transformed her passion for Model UN into a tool to educate and empower students in Monrovia, Liberia with public speaking, debate, and research skills."
+      buttonLabel="Explore the project"
+      buttonHref="/project/cross-border-access"
+    />
+
+    <FeatureSlider3
+      client:load
+      heading="Cross-Border Access Portfolio: each founded by an ámaxa student"
+      items={[
+        { id: "1", title: "Young Delegates", subtitle: "Public speaking & research-based conferences, with scholarship prizes", href: "#" },
+        { id: "2", title: "Early Financial Literacy", subtitle: "Equipping young students with financial skills through games & crafts", href: "#" },
+        { id: "3", title: "Book Club: Psychology 101", subtitle: "Discussing & sharing books and articles about psychology to curious minds", href: "#" },
+        { id: "4", title: "Connect through Creativity", subtitle: "Form friendships with global peers through weekly creativity activities", href: "#" },
+        { id: "5", title: "Flora & Fauna Documentary", subtitle: "Create a documentary about the nature in each of your communities", href: "#" },
+        { id: "6", title: "Cook Together", subtitle: "Try out a recipe from a global peer each week & assemble a custom cookbook", href: "#" },
+      ]}
+    />
+
+    <StatementMedia
+      statement="Are you an education leader?"
+      body="Bring students from 52+ countries to your classrooms. Our programs cater to ages 12-21 and are fully customized to your students' needs."
+      ctaLabel="Partner with us →"
+      learnMoreHref="/contact-us"
+    />
+
+    <NewsletterCta client:load />
+
+    <ContactForm />
+
+  </main>
+</AppLayout>

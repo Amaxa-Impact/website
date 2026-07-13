@@ -1,0 +1,21 @@
+---
+interface Props {
+  eyebrow?: string;
+  statement?: string;
+}
+
+const {
+  eyebrow = "ABOUT ÁMAXA",
+  statement = "Digital transformation creates opportunities for a more inclusive and sustainable world. We equip ambitious governments, companies, and foundations, with the strategies, insights, and tools to mobilize and shape technology to achieve their impact goals.",
+} = Astro.props;
+---
+
+<section class="bg-neutral-1-500 w-full px-12 py-14 flex flex-col gap-11">
+  <div class="flex flex-col gap-11">
+    <p class="font-semibold text-sm text-foreground tracking-[1.12px]">{eyebrow}</p>
+    <div class="bg-foreground h-px w-full" />
+    <p class="font-normal text-4xl text-foreground leading-[1.32] max-w-[1300px] whitespace-pre-line">
+      {statement}
+    </p>
+  </div>
+</section>

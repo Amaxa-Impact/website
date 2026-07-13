@@ -1,0 +1,79 @@
+---
+import AppLayout from "@/layouts/app-layout.astro";
+import IntroMedia from "@/components/sections/IntroMedia.astro";
+import { NewsletterCta } from "@/components/sections/NewsletterCta";
+import ContactForm from "@/components/sections/ContactForm.astro";
+
+const APPLY = "https://airtable.com/appPR9mkslbn3U8YZ/shrHHUtRzK4DqKt3F";
+const SUPPORT = "https://collect.crowded.me/collection/8d1ba838-a38e-4803-b155-d102b7b131e4";
+
+const ways = [
+  {
+    title: "Join a program",
+    body: "High schoolers, undergraduates, and professionals — apply to a fully remote program and deliver a real project with one of our partners.",
+    ctaLabel: "Apply today ↗",
+    href: APPLY,
+    external: true,
+  },
+  {
+    title: "Partner with us",
+    body: "Are you a nonprofit, school, or education leader? Bring students from 52+ countries to your community through a custom program.",
+    ctaLabel: "Get in touch →",
+    href: "/contact-us",
+    external: false,
+  },
+  {
+    title: "Support our work",
+    body: "Fuel grassroots impact around the globe. Every contribution helps our teams turn passion into real-world change.",
+    ctaLabel: "Support us ↗",
+    href: SUPPORT,
+    external: true,
+  },
+];
+---
+
+<AppLayout
+  seo={{
+    title: "Get Involved — Ámaxa",
+    description: "Join a global community turning passion into real-world impact. Apply to a program, partner with us, or support our work.",
+    image: "https://b47pkz22xs.ufs.sh/f/OxFTTzjZGToOexh9L5yvrS3NH5LD0fGBOXwFydpiVbYzJMa1",
+    type: "website",
+    canonicalURL: "https://www.amaxaimpact.org/join-us",
+    keywords: ["amaxa", "get involved", "join", "volunteer", "partner", "support"],
+    noIndex: false,
+  }}
+>
+  <main>
+
+    <IntroMedia
+      heading="Get Involved"
+      subhead="Join a global community turning passion into real-world impact."
+      imageSrc="/images/join-us/intro-media.png"
+      imageAlt="Get involved with Ámaxa"
+    />
+
+    <!-- Ways to get involved -->
+    <section class="bg-neutral-1-500 w-full px-12 py-[100px]">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {ways.map((w) => (
+          <div class="rounded-[36px] bg-neutral-2-500 border-[5px] border-white p-10 flex flex-col gap-5 min-h-[360px]">
+            <h3 class="font-semibold text-[26px] text-purple-dark-500 leading-tight">{w.title}</h3>
+            <p class="text-base text-purple-dark-500/80 leading-relaxed flex-1">{w.body}</p>
+            <a
+              href={w.href}
+              {...(w.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              class="inline-flex items-center gap-2 bg-purple-dark-500 hover:bg-purple-dark-600 text-white rounded-full px-6 py-3 text-base font-semibold transition-colors w-fit"
+            >
+              {w.ctaLabel}
+            </a>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <NewsletterCta client:load />
+
+    <ContactForm />
+
+  </main>
+</AppLayout>

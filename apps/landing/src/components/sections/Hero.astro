@@ -1,0 +1,58 @@
+---
+interface Props {
+  title?: string;
+  subhead?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  imageSrc?: string;
+  imageAlt?: string;
+}
+
+const {
+  title = "We are ámaxa.",
+  subhead = "We champion grassroots projects around the globe and empower individuals—across age, location, and skillset—to lead the change that pushes them forward.",
+  ctaLabel = "Learn More",
+  ctaHref = "/who-we-are",
+  imageSrc,
+  imageAlt = "Hero background",
+} = Astro.props;
+---
+
+<section class="relative h-[720px] overflow-hidden w-full">
+  <!-- Background image -->
+  {imageSrc && (
+    <img
+      src={imageSrc}
+      alt={imageAlt}
+      class="absolute inset-0 w-full h-full object-cover"
+    />
+  )}
+  {!imageSrc && (
+    <div class="absolute inset-0 bg-purple-dark-700" />
+  )}
+
+  <!-- Legibility gradient overlay -->
+  <div class="absolute inset-0 bg-gradient-to-r from-black/50 via-black/12 to-transparent" />
+
+  <!-- Top cream accent bar -->
+  <div class="absolute top-0 left-0 right-0 h-2.5 bg-neutral-1-500" />
+
+  <!-- Bottom coral rule -->
+  <div class="absolute bottom-0 left-0 right-0 h-1.5 bg-coral-dark-500" />
+
+  <!-- Content -->
+  <div class="absolute left-20 top-[205px] flex flex-col gap-7 items-start max-w-[680px]">
+    <h1 class="font-semibold text-6xl text-white leading-[1.04]">
+      {title}
+    </h1>
+    <p class="font-normal text-[40px] leading-[1.38] text-white">
+      {subhead}
+    </p>
+    <a
+      href={ctaHref}
+      class="inline-flex items-center gap-2 rounded-full px-6 py-3 text-base font-semibold bg-background text-purple-dark-500 hover:bg-neutral-2-200 transition-colors"
+    >
+      {ctaLabel}
+    </a>
+  </div>
+</section>

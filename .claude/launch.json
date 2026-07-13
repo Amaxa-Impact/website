@@ -1,0 +1,24 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dev",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev:platform"],
+      "port": 3000
+    },
+    {
+      "name": "landing",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev:landing"],
+      "port": 4321
+    },
+    {
+      "name": "ellie-planner",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "/Users/laurenmcmillen/Desktop/ellie-planner"],
+      "port": 3000,
+      "autoPort": true
+    }
+  ]
+}

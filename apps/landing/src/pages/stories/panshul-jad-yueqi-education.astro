@@ -1,0 +1,64 @@
+---
+import AppLayout from "@/layouts/app-layout.astro";
+import ArticleHeader from "@/components/blog/ArticleHeader.astro";
+import BlogImage from "@/components/blog/BlogImage.astro";
+import BlogHeading from "@/components/blog/BlogHeading.astro";
+import BlogParagraph from "@/components/blog/BlogParagraph.astro";
+import BlogShare from "@/components/blog/BlogShare.astro";
+import { ArticleSlider } from "@/components/sections/ArticleSlider";
+import { NewsletterCta } from "@/components/sections/NewsletterCta";
+import ContactForm from "@/components/sections/ContactForm.astro";
+
+const url = "https://www.amaxaimpact.org/stories/panshul-jad-yueqi-education";
+const title = "How Panshul, Jad, and Yueqi Founded a Platform for Educational Accessibility";
+
+const relatedArticles = [
+  { id: "1", title: "How Isabella and Zobia's Love for Music Changed Lives in Gaza", href: "/stories/isabella-and-zobia-music-gaza" },
+  { id: "2", title: "How Maltha Organized a Remote Cultural Exchange between Palestine & the UAE", href: "/stories/maltha-cultural-exchange" },
+  { id: "3", title: "How Damira and Aamna Launched Hoops4Hope in Qatar", href: "/stories/damira-aamna-hoops4hope" },
+];
+---
+
+<AppLayout
+  seo={{
+    title,
+    description: "Three students from different continents came together to build a free platform connecting underserved students with educational resources.",
+  }}
+>
+  <ArticleHeader
+    title={title}
+    dek="Three students from different continents came together to build a free platform connecting underserved students with educational resources."
+    date="Jan 1, 2026"
+    tag1="Story"
+    tag2="Education"
+    tag3="Technology"
+  />
+
+  <div class="bg-neutral-1-500 w-full px-[200px] py-16 flex flex-col gap-12">
+    <BlogImage src="/images/stories/panshul-jad-yueqi-education/accessifyed.png" caption="Panshul, Jad, and Yueqi in a virtual planning session." />
+
+    <BlogHeading heading="Three students, one shared problem" />
+
+    <BlogParagraph body="Panshul was in India, Jad was in Lebanon, and Yueqi was in China — but all three had noticed the same gap: students in under-resourced schools had almost no access to quality study materials in their own languages. When they were matched together in an Ámaxa cohort, the problem felt obvious. The solution took longer to find." />
+
+    <BlogParagraph body="Over twelve weeks, the team built EduBridge — a lightweight web platform that aggregates free, open-licensed educational content and organizes it by subject, grade level, and language. No account required. No ads. Just resources." />
+
+    <BlogHeading heading="Building across borders" />
+
+    <BlogParagraph body={`The hardest part, Jad says, wasn't the technology — it was the coordination. With a 10-hour time difference between team members, every decision required advance planning. "We learned to leave very detailed notes for each other," he says. "It made us better communicators than any class ever did."`} />
+
+    <BlogParagraph body="EduBridge launched in its beta form at the end of the cohort with content in four languages and resources for grades 6 through 12. In the month after launch, it received over 800 unique visitors — most of them from regions the team had specifically tried to reach." />
+  </div>
+
+  <BlogShare url={url} title={title} />
+
+  <ArticleSlider
+    heading="More from our Knowledge Hub"
+    tagline="Read the latest insights and news on our blog."
+    items={relatedArticles}
+    client:load
+  />
+
+  <NewsletterCta client:load />
+  <ContactForm />
+</AppLayout>

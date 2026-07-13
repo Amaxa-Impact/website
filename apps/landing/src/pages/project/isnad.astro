@@ -1,0 +1,108 @@
+---
+import AppLayout from "@/layouts/app-layout.astro";
+import SplitMedia from "@/components/sections/SplitMedia.astro";
+import TeamGrid from "@/components/sections/TeamGrid.astro";
+import ProjectTypes from "@/components/sections/ProjectTypes.astro";
+import { ProjectFeatureSlider } from "@/components/sections/ProjectFeatureSlider";
+import { NewsletterCta } from "@/components/sections/NewsletterCta";
+import ContactForm from "@/components/sections/ContactForm.astro";
+---
+
+<AppLayout
+  seo={{
+    title: "ISNAD — Ámaxa Projects",
+    description:
+      "Ámaxa students partner with ISNAD in Palestine to support community development and access to resources in the West Bank.",
+    image: "/images/projects/isnad.png",
+    type: "website",
+    canonicalURL: "https://www.amaxaimpact.org/project/isnad",
+    keywords: ["amaxa", "ISNAD", "Palestine", "West Bank", "community development"],
+    noIndex: false,
+  }}
+>
+  <main>
+
+    <section class="bg-neutral-1-500 w-full px-12 pt-[120px] pb-12">
+      <h1 class="font-semibold text-[56px] text-purple-dark-500 leading-[1.1] max-w-[900px]">
+        Palestinian students in the West Bank cannot access diverse educational opportunities due to the Israeli occupation.
+      </h1>
+    </section>
+
+    <SplitMedia
+      mediaSrc="/images/projects/isnad.png"
+      heading="Our Partner: ISNAD Community Education Center"
+      subhead="The ISNAD Community Education Center works to fill educational gaps in Dahria, a town south of Hebron in the West Bank. It is the first of its kind in the area to implement community-based learning."
+      ctaLabel="Visit Their Website"
+      ctaHref="/project/isnad"
+      panelSide="left"
+      large={true}
+    />
+
+    <TeamGrid
+      heading="The ISNAD Partnership Team"
+      members={[
+        { name: "Raed Eshnaiwer", role: "Founder & Director of ISNAD", tone: "coral", imageSrc: "/images/teams/isnad/raed-eshnaiwer.jpeg" },
+        { joinCard: true },
+      ]}
+    />
+
+    <ProjectTypes
+      heading="What kind of projects will I work on?"
+      body="Ámaxa Cohorts projects are each 100% unique — driven by ámaxa members' passions, interests, skills, networks, and location."
+      note='With ISNAD, teams take on diverse projects, including <strong>remote tutoring</strong>, <strong>fundraising</strong>, and <strong>organizing cross-cultural events</strong> through our <strong>Cross-Border Access Program</strong>.'
+      chips={["Remote Tutoring", "Fundraising Campaigns", "Organizing Online Events", "Educational Events and Activities"]}
+      ctaLabel="Learn about Cohorts projects"
+      ctaHref="/pathways/cohorts"
+    />
+
+    <ProjectFeatureSlider
+      client:load
+      heading="Explore Past Projects"
+      subhead="Every project we take on is a chance to learn and share — explore more of the work created alongside our partners."
+      slides={[
+        {
+          title: "How Panshul, Jad, and Yueqi Founded a Platform for Educational Accessibility",
+          ctaLabel: "Read the story",
+          ctaHref: "/stories/panshul-jad-yueqi-education",
+          imageSrc: "/images/stories/panshul-jad-yueqi-education/accessifyed.png",
+        },
+        {
+          title: "How Maltha Organized a Remote Cultural Exchange between Palestine & the UAE",
+          ctaLabel: "Read the story",
+          ctaHref: "/stories/maltha-cultural-exchange",
+          imageSrc: "https://i.vimeocdn.com/video/2005247869-7b9e65ca632adcd88cdcfe7f36e9079099738f117b3927b0c408598bcc58fb12-d_1280x720?region=us",
+        },
+      ]}
+    />
+
+    <NewsletterCta client:load />
+
+    <section class="bg-purple-dark-500 w-full px-12 py-24 flex flex-col gap-7 items-center text-center">
+      <h2 class="font-semibold text-[40px] text-white max-w-[820px] leading-[1.2]">
+        Ready to make an impact?
+      </h2>
+      <p class="text-white/80 text-lg max-w-[560px]">Join hundreds of students from around the world who are creating meaningful change through Ámaxa.</p>
+      <div class="flex gap-4">
+        <a
+          href="https://airtable.com/appPR9mkslbn3U8YZ/shrHHUtRzK4DqKt3F"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 bg-coral-dark-500 hover:bg-coral-dark-600 text-white text-base font-semibold px-6 py-3 rounded-full transition-colors"
+        >
+          Apply Now ↗
+        </a>
+        <a
+          href="https://airtable.com/appPR9mkslbn3U8YZ/shrHHUtRzK4DqKt3F"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 border-[1.5px] border-white hover:bg-white hover:text-purple-dark-500 text-white text-base font-semibold px-6 py-3 rounded-full transition-colors"
+        >
+          Support Us
+        </a>
+      </div>
+    </section>
+
+    <ContactForm />
+
+  </main>
+</AppLayout>

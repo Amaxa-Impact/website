@@ -1,0 +1,64 @@
+---
+import AppLayout from "@/layouts/app-layout.astro";
+import ArticleHeader from "@/components/blog/ArticleHeader.astro";
+import BlogImage from "@/components/blog/BlogImage.astro";
+import BlogHeading from "@/components/blog/BlogHeading.astro";
+import BlogParagraph from "@/components/blog/BlogParagraph.astro";
+import BlogShare from "@/components/blog/BlogShare.astro";
+import { ArticleSlider } from "@/components/sections/ArticleSlider";
+import { NewsletterCta } from "@/components/sections/NewsletterCta";
+import ContactForm from "@/components/sections/ContactForm.astro";
+
+const url = "https://www.amaxaimpact.org/stories/damira-aamna-hoops4hope";
+const title = "How Damira and Aamna Launched Hoops4Hope in Qatar to Send Crucial Aid to Gazans";
+
+const relatedArticles = [
+  { id: "1", title: "How Isabella and Zobia's Love for Music Changed Lives in Gaza", href: "/stories/isabella-and-zobia-music-gaza" },
+  { id: "2", title: "How Maltha Organized a Remote Cultural Exchange between Palestine & the UAE", href: "/stories/maltha-cultural-exchange" },
+  { id: "3", title: "How An Nhi Sequestered Carbon by Planting Trees", href: "/stories/an-nhi-carbon-trees" },
+];
+---
+
+<AppLayout
+  seo={{
+    title,
+    description: "Damira and Aamna organized a charity basketball tournament in Qatar that raised funds for urgent humanitarian aid in Gaza.",
+  }}
+>
+  <ArticleHeader
+    title={title}
+    dek="Damira and Aamna organized a charity basketball tournament in Qatar that raised funds for urgent humanitarian aid in Gaza."
+    date="Jan 1, 2026"
+    tag1="Story"
+    tag2="Qatar"
+    tag3="Humanitarian Aid"
+  />
+
+  <div class="bg-neutral-1-500 w-full px-[200px] py-16 flex flex-col gap-12">
+    <BlogImage src="/images/stories/damira-aamna-hoops4hope/hoops4hope.jpg" caption="Hoops4Hope players and organizers after the final tournament match." />
+
+    <BlogHeading heading="From the court to the cause" />
+
+    <BlogParagraph body="Damira and Aamna met at school in Doha and had been playing basketball together for two years before they joined Ámaxa. When they were placed in a cohort focused on Gaza Champions — one of Ámaxa's partner nonprofits delivering aid in Gaza — they knew immediately what kind of project they wanted to build." />
+
+    <BlogParagraph body="Hoops4Hope was a one-day charity basketball tournament, open to student teams across Doha. Entry fees went directly to the Gaza Champions aid fund. Damira handled logistics and sponsorship; Aamna ran communications and player recruitment. Within three weeks, they had eight teams signed up and two local businesses covering venue costs." />
+
+    <BlogHeading heading="Game day — and what came after" />
+
+    <BlogParagraph body={`The tournament drew over 150 spectators — far more than either of them expected. "We thought maybe thirty people would show up," Damira says. "We ran out of chairs." The energy on the day was something neither of them had anticipated: people who came for the basketball stayed because they cared about the cause.`} />
+
+    <BlogParagraph body={`Hoops4Hope raised $6,200 in a single day. All of it went to Gaza Champions for emergency food and medical supply distribution. Aamna says the number still surprises her: "We started with a group chat and a Google Form. I don't think either of us really believed it would turn into something real until it was."`} />
+  </div>
+
+  <BlogShare url={url} title={title} />
+
+  <ArticleSlider
+    heading="More from our Knowledge Hub"
+    tagline="Read the latest insights and news on our blog."
+    items={relatedArticles}
+    client:load
+  />
+
+  <NewsletterCta client:load />
+  <ContactForm />
+</AppLayout>

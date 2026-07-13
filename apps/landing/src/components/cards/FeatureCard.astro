@@ -1,0 +1,43 @@
+---
+interface Props {
+  title: string;
+  country?: string;
+  href?: string;
+  imageSrc?: string;
+  imageAlt?: string;
+}
+
+const {
+  title,
+  country,
+  href = "#",
+  imageSrc,
+  imageAlt = "",
+} = Astro.props;
+---
+
+<div class="flex flex-col gap-6 w-[300px]">
+  <!-- Image / placeholder -->
+  <div class="bg-neutral-2-500 border-[5px] border-white rounded-[56px] h-[440px] w-full overflow-hidden">
+    {imageSrc && (
+      <img src={imageSrc} alt={imageAlt} class="w-full h-full object-cover" />
+    )}
+  </div>
+
+  <!-- Text + CTA -->
+  <div class="flex flex-col gap-6">
+    <div class="flex flex-col">
+      <p class="font-semibold text-[30px] text-white leading-tight">{title}</p>
+      {country && (
+        <p class="font-normal text-2xl text-white/70 tracking-[-0.48px]">{country}</p>
+      )}
+    </div>
+    <a
+      href={href}
+      class="inline-flex items-center justify-center size-10 rounded-full bg-background text-purple-dark-500 hover:bg-neutral-2-200 transition-colors"
+      aria-label={`View ${title}`}
+    >
+      ↗
+    </a>
+  </div>
+</div>

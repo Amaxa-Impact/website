@@ -1,0 +1,54 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  body: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  imageSrc?: string;
+  imageAlt?: string;
+}
+const {
+  eyebrow = "Report",
+  title,
+  body,
+  ctaLabel = "Read the report",
+  ctaHref = "#",
+  imageSrc,
+  imageAlt = "",
+} = Astro.props;
+---
+
+<section class="bg-neutral-1-500 w-full py-12 px-12">
+  <div class="w-full h-[660px] rounded-[56px] overflow-hidden flex">
+    <!-- Left: image -->
+    <div class="flex-1 bg-neutral-2-500 border-[5px] border-white rounded-[56px] overflow-hidden shrink-0">
+      {imageSrc && (
+        <img src={imageSrc} alt={imageAlt} class="w-full h-full object-cover" />
+      )}
+    </div>
+
+    <!-- Right: purple-light panel -->
+    <div class="flex-1 bg-purple-light-500 flex items-center">
+      <div class="px-[72px] flex flex-col gap-6 max-w-[620px]">
+        <!-- Eyebrow -->
+        <div class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M3 2h8l4 4v10H3V2Zm8 0v4h4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <p class="text-base font-semibold text-white">{eyebrow}</p>
+        </div>
+
+        <h2 class="text-[36px] font-semibold text-white leading-[1.12]">{title}</h2>
+        <p class="text-base text-white/95 leading-[1.5]">{body}</p>
+
+        <a
+          href={ctaHref}
+          class="mt-3 inline-flex items-center border-[1.5px] border-white text-white text-base font-semibold px-6 py-3 rounded-full hover:bg-white hover:text-purple-light-500 transition-colors w-fit"
+        >
+          {ctaLabel}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

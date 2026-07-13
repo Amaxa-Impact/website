@@ -1,0 +1,84 @@
+---
+import AppLayout from "@/layouts/app-layout.astro";
+import IntroMedia from "@/components/sections/IntroMedia.astro";
+import SplitMedia from "@/components/sections/SplitMedia.astro";
+import { NewsletterCta } from "@/components/sections/NewsletterCta";
+import ContactForm from "@/components/sections/ContactForm.astro";
+---
+
+<AppLayout
+  seo={{
+    title: "Our Programs — Ámaxa",
+    description: "Fully remote, structured programs that take you from start-to-finish to make a real impact — Cohorts, Cross-Border Access, Research, and Partnerships.",
+    image: "https://b47pkz22xs.ufs.sh/f/OxFTTzjZGToOexh9L5yvrS3NH5LD0fGBOXwFydpiVbYzJMa1",
+    type: "website",
+    canonicalURL: "https://www.amaxaimpact.org/programs",
+    keywords: ["amaxa", "programs", "cohorts", "research", "partnerships", "cross-border access"],
+    noIndex: false,
+  }}
+>
+  <main>
+
+    <IntroMedia
+      heading="Our Programs"
+      subhead="Fully remote, structured programs that take you from start-to-finish to make a real impact."
+      imageSrc="/images/programs/intro-media.png"
+      imageAlt="Ámaxa programs"
+    />
+
+    <SplitMedia
+      heading="Cohorts — for high school students"
+      subhead="Our flagship program: free and fully remote, pairing high schoolers with global peers and a trained coach to deliver a real project with one of our nonprofit partners."
+      ctaLabel="Learn More"
+      ctaHref="/pathways/cohorts"
+      mediaSrc="/images/programs/cohorts.png"
+      mediaAlt="Ámaxa Cohorts"
+      panelSide="right"
+    />
+
+    <SplitMedia
+      heading="Cross-Border Access Program"
+      subhead="A student-led international virtual exchange program, bringing extracurricular learning to students without access around the globe."
+      ctaLabel="Learn More"
+      ctaHref="/project/cross-border-access"
+      mediaSrc="/images/programs/cross-border-access.png"
+      mediaAlt="Cross-Border Access Program"
+      panelSide="right"
+    />
+
+    <SplitMedia
+      heading="Research — for university students"
+      subhead="Undergraduate and postgraduate students take on applied research projects alongside our partners."
+      ctaLabel="Learn More"
+      ctaHref="/pathways/research"
+      mediaSrc="/images/programs/research.png"
+      mediaAlt="Ámaxa Research"
+      panelSide="right"
+    />
+
+    <SplitMedia
+      heading="Partnerships — for professionals"
+      subhead="Professionals lend their skills and networks to grassroots organizations through structured, fully remote engagements."
+      ctaLabel="Learn More"
+      ctaHref="/pathways/partnerships"
+      mediaSrc="/images/programs/partnerships.png"
+      mediaAlt="Ámaxa Partnerships"
+      panelSide="right"
+    />
+
+    <section class="bg-purple-dark-500 w-full px-12 py-24 flex flex-col gap-7 items-center text-center">
+      <h2 class="font-semibold text-[40px] text-white max-w-[820px] leading-[1.2]">
+        Ready to make an impact?
+      </h2>
+      <p class="text-white/80 text-lg max-w-[620px]">Join hundreds of high school students from around the world who are creating meaningful change through Ámaxa Cohorts.</p>
+      <a href="https://airtable.com/appPR9mkslbn3U8YZ/shrHHUtRzK4DqKt3F" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-coral-dark-500 hover:bg-coral-dark-600 text-white text-base font-semibold px-6 py-3 rounded-full transition-colors">
+        Apply Now ↗
+      </a>
+    </section>
+
+    <ContactForm />
+
+    <NewsletterCta client:load />
+
+  </main>
+</AppLayout>

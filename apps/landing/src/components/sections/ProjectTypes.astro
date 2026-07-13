@@ -1,0 +1,46 @@
+---
+interface Props {
+  eyebrow?: string;
+  heading?: string;
+  body?: string;
+  note?: string;
+  chips?: string[];
+  ctaLabel?: string;
+  ctaHref?: string;
+}
+
+const {
+  eyebrow = "FREQUENTLY ASKED",
+  heading = "What kind of projects will I work on?",
+  body = "Ámaxa Cohorts projects are each 100% unique — driven by ámaxa members' passions, interests, skills, networks, and location.",
+  note,
+  chips = ["Fundraising", "Direct aid", "Awareness & events", "Community outreach"],
+  ctaLabel = "Learn about Cohorts projects",
+  ctaHref = "/pathways/cohorts",
+} = Astro.props;
+---
+
+<section class="bg-neutral-1-500 w-full px-12 py-20">
+  <div class="relative rounded-[56px] overflow-hidden bg-neutral-2-500 border-[5px] border-white px-16 py-14 flex flex-col gap-6">
+    <p class="font-medium text-[13px] text-coral-dark-500 tracking-[1.04px]">{eyebrow}</p>
+    <h2 class="font-semibold text-[34px] text-purple-dark-500 leading-tight">{heading}</h2>
+    <p class="font-normal text-xl text-purple-dark-500">{body}</p>
+    {note && <p class="font-normal text-lg text-purple-dark-500" set:html={note} />}
+
+    <!-- Chips -->
+    <div class="flex flex-wrap gap-3 pt-2">
+      {chips.map((chip) => (
+        <span class="bg-background rounded-full px-[18px] py-[9px] font-medium text-[15px] text-purple-dark-500">
+          {chip}
+        </span>
+      ))}
+    </div>
+
+    <a
+      href={ctaHref}
+      class="inline-flex items-center gap-2 bg-coral-dark-500 hover:bg-coral-dark-600 text-white rounded-full px-6 py-3 text-base font-semibold transition-colors w-fit"
+    >
+      {ctaLabel} ↗
+    </a>
+  </div>
+</section>

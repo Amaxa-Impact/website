@@ -1,0 +1,71 @@
+---
+import AppLayout from "@/layouts/app-layout.astro";
+import IntroMedia from "@/components/sections/IntroMedia.astro";
+import StatementBar from "@/components/sections/StatementBar.astro";
+import { PartnerFeatureSlider } from "@/components/sections/PartnerFeatureSlider";
+import { NewsletterCta } from "@/components/sections/NewsletterCta";
+import ContactForm from "@/components/sections/ContactForm.astro";
+---
+
+<AppLayout
+  seo={{
+    title: "Our Projects — Ámaxa",
+    description: "Explore Ámaxa's high-impact projects.",
+    image: "https://b47pkz22xs.ufs.sh/f/OxFTTzjZGToOexh9L5yvrS3NH5LD0fGBOXwFydpiVbYzJMa1",
+    type: "website",
+    canonicalURL: "https://www.amaxaimpact.org/project",
+    keywords: ["amaxa", "projects", "nonprofits"],
+    noIndex: false,
+  }}
+>
+  <main>
+
+    <IntroMedia
+      heading="Discover Our Projects"
+      subhead="Our projects are high-impact, innovative, and community-driven."
+      imageSrc="/images/intro-media/tree2.png"
+      imageAlt="Ámaxa Global Forest tree planting"
+    />
+
+    <StatementBar
+      eyebrow="OUR PARTNERS"
+      statement={`We have 8 nonprofit partners and original ámaxa initiatives.\n\nOur partners are in the West Bank (Palestine), Uganda, Liberia focus on access to education. Our partner in Gaza delivers humanitarian aid.\n\nOur original initiatives are designed to be implemented in any community and focus on Mental Health First Aid education, fighting book bans in the US , ways to fight climate change, and platforming grassroots social impact film, music, writing, and other art through PR and social media.`}
+    />
+
+    <PartnerFeatureSlider
+      client:load
+      heading="Ámaxa Community Partners"
+      items={[
+        { id: "1", name: "The Nyaka School", location: "Uganda", href: "/project/nyaka", imageSrc: "/images/projects/nyaka.png" },
+        { id: "2", name: "Educate Children", location: "Liberia", href: "/project/educhildren", imageSrc: "/images/projects/educhildren.png" },
+        { id: "3", name: "ISNAD Center", location: "Palestine", href: "/project/isnad", imageSrc: "/images/projects/isnad.png" },
+        { id: "4", name: "Gaza Champions", location: "Palestine", href: "/project/gaza", imageSrc: "/images/projects/gaza.png" },
+      ]}
+    />
+
+    <PartnerFeatureSlider
+      client:load
+      heading="Ámaxa Initiatives"
+      items={[
+        { id: "1", name: "Mental Health First Aid", location: "USA", href: "/project/mental-health", imageSrc: "/images/projects/mental-health.png" },
+        { id: "2", name: "Platforming Diverse Voices in the Arts", location: "Global", href: "/project/lgbtq", imageSrc: "/images/projects/lgbtq.png" },
+        { id: "3", name: "Access to Womens' Literature", location: "USA", href: "/project/karinas-library", imageSrc: "/images/projects/karinas-library.png" },
+        { id: "4", name: "Global Forest", location: "Global", href: "/project/global-forest", imageSrc: "/images/projects/global-forest.png" },
+      ]}
+    />
+
+    <section class="bg-purple-dark-500 w-full px-12 py-24 flex flex-col gap-7 items-center text-center">
+      <h2 class="font-semibold text-[40px] text-white max-w-[820px] leading-[1.2]">
+        Join us to transform your passion into impact.
+      </h2>
+      <a href="https://airtable.com/appPR9mkslbn3U8YZ/shrHHUtRzK4DqKt3F" class="inline-flex items-center gap-2 bg-coral-dark-500 hover:bg-coral-dark-600 text-white text-base font-semibold px-6 py-3 rounded-full transition-colors">
+        Apply Today ↗
+      </a>
+    </section>
+
+    <NewsletterCta client:load />
+
+    <ContactForm />
+
+  </main>
+</AppLayout>

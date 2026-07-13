@@ -1,0 +1,12 @@
+---
+interface Props {
+  body: string;
+}
+const { body } = Astro.props;
+---
+
+<div class="w-full max-w-[720px]">
+  <p class="font-normal text-xl text-purple-dark-500 leading-[1.5] w-full">
+    {body}
+  </p>
+</div>

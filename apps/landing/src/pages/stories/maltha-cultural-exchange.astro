@@ -1,0 +1,64 @@
+---
+import AppLayout from "@/layouts/app-layout.astro";
+import ArticleHeader from "@/components/blog/ArticleHeader.astro";
+import BlogVideo from "@/components/blog/BlogVideo.astro";
+import BlogHeading from "@/components/blog/BlogHeading.astro";
+import BlogParagraph from "@/components/blog/BlogParagraph.astro";
+import BlogShare from "@/components/blog/BlogShare.astro";
+import { ArticleSlider } from "@/components/sections/ArticleSlider";
+import { NewsletterCta } from "@/components/sections/NewsletterCta";
+import ContactForm from "@/components/sections/ContactForm.astro";
+
+const url = "https://www.amaxaimpact.org/stories/maltha-cultural-exchange";
+const title = "How Maltha Organized a Remote Cultural Exchange between Palestine & the UAE";
+
+const relatedArticles = [
+  { id: "1", title: "How Isabella and Zobia's Love for Music Changed Lives in Gaza", href: "/stories/isabella-and-zobia-music-gaza" },
+  { id: "2", title: "How Panshul, Jad, and Yueqi founded a platform for educational accessibility", href: "/stories/panshul-jad-yueqi-education" },
+  { id: "3", title: "How An Nhi Sequestered Carbon by Planting Trees", href: "/stories/an-nhi-carbon-trees" },
+];
+---
+
+<AppLayout
+  seo={{
+    title,
+    description: "Maltha designed and ran a fully remote cultural exchange program that brought Palestinian and Emirati students into conversation for the first time.",
+  }}
+>
+  <ArticleHeader
+    title={title}
+    dek="Maltha designed and ran a fully remote cultural exchange program that brought Palestinian and Emirati students into conversation for the first time."
+    date="Jan 1, 2026"
+    tag1="Story"
+    tag2="Palestine"
+    tag3="Cultural Exchange"
+  />
+
+  <div class="bg-neutral-1-500 w-full px-[200px] py-16 flex flex-col gap-12">
+    <BlogVideo vimeoId="1075624389" vimeoHash="cf896f672d" title="Students from Palestine and the UAE meeting virtually for the first time" />
+
+    <BlogHeading heading="Starting a conversation that didn't exist" />
+
+    <BlogParagraph body="Maltha had a simple observation: students in Palestine and the UAE were growing up with strong opinions about each other, but almost no direct contact. Her Ámaxa project set out to change that — not through debate or politics, but through the everyday stuff: food, music, family traditions, what a regular school day looks like." />
+
+    <BlogParagraph body="She partnered with two schools — one in Ramallah, one in Dubai — and designed a six-session exchange curriculum. Each session gave students from both sides a structured topic to explore together. By session three, they were asking questions the curriculum hadn't planned for." />
+
+    <BlogHeading heading="What surprised her" />
+
+    <BlogParagraph body={`Maltha expected the biggest challenge to be logistics — internet access, scheduling, getting teachers on board. The real challenge turned out to be something else: getting students to stop performing and start talking. "At first everyone was very careful," she says. "Then someone made a joke about a food and the whole room relaxed."`} />
+
+    <BlogParagraph body={`The exchange ran for six weeks. At the end, both schools asked to continue. Maltha documented the full curriculum and handed it to both partner teachers so it could run independently. "That was the goal all along," she says. "Build something that doesn't need me to keep going."`} />
+  </div>
+
+  <BlogShare url={url} title={title} />
+
+  <ArticleSlider
+    heading="More from our Knowledge Hub"
+    tagline="Read the latest insights and news on our blog."
+    items={relatedArticles}
+    client:load
+  />
+
+  <NewsletterCta client:load />
+  <ContactForm />
+</AppLayout>

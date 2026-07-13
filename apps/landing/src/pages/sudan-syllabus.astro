@@ -1,0 +1,586 @@
+---
+import { SYLLABUS } from "../data/syllabusData";
+---
+
+<!doctype html>
+<html lang="en" data-theme="midnight">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sudan Syllabus · Ámaxa Research</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&family=Stint+Ultra+Expanded&display=swap"
+      rel="stylesheet"
+    />
+    <style is:global>
+      /* ── THEME TOKENS ─────────────────────────────────────────── */
+
+      /* Theme 1: Midnight — deep navy, salmon eyebrow, coral accent */
+      [data-theme="midnight"] {
+        --bg:                 #110828;
+        --band:               #1a0f35;
+        --card:               #150c2e;
+        --card-open:          #1d1038;
+        --sub-bg:             #110828;
+        --border:             #1f1040;
+        --text:               #f0ede8;
+        --muted:              #6b5f8a;
+        --accent:             #ff6b4a;
+        --chip-border:        #2a1d4a;
+        --chip-text:          #5a4a80;
+        --link:               #c8c4be;
+        --link-unlinked:      #4a3870;
+        --link-unlinked-label:#2e2050;
+        --eyebrow:            #ffd6cc;
+        --stat-label:         #3d2f60;
+        --heading-font:       'Instrument Sans', sans-serif;
+        --heading-transform:  uppercase;
+        --heading-tracking:   0.08em;
+      }
+
+      /* Theme 2: Peach — light peach bg, white eyebrow, coral accent */
+      [data-theme="peach"] {
+        --bg:                 #fdd0c0;
+        --band:               #f9c4b0;
+        --card:               #fde0d4;
+        --card-open:          #f9c8b8;
+        --sub-bg:             #fdd0c0;
+        --border:             #f0b8a4;
+        --text:               #2e1f54;
+        --muted:              #8b5548;
+        --accent:             #ff6b4a;
+        --chip-border:        #f0b8a4;
+        --chip-text:          #a06050;
+        --link:               #5a3028;
+        --link-unlinked:      #c09080;
+        --link-unlinked-label:#d0a898;
+        --eyebrow:            #ffffff;
+        --stat-label:         #a06050;
+        --heading-font:       'Instrument Sans', sans-serif;
+        --heading-transform:  uppercase;
+        --heading-tracking:   0.08em;
+      }
+
+      /* Theme 3: Grain — dusty rose + noise texture, navy eyebrow */
+      [data-theme="grain"] {
+        --bg:                 #f0bfae;
+        --band:               #e8b4a2;
+        --card:               #f5c8b6;
+        --card-open:          #e8b8a6;
+        --sub-bg:             #f0bfae;
+        --border:             #d8a898;
+        --text:               #2e1f54;
+        --muted:              #6b3a30;
+        --accent:             #c84028;
+        --chip-border:        #d8a898;
+        --chip-text:          #8b4a38;
+        --link:               #4a2018;
+        --link-unlinked:      #b08070;
+        --link-unlinked-label:#c09080;
+        --eyebrow:            #2e1f54;
+        --stat-label:         #8b4a38;
+        --heading-font:       'Instrument Sans', sans-serif;
+        --heading-transform:  uppercase;
+        --heading-tracking:   0.08em;
+      }
+
+      /* Theme 4: Serif — peach bg, Stint Ultra Expanded display headers */
+      [data-theme="serif"] {
+        --bg:                 #ffd6cc;
+        --band:               #f9c8ba;
+        --card:               #ffe4da;
+        --card-open:          #f9d0c4;
+        --sub-bg:             #ffd6cc;
+        --border:             #f0b8a8;
+        --text:               #2e1f54;
+        --muted:              #8b5548;
+        --accent:             #ff6b4a;
+        --chip-border:        #f0b8a8;
+        --chip-text:          #a06050;
+        --link:               #5a3028;
+        --link-unlinked:      #c09080;
+        --link-unlinked-label:#d0a898;
+        --eyebrow:            #2e1f54;
+        --stat-label:         #a06050;
+        --heading-font:       'Stint Ultra Expanded', serif;
+        --heading-transform:  uppercase;
+        --heading-tracking:   -0.02em;
+      }
+
+      /* ── BASE RESET ────────────────────────────────────────────── */
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        font-family: 'Instrument Sans', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-width: 1024px;
+        transition: background 0.3s, color 0.3s;
+      }
+
+      /* Grain texture overlay — only visible in grain theme */
+      body::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9999;
+        opacity: 0;
+        transition: opacity 0.3s;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23grain)' opacity='0.18'/%3E%3C/svg%3E");
+      }
+      [data-theme="grain"] body::after { opacity: 1; }
+
+      /* ── NAV ──────────────────────────────────────────────────── */
+      .nav {
+        background: var(--bg);
+        border-bottom: 1px solid var(--border);
+        padding: 12px 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: background 0.3s, border-color 0.3s;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      .nav-brand {
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+      }
+      .nav-brand .brand-name { color: var(--text); transition: color 0.3s; }
+      .nav-brand .brand-sub  { color: var(--accent); transition: color 0.3s; }
+
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .nav-label {
+        color: var(--muted);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-weight: 600;
+        transition: color 0.3s;
+      }
+
+      /* Theme switcher */
+      .theme-switcher {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding-left: 14px;
+        border-left: 1px solid var(--border);
+        transition: border-color 0.3s;
+      }
+      .theme-btn {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: 2px solid transparent;
+        cursor: pointer;
+        transition: border-color 0.15s, transform 0.15s;
+        padding: 0;
+        flex-shrink: 0;
+      }
+      .theme-btn:hover { transform: scale(1.2); }
+      .theme-btn.active { border-color: var(--text); }
+
+      .theme-btn[data-t="midnight"] { background: #110828; outline: 1px solid #6b5f8a; }
+      .theme-btn[data-t="peach"]    { background: #fdd0c0; outline: 1px solid #f0b8a4; }
+      .theme-btn[data-t="grain"]    { background: #f0bfae; outline: 1px solid #d8a898; }
+      .theme-btn[data-t="serif"]    { background: #ffd6cc; outline: 1px solid #f0b8a8; }
+
+      /* ── HERO ─────────────────────────────────────────────────── */
+      .hero {
+        background: var(--bg);
+        padding: 32px 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        transition: background 0.3s;
+      }
+      .hero-eyebrow {
+        color: var(--eyebrow);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        font-weight: 600;
+        transition: color 0.3s;
+      }
+      .hero-title {
+        color: var(--accent);
+        font-size: 28px;
+        font-weight: 700;
+        line-height: 1.2;
+        font-family: var(--heading-font);
+        letter-spacing: var(--heading-tracking);
+        text-transform: var(--heading-transform);
+        transition: color 0.3s, font-family 0.1s;
+      }
+      .hero-desc {
+        color: var(--muted);
+        font-size: 13px;
+        margin-top: 4px;
+        transition: color 0.3s;
+      }
+
+      /* ── DIVIDERS ─────────────────────────────────────────────── */
+      .divider-down, .divider-up { display: block; width: 100%; }
+
+      /* ── FILTER BAR ───────────────────────────────────────────── */
+      .filter-bar {
+        background: var(--band);
+        border-bottom: 1px solid var(--border);
+        padding: 10px 28px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transition: background 0.3s, border-color 0.3s;
+      }
+      .filter-label {
+        color: var(--muted);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-weight: 600;
+        flex-shrink: 0;
+        transition: color 0.3s;
+      }
+      .filter-btn {
+        border: 1px solid var(--chip-border);
+        color: var(--chip-text);
+        border-radius: 2px;
+        padding: 3px 8px;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 600;
+        font-family: 'Instrument Sans', sans-serif;
+        background: transparent;
+        cursor: pointer;
+        transition: border-color 0.12s, color 0.12s;
+      }
+      .filter-btn:hover { border-color: var(--muted); color: var(--muted); }
+      .filter-active { border-color: var(--accent) !important; color: var(--accent) !important; }
+
+      /* ── ACCORDION ────────────────────────────────────────────── */
+      .accordion {
+        background: var(--band);
+        padding: 20px 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        transition: background 0.3s;
+      }
+
+      details {
+        border: 1px solid var(--border);
+        background: var(--card);
+        transition: background 0.3s, border-color 0.3s;
+      }
+      details[open] { background: var(--card-open); }
+
+      summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        cursor: pointer;
+        list-style: none;
+        user-select: none;
+      }
+      summary::-webkit-details-marker { display: none; }
+
+      .summary-left { display: flex; align-items: center; gap: 10px; }
+
+      .accent-bar {
+        width: 2px;
+        height: 18px;
+        background: var(--chip-border);
+        flex-shrink: 0;
+        transition: background 0.12s;
+      }
+      details[open] > summary .accent-bar { background: var(--accent); }
+
+      .section-title {
+        color: var(--text);
+        text-transform: var(--heading-transform);
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: var(--heading-tracking);
+        font-family: var(--heading-font);
+        transition: color 0.3s, font-family 0.1s, letter-spacing 0.1s;
+      }
+
+      /* In serif theme, section titles look a bit bigger/looser */
+      [data-theme="serif"] .section-title {
+        font-size: 11px;
+        letter-spacing: -0.01em;
+      }
+
+      .summary-right { display: flex; align-items: center; gap: 10px; }
+
+      .resource-count {
+        color: var(--muted);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        transition: color 0.3s;
+      }
+
+      .chevron {
+        color: var(--muted);
+        font-size: 12px;
+        display: inline-block;
+        transition: transform 0.2s, color 0.3s;
+        line-height: 1;
+      }
+      details[open] > summary .chevron { transform: rotate(90deg); }
+
+      /* ── SUBSECTIONS ──────────────────────────────────────────── */
+      .sub-header {
+        background: var(--sub-bg);
+        border-top: 1px solid var(--band);
+        padding: 9px 16px 9px 32px;
+        color: var(--accent);
+        text-transform: uppercase;
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        font-weight: 600;
+        transition: background 0.3s, color 0.3s, border-color 0.3s;
+      }
+
+      .resource-row {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        padding: 9px 16px 9px 32px;
+        border-bottom: 1px solid var(--band);
+        transition: background 0.12s, border-color 0.3s;
+      }
+      .resource-row:hover { background: var(--card-open); }
+      .resource-row:last-child { border-bottom: none; }
+
+      /* ── BADGES ───────────────────────────────────────────────── */
+      .badge {
+        border-radius: 2px;
+        text-transform: uppercase;
+        font-size: 9px;
+        letter-spacing: 0.1em;
+        font-weight: 700;
+        padding: 1px 5px;
+        flex-shrink: 0;
+        margin-top: 2px;
+        white-space: nowrap;
+        transition: border-color 0.3s, color 0.3s;
+      }
+      .badge-book,
+      .badge-article,
+      .badge-thesis,
+      .badge-contemporary {
+        border: 1px solid var(--chip-border);
+        color: var(--chip-text);
+        background: transparent;
+      }
+      .badge-film {
+        border: 1px solid rgba(255,107,74,0.35);
+        color: var(--accent);
+        background: transparent;
+      }
+
+      /* ── LINKS ────────────────────────────────────────────────── */
+      .resource-link {
+        color: var(--link);
+        text-decoration: none;
+        font-size: 13px;
+        line-height: 1.45;
+        transition: color 0.12s;
+      }
+      .resource-link:hover {
+        text-decoration: underline;
+        color: var(--text);
+        text-underline-offset: 3px;
+      }
+      .resource-unlinked { display: flex; flex-direction: column; gap: 2px; }
+      .resource-unlinked-title  { color: var(--link-unlinked); font-size: 13px; line-height: 1.45; }
+      .resource-unlinked-label  { color: var(--link-unlinked-label); font-size: 10px; font-style: italic; }
+
+      /* ── STATS BAR ────────────────────────────────────────────── */
+      .stats-bar {
+        background: var(--bg);
+        border-top: 1px solid var(--border);
+        padding: 12px 28px;
+        display: flex;
+        align-items: center;
+        gap: 32px;
+        transition: background 0.3s, border-color 0.3s;
+      }
+      .stat { display: flex; flex-direction: column; gap: 2px; }
+      .stat-value {
+        color: var(--accent);
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1;
+        transition: color 0.3s;
+      }
+      .stat-label {
+        color: var(--stat-label);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-weight: 600;
+        transition: color 0.3s;
+      }
+      .stat-sep { color: var(--border); font-size: 16px; align-self: center; transition: color 0.3s; }
+    </style>
+  </head>
+  <body>
+
+    <!-- Nav -->
+    <nav class="nav">
+      <span class="nav-brand">
+        <span class="brand-name">ámaxa </span><span class="brand-sub">research</span>
+      </span>
+      <div class="nav-right">
+        <span class="nav-label">Sudan Syllabus</span>
+        <div class="theme-switcher" title="Switch theme">
+          <button class="theme-btn active" data-t="midnight" title="Midnight"></button>
+          <button class="theme-btn"        data-t="peach"    title="Peach"></button>
+          <button class="theme-btn"        data-t="grain"    title="Grain"></button>
+          <button class="theme-btn"        data-t="serif"    title="Serif"></button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+      <p class="hero-eyebrow">CU Boulder Cohort · Spring 2026</p>
+      <h1 class="hero-title">Sudan Syllabus</h1>
+      <p class="hero-desc">
+        Academic and journalistic resources on Sudan's history, culture, people,
+        and nature — accessible to English-speaking audiences.
+      </p>
+    </section>
+
+    <!-- Diagonal divider down -->
+    <svg class="divider-down" height="32" viewBox="0 0 1000 32" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="0,32 1000,0 1000,32" fill="var(--band)"></polygon>
+    </svg>
+
+    <!-- Filter bar -->
+    <div class="filter-bar">
+      <span class="filter-label">Filter:</span>
+      <button class="filter-btn filter-active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="book">Books</button>
+      <button class="filter-btn" data-filter="article">Articles</button>
+      <button class="filter-btn" data-filter="film">Films</button>
+      <button class="filter-btn" data-filter="contemporary">Contemporary</button>
+    </div>
+
+    <!-- Accordion -->
+    <div class="accordion">
+      {SYLLABUS.map((section) => {
+        const sectionTotal = section.subsections.reduce((a, sub) => a + sub.resources.length, 0);
+        const isOpen = section.id === "creative-arts";
+        return (
+          <details open={isOpen || undefined}>
+            <summary>
+              <div class="summary-left">
+                <span class="accent-bar"></span>
+                <span class="section-title">{section.title}</span>
+              </div>
+              <div class="summary-right">
+                <span class="resource-count">{sectionTotal} resources</span>
+                <span class="chevron">&#9658;</span>
+              </div>
+            </summary>
+            {section.subsections.map((sub) => (
+              <div class="subsection">
+                <div class="sub-header">{sub.title}</div>
+                {sub.resources.map((resource) => (
+                  <div class="resource-row" data-type={resource.type}>
+                    <span class={`badge badge-${resource.type}`}>{resource.type}</span>
+                    {resource.url !== null ? (
+                      <a class="resource-link" href={resource.url} target="_blank" rel="noopener noreferrer">
+                        {resource.title}
+                      </a>
+                    ) : (
+                      <div class="resource-unlinked">
+                        <span class="resource-unlinked-title">{resource.title}</span>
+                        <span class="resource-unlinked-label">No link available</span>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </details>
+        );
+      })}
+    </div>
+
+    <!-- Reverse diagonal divider -->
+    <svg class="divider-up" height="24" viewBox="0 0 1000 24" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="0,0 1000,24 0,24" fill="var(--bg)"></polygon>
+    </svg>
+
+    <!-- Stats bar -->
+    <div class="stats-bar">
+      <div class="stat">
+        <span class="stat-value">18</span>
+        <span class="stat-label">Topic Areas</span>
+      </div>
+      <span class="stat-sep">/</span>
+      <div class="stat">
+        <span class="stat-value">400+</span>
+        <span class="stat-label">Resources</span>
+      </div>
+      <span class="stat-sep">/</span>
+      <div class="stat">
+        <span class="stat-value">3</span>
+        <span class="stat-label">Researchers</span>
+      </div>
+      <span class="stat-sep">/</span>
+      <div class="stat">
+        <span class="stat-value">Spring 2026</span>
+        <span class="stat-label">Cohort</span>
+      </div>
+    </div>
+
+    <script>
+      // ── Filter chips ──────────────────────────────────────────
+      const filterBtns = document.querySelectorAll('[data-filter]');
+      const rows = document.querySelectorAll('.resource-row');
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterBtns.forEach(b => b.classList.remove('filter-active'));
+          btn.classList.add('filter-active');
+          const filter = (btn as HTMLElement).dataset.filter;
+          rows.forEach(row => {
+            (row as HTMLElement).style.display =
+              filter === 'all' || (row as HTMLElement).dataset.type === filter ? 'flex' : 'none';
+          });
+        });
+      });
+
+      // ── Theme switcher ────────────────────────────────────────
+      const themeBtns = document.querySelectorAll('.theme-btn');
+      const html = document.documentElement;
+
+      themeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const theme = (btn as HTMLElement).dataset.t!;
+          html.dataset.theme = theme;
+          themeBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        });
+      });
+    </script>
+  </body>
+</html>

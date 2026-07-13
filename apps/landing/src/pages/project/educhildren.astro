@@ -1,0 +1,97 @@
+---
+import AppLayout from "@/layouts/app-layout.astro";
+import SplitMedia from "@/components/sections/SplitMedia.astro";
+import TeamGrid from "@/components/sections/TeamGrid.astro";
+import ProjectTypes from "@/components/sections/ProjectTypes.astro";
+import { NewsletterCta } from "@/components/sections/NewsletterCta";
+import ContactForm from "@/components/sections/ContactForm.astro";
+---
+
+<AppLayout
+  seo={{
+    title: "Educate Children Liberia — Ámaxa Projects",
+    description:
+      "Ámaxa students partner with Educate Children Liberia to raise funds so students in Liberia can afford the $80 annual tuition to attend school.",
+    image: "/images/projects/educhildren.png",
+    type: "website",
+    canonicalURL: "https://www.amaxaimpact.org/project/educhildren",
+    keywords: ["amaxa", "Educhildren", "Liberia", "education", "children"],
+    noIndex: false,
+  }}
+>
+  <main>
+
+    <section class="bg-neutral-1-500 w-full px-12 pt-[120px] pb-12">
+      <h1 class="font-semibold text-[56px] text-purple-dark-500 leading-[1.1] max-w-[900px]">
+        Students in Liberia don't go to school if they cannot pay $80 for one year's tuition.
+      </h1>
+    </section>
+
+    <SplitMedia
+      mediaSrc="/images/projects/educhildren.png"
+      heading="Our Partner: Educate Children Liberia"
+      subhead="Founded by Monrovia native Sekou Jabateh, Educate Children employs a community-based approach to ensuring students have the funds to attend school. Their primary program, Enrollment Through Local Philanthropy, raises funds directly from the community to sponsor students."
+      ctaLabel="Visit Their Website"
+      ctaHref="/project/educhildren"
+      panelSide="left"
+      large={true}
+    />
+
+    <TeamGrid
+      heading="The Educate Children Liberia Team"
+      members={[
+        { name: "Sahr Felle", role: "EduChildren Partnership Lead", tone: "coral", imageSrc: "/images/teams/educhildren/sahr-felle.jpeg" },
+        { name: "Sekou Jabateh", role: "Educhildren Founder", tone: "lavender", imageSrc: "/images/teams/educhildren/sekou-jabateh.jpeg" },
+        { name: "Raima Vad", role: "Cross-Border Access Liberia Student Director", tone: "coral" },
+        { joinCard: true },
+      ]}
+    />
+
+    <ProjectTypes
+      heading="What kind of projects will I work on?"
+      body="Ámaxa Cohorts projects are each 100% unique — driven by ámaxa members' passions, interests, skills, networks, and location."
+      note='With Educate Children Liberia, teams most often take on <strong>fundraising-based</strong> projects. Future projects may also involve <strong>event planning</strong>, <strong>social media creation</strong>, and more to contribute to our <strong>Cross-Border Access Program</strong> events in Liberia.'
+      chips={["Fundraising", "Fundraising Events", "Social Media Campaigns", "Event Planning"]}
+      ctaLabel="Learn about Cohorts projects"
+      ctaHref="/pathways/cohorts"
+    />
+
+    <SplitMedia
+      heading="Cross-Border Access Program: Raima's Model UN Conference"
+      subhead="Raima used her passion for Model UN to organize a cross-border conference for students in Liberia, creating opportunities for students who would otherwise never have access to these kinds of experiences."
+      ctaLabel="Learn More"
+      ctaHref="/project/educhildren"
+      panelSide="right"
+    />
+
+    <NewsletterCta client:load />
+
+    <section class="bg-purple-dark-500 w-full px-12 py-24 flex flex-col gap-7 items-center text-center">
+      <h2 class="font-semibold text-[40px] text-white max-w-[820px] leading-[1.2]">
+        Ready to make an impact?
+      </h2>
+      <p class="text-white/80 text-lg max-w-[560px]">Join hundreds of students from around the world who are creating meaningful change through Ámaxa.</p>
+      <div class="flex gap-4">
+        <a
+          href="https://airtable.com/appPR9mkslbn3U8YZ/shrHHUtRzK4DqKt3F"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 bg-coral-dark-500 hover:bg-coral-dark-600 text-white text-base font-semibold px-6 py-3 rounded-full transition-colors"
+        >
+          Apply Now ↗
+        </a>
+        <a
+          href="https://airtable.com/appPR9mkslbn3U8YZ/shrHHUtRzK4DqKt3F"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 border-[1.5px] border-white hover:bg-white hover:text-purple-dark-500 text-white text-base font-semibold px-6 py-3 rounded-full transition-colors"
+        >
+          Support Us
+        </a>
+      </div>
+    </section>
+
+    <ContactForm />
+
+  </main>
+</AppLayout>

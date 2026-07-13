@@ -1,0 +1,412 @@
+@import "tailwindcss";
+@import "@amaxa/tailwind-config/theme";
+
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+@import "@fontsource/instrument-sans/400.css";
+@import "@fontsource/instrument-sans/500.css";
+@import "@fontsource/instrument-sans/600.css";
+
+@source "../../../../packages/ui/src/*.{ts,tsx}";
+
+/* ── Ámaxa primitive color ramps (mode-independent) ── */
+:root {
+  --purple-dark-0:   #eeedf1;
+  --purple-dark-100: #d9d7e0;
+  --purple-dark-200: #bcb7c8;
+  --purple-dark-300: #968fa9;
+  --purple-dark-400: #695e84;
+  --purple-dark-500: #2e1f54;
+  --purple-dark-600: #261945;
+  --purple-dark-700: #1e1437;
+  --purple-dark-800: #17102a;
+  --purple-dark-900: #100b1d;
+
+  --purple-light-0:   #f3f1fb;
+  --purple-light-100: #e4dff6;
+  --purple-light-200: #cfc5f0;
+  --purple-light-300: #b4a5e7;
+  --purple-light-400: #947ddc;
+  --purple-light-500: #6a4bcf;
+  --purple-light-600: #573eaa;
+  --purple-light-700: #463289;
+  --purple-light-800: #352668;
+  --purple-light-900: #241a46;
+
+  --coral-dark-0:   #fff3f1;
+  --coral-dark-100: #ffe4de;
+  --coral-dark-200: #ffd0c5;
+  --coral-dark-300: #ffb5a4;
+  --coral-dark-400: #ff947d;
+  --coral-dark-500: #ff6b4a;
+  --coral-dark-600: #d1583d;
+  --coral-dark-700: #a84731;
+  --coral-dark-800: #803625;
+  --coral-dark-900: #572419;
+
+  --coral-light-0:   #fffcfb;
+  --coral-light-100: #fff8f6;
+  --coral-light-200: #fff2ef;
+  --coral-light-300: #ffeae5;
+  --coral-light-400: #ffe1da;
+  --coral-light-500: #ffd6cc;
+  --coral-light-600: #d1afa7;
+  --coral-light-700: #a88d87;
+  --coral-light-800: #806b66;
+  --coral-light-900: #574945;
+
+  --neutral-1-0:   #fffffe;
+  --neutral-1-100: #fefefe;
+  --neutral-1-200: #fdfdfc;
+  --neutral-1-300: #fcfcfb;
+  --neutral-1-400: #fbfbf9;
+  --neutral-1-500: #faf9f7;
+  --neutral-1-600: #cdcccb;
+  --neutral-1-700: #a5a4a3;
+  --neutral-1-800: #7d7d7c;
+  --neutral-1-900: #555554;
+
+  --neutral-2-0:   #fdfdfe;
+  --neutral-2-100: #fbfafd;
+  --neutral-2-200: #f8f6fc;
+  --neutral-2-300: #f3f1fa;
+  --neutral-2-400: #eeecf8;
+  --neutral-2-500: #e8e4f5;
+  --neutral-2-600: #bebbc9;
+  --neutral-2-700: #9996a2;
+  --neutral-2-800: #74727b;
+  --neutral-2-900: #4f4e53;
+
+  /* ── Ámaxa semantic tokens (light mode) ── */
+  --amaxa-background:       #ffffff;
+  --amaxa-foreground:       #18181b;
+  --amaxa-card:             #ffffff;
+  --amaxa-card-foreground:  #26272d;
+  --amaxa-accent:           #f1f2f5;
+  --amaxa-muted-foreground: #6b7280;
+  --amaxa-border:           #c3c6e0;
+}
+
+.dark {
+  --amaxa-background:       #141520;
+  --amaxa-foreground:       #f5f5fa;
+  --amaxa-card:             #141520;
+  --amaxa-card-foreground:  #f0f0f5;
+  --amaxa-accent:           #1e1f2e;
+  --amaxa-muted-foreground: #8c91a8;
+  --amaxa-border:           #2e304a;
+}
+
+/* ── Expose Ámaxa tokens to Tailwind v4 ── */
+@theme inline {
+  /* sans font → Instrument Sans */
+  --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, monospace;
+
+  /* type scale */
+  --text-6xl: 60px;
+  --text-5xl: 48px;
+  --text-4xl: 36px;
+  --text-3xl: 30px;
+  --text-2xl: 24px;
+  --text-xl:  20px;
+  --text-lg:  18px;
+  --text-base: 16px;
+  --text-sm:  14px;
+  --text-xs:  12px;
+
+  /* primitive ramps */
+  --color-purple-dark-0:   var(--purple-dark-0);
+  --color-purple-dark-100: var(--purple-dark-100);
+  --color-purple-dark-200: var(--purple-dark-200);
+  --color-purple-dark-300: var(--purple-dark-300);
+  --color-purple-dark-400: var(--purple-dark-400);
+  --color-purple-dark-500: var(--purple-dark-500);
+  --color-purple-dark-600: var(--purple-dark-600);
+  --color-purple-dark-700: var(--purple-dark-700);
+  --color-purple-dark-800: var(--purple-dark-800);
+  --color-purple-dark-900: var(--purple-dark-900);
+
+  --color-purple-light-0:   var(--purple-light-0);
+  --color-purple-light-100: var(--purple-light-100);
+  --color-purple-light-200: var(--purple-light-200);
+  --color-purple-light-300: var(--purple-light-300);
+  --color-purple-light-400: var(--purple-light-400);
+  --color-purple-light-500: var(--purple-light-500);
+  --color-purple-light-600: var(--purple-light-600);
+  --color-purple-light-700: var(--purple-light-700);
+  --color-purple-light-800: var(--purple-light-800);
+  --color-purple-light-900: var(--purple-light-900);
+
+  --color-coral-dark-0:   var(--coral-dark-0);
+  --color-coral-dark-100: var(--coral-dark-100);
+  --color-coral-dark-200: var(--coral-dark-200);
+  --color-coral-dark-300: var(--coral-dark-300);
+  --color-coral-dark-400: var(--coral-dark-400);
+  --color-coral-dark-500: var(--coral-dark-500);
+  --color-coral-dark-600: var(--coral-dark-600);
+  --color-coral-dark-700: var(--coral-dark-700);
+  --color-coral-dark-800: var(--coral-dark-800);
+  --color-coral-dark-900: var(--coral-dark-900);
+
+  --color-coral-light-0:   var(--coral-light-0);
+  --color-coral-light-100: var(--coral-light-100);
+  --color-coral-light-200: var(--coral-light-200);
+  --color-coral-light-300: var(--coral-light-300);
+  --color-coral-light-400: var(--coral-light-400);
+  --color-coral-light-500: var(--coral-light-500);
+  --color-coral-light-600: var(--coral-light-600);
+  --color-coral-light-700: var(--coral-light-700);
+  --color-coral-light-800: var(--coral-light-800);
+  --color-coral-light-900: var(--coral-light-900);
+
+  --color-neutral-1-0:   var(--neutral-1-0);
+  --color-neutral-1-100: var(--neutral-1-100);
+  --color-neutral-1-200: var(--neutral-1-200);
+  --color-neutral-1-300: var(--neutral-1-300);
+  --color-neutral-1-400: var(--neutral-1-400);
+  --color-neutral-1-500: var(--neutral-1-500);
+  --color-neutral-1-600: var(--neutral-1-600);
+  --color-neutral-1-700: var(--neutral-1-700);
+  --color-neutral-1-800: var(--neutral-1-800);
+  --color-neutral-1-900: var(--neutral-1-900);
+
+  --color-neutral-2-0:   var(--neutral-2-0);
+  --color-neutral-2-100: var(--neutral-2-100);
+  --color-neutral-2-200: var(--neutral-2-200);
+  --color-neutral-2-300: var(--neutral-2-300);
+  --color-neutral-2-400: var(--neutral-2-400);
+  --color-neutral-2-500: var(--neutral-2-500);
+  --color-neutral-2-600: var(--neutral-2-600);
+  --color-neutral-2-700: var(--neutral-2-700);
+  --color-neutral-2-800: var(--neutral-2-800);
+  --color-neutral-2-900: var(--neutral-2-900);
+
+  /* semantic overrides */
+  --color-background:      var(--amaxa-background);
+  --color-foreground:      var(--amaxa-foreground);
+  --color-card:            var(--amaxa-card);
+  --color-card-foreground: var(--amaxa-card-foreground);
+  --color-accent:          var(--amaxa-accent);
+  --color-muted-foreground: var(--amaxa-muted-foreground);
+  --color-border:          var(--amaxa-border);
+  --color-primary:         var(--coral-dark-500);
+  --color-primary-foreground: #ffffff;
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant light (&:where(.light, .light *));
+@custom-variant auto (&:where(.auto, .auto *));
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
+  @media (width >= --theme(--breakpoint-sm)) {
+    max-width: none;
+  }
+  @media (width >= 1400px) {
+    max-width: 1400px;
+  }
+}
+
+@theme {
+  --color-brand-green: #bcd96c;
+}
+
+@layer base {
+  :root {
+    --font-geist-sans: "Geist Variable";
+    --font-geist-mono: "Geist Mono Variable";
+  }
+  * {
+    @apply border-border;
+  }
+  body {
+    letter-spacing: var(--tracking-normal);
+  }
+}
+
+@layer utilities {
+  /* Animated underline drawing effect - 2s delay, very slow start, stays for 5 seconds, then loops */
+  @keyframes draw-line {
+    0% {
+      stroke-dashoffset: 1000;
+      opacity: 0;
+    }
+    2% {
+      opacity: 1;
+    }
+    30% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    75% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    98% {
+      opacity: 1;
+    }
+    100% {
+      stroke-dashoffset: 1000;
+      opacity: 0;
+    }
+  }
+
+  /* Permanent underline animation - draws once and stays */
+  @keyframes draw-line-permanent {
+    0% {
+      stroke-dashoffset: 1000;
+      opacity: 0;
+    }
+    2% {
+      opacity: 1;
+    }
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+  }
+
+  /* Keyframes from tailwind.config.ts */
+  @keyframes skew-scroll {
+    0% {
+      transform: translateZ(0) translateY(0);
+    }
+    100% {
+      transform: translateZ(0) translateY(-100%);
+    }
+  }
+
+  @keyframes border-beam {
+    100% {
+      offset-distance: 100%;
+    }
+  }
+
+  @keyframes image-glow {
+    0% {
+      opacity: 0;
+      animation-timing-function: cubic-bezier(0.74, 0.25, 0.76, 1);
+    }
+    10% {
+      opacity: 0.7;
+      animation-timing-function: cubic-bezier(0.12, 0.01, 0.08, 0.99);
+    }
+    100% {
+      opacity: 0.4;
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes shimmer {
+    0%,
+    90%,
+    100% {
+      background-position: calc(-100% - var(--shimmer-width)) 0;
+    }
+    30%,
+    60% {
+      background-position: calc(100% + var(--shimmer-width)) 0;
+    }
+  }
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-100% - var(--gap)));
+    }
+  }
+
+  @keyframes marquee-vertical {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(calc(-100% - var(--gap)));
+    }
+  }
+}
+
+/* Custom utility classes with animations */
+@utility animate-draw-line {
+  animation: draw-line 12s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation-delay: 1s;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  will-change: stroke-dashoffset, opacity;
+  shape-rendering: geometricPrecision;
+}
+
+@utility animate-draw-line-permanent {
+  animation: draw-line-permanent 3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: 2s;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  will-change: stroke-dashoffset, opacity;
+  shape-rendering: geometricPrecision;
+}
+
+@utility animate-border-beam {
+  animation: border-beam calc(var(--duration) * 1s) infinite linear;
+}
+
+@utility animate-skew-scroll {
+  animation: skew-scroll 20s linear infinite;
+}
+
+@utility animate-image-glow {
+  animation: image-glow 4100ms 600ms ease-out forwards;
+}
+
+@utility animate-fade-in {
+  animation: fade-in 1000ms var(--animation-delay, 0ms) ease forwards;
+}
+
+@utility animate-fade-up {
+  animation: fade-up 1000ms var(--animation-delay, 0ms) ease forwards;
+}
+
+@utility animate-shimmer {
+  animation: shimmer 8s infinite;
+}
+
+@utility animate-marquee {
+  animation: marquee var(--duration) infinite linear;
+}
+
+@utility animate-marquee-vertical {
+  animation: marquee-vertical var(--duration) linear infinite;
+}
+
+@utility scrollbar-hidden {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

@@ -1,0 +1,37 @@
+---
+interface Step {
+  number: string;
+  heading: string;
+  description: string;
+}
+
+interface Props {
+  title?: string;
+  steps?: Step[];
+}
+
+const defaultSteps: Step[] = [
+  { number: "STEP 01", heading: "Apply to the next cohort", description: "Click on the application link to view the next cohort deadline." },
+  { number: "STEP 02", heading: "Attend an interview", description: "Tell us about your interests, availability, and which projects excite you most." },
+  { number: "STEP 03", heading: "Get matched to a team", description: "We match you to a project you're passionate about with a team that meets at times that work for you." },
+  { number: "STEP 04", heading: "Meet weekly for 3 months", description: "One-hour weekly meetings with your coach guiding you through planning, problem solving, and execution." },
+];
+
+const {
+  title = "How Cohorts Work",
+  steps = defaultSteps,
+} = Astro.props;
+---
+
+<section class="bg-neutral-1-500 w-full px-12 py-24 flex flex-col gap-14">
+  <h2 class="font-semibold text-[40px] text-foreground">{title}</h2>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+    {steps.map((step) => (
+      <div class="border-t-[3px] border-coral-dark-500 flex flex-col gap-3 pt-6">
+        <p class="font-medium text-sm text-coral-dark-500 tracking-[0.84px]">{step.number}</p>
+        <p class="font-semibold text-[22px] text-foreground leading-snug">{step.heading}</p>
+        <p class="font-normal text-base text-muted-foreground leading-relaxed">{step.description}</p>
+      </div>
+    ))}
+  </div>
+</section>
