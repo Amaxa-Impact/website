@@ -30,7 +30,7 @@ export function NavLight() {
           ))}
         </div>
         <a
-          href="/pathways/cohorts"
+          href="/programs/cohorts"
           className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-base font-semibold bg-coral-dark-500 text-white hover:bg-coral-dark-600 transition-colors"
         >
           Apply now
@@ -55,7 +55,7 @@ export function NavLight() {
             </a>
           ))}
           <a
-            href="/pathways/cohorts"
+            href="/programs/cohorts"
             className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-base font-semibold bg-coral-dark-500 text-white hover:bg-coral-dark-600 transition-colors w-fit"
           >
             Apply now

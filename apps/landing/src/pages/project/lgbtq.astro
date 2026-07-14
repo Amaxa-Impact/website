@@ -31,10 +31,17 @@ import ContactForm from "@/components/sections/ContactForm.astro";
       mediaSrc="/images/projects/lgbtq.png"
       heading="Our Initiative: LGBTQ+ Artists Program"
       subhead="This program is ámaxa's way of helping LGBTQ+ artists and storytellers get the attention they deserve, while giving our students tangible experience in their fields of interest. Through an application opened before each cycle, artists can apply to be our next feature artist and benefit from our team of young marketing and PR professionals."
-      ctaLabel="Learn More"
-      ctaHref="/project/lgbtq"
+      showCta={false}
       panelSide="left"
       large={true}
+    />
+
+    <SplitMedia
+      mediaSrc="/images/projects/lgbtq/platforming-refugee-stories.webp"
+      heading="Platforming refugee stories"
+      subhead={`Our 2025 highlight: "Won't Be Displaced" tells the story, through film, of refugees forced to flee their homeland because being gay is illegal or unprotected where they live. "We aim to show how creativity and the arts can drive policy change, in partnership with leading NGOs and advocates." — Piera van de Wiel, Writer, Director & Producer.`}
+      showCta={false}
+      panelSide="right"
     />
 
     <TeamGrid
@@ -52,15 +59,7 @@ import ContactForm from "@/components/sections/ContactForm.astro";
       note='The LGBTQ+ Artists Program centers on <strong>PR</strong>, <strong>marketing</strong>, and <strong>storytelling</strong>.'
       chips={["PR & marketing", "Content creation", "Storytelling", "Advocacy"]}
       ctaLabel="Learn about Cohorts projects"
-      ctaHref="/pathways/cohorts"
-    />
-
-    <SplitMedia
-      heading="Platforming refugee stories"
-      subhead={`Our 2025 highlight: "Won't Be Displaced" tells the story, through film, of refugees forced to flee their homeland because being gay is illegal or unprotected where they live. "We aim to show how creativity and the arts can drive policy change, in partnership with leading NGOs and advocates." — Piera van de Wiel, Writer, Director & Producer.`}
-      ctaLabel="Learn More"
-      ctaHref="/project/lgbtq"
-      panelSide="right"
+      ctaHref="/programs/cohorts"
     />
 
     <NewsletterCta client:load />
@@ -69,8 +68,8 @@ import ContactForm from "@/components/sections/ContactForm.astro";
       <h2 class="font-semibold text-[40px] text-white max-w-[820px] leading-[1.2]">
         Ready to make an impact?
       </h2>
-      <p class="text-white/80 text-lg max-w-[560px]">Join hundreds of students from around the world who are creating meaningful change through Ámaxa.</p>
-      <div class="flex gap-4">
+      <p class="text-white/80 text-lg max-w-[620px]">Join hundreds of change makers from around the world who are creating meaningful change through Ámaxa programs.</p>
+      <div class="flex flex-wrap gap-4 justify-center">
         <a
           href="https://airtable.com/appPR9mkslbn3U8YZ/shrHHUtRzK4DqKt3F"
           target="_blank"
@@ -80,7 +79,7 @@ import ContactForm from "@/components/sections/ContactForm.astro";
           Apply Now ↗
         </a>
         <a
-          href="https://airtable.com/appPR9mkslbn3U8YZ/shrHHUtRzK4DqKt3F"
+          href="https://collect.crowded.me/collection/8d1ba838-a38e-4803-b155-d102b7b131e4"
           target="_blank"
           rel="noopener noreferrer"
           class="inline-flex items-center gap-2 border-[1.5px] border-white hover:bg-white hover:text-purple-dark-500 text-white text-base font-semibold px-6 py-3 rounded-full transition-colors"

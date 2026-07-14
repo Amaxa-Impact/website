@@ -7,6 +7,7 @@ import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@amaxa/ui/sheet";
 interface NavItem {
   href: string;
   label: string;
+  children?: NavItem[];
 }
 
 export const MobileMenu = ({ navItems }: { navItems: NavItem[] }) => {
@@ -18,17 +19,35 @@ export const MobileMenu = ({ navItems }: { navItems: NavItem[] }) => {
       <SheetContent side="right" className="w-[80%] sm:w-[350px]">
         <div className="mt-8 flex flex-col gap-6">
           {navItems.map((item) => (
-            <SheetClose
-              key={item.href}
-              render={
-                <a
-                  href={item.href}
-                  className="hover:text-primary text-xl font-medium transition-colors"
-                >
-                  {item.label}
-                </a>
-              }
-            />
+            <div key={item.href} className="flex flex-col gap-3">
+              <SheetClose
+                render={
+                  <a
+                    href={item.href}
+                    className="hover:text-primary text-xl font-medium transition-colors"
+                  >
+                    {item.label}
+                  </a>
+                }
+              />
+              {item.children && (
+                <div className="ml-3 flex flex-col gap-3 border-l border-black/10 pl-4">
+                  {item.children.map((child) => (
+                    <SheetClose
+                      key={child.href}
+                      render={
+                        <a
+                          href={child.href}
+                          className="hover:text-primary text-base font-medium text-black/70 transition-colors"
+                        >
+                          {child.label}
+                        </a>
+                      }
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
           <div className="mt-4 flex flex-col gap-4">
             <SheetClose

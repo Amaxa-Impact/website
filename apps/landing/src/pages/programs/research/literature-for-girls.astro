@@ -1,0 +1,79 @@
+---
+import AppLayout from "@/layouts/app-layout.astro";
+import IntroMedia from "@/components/sections/IntroMedia.astro";
+import StatementBar from "@/components/sections/StatementBar.astro";
+import { NewsletterCta } from "@/components/sections/NewsletterCta";
+import ContactForm from "@/components/sections/ContactForm.astro";
+
+const topic = `Paint a picture — or "weave a tapestry" — of the varied ways books and literature affect women and girls of different ages, different kinds of literature, across cities, states, and countries; across cultures — in order to convey the importance of the Karina's Library project: all of the ways "behind the scenes" that it's more than just "giving someone a book."
+
+Provide the Karina's Library project with greater information to make our work more effective and targeted: Should we focus on an age group or type of literature? Are libraries vs. direct distribution a greater impact in literature? How can we create interactive events beyond giving a book, like the Baltimore Polar Express Bus, or library buses?
+
+After this research has been completed: how can we measure the impact of this initiative?`;
+---
+
+<AppLayout
+  seo={{
+    title: "Impact of Literature on Women and Girls — Ámaxa Research",
+    description: "Grounding ámaxa's Karina's Library initiative in evidence-based research on how literature shapes the lives of women and girls.",
+    image: "https://b47pkz22xs.ufs.sh/f/OxFTTzjZGToOTXSksZrPvV4ygRa57DXtJwU9SfhC1qxONmlA",
+    type: "website",
+    canonicalURL: "https://www.amaxaimpact.org/programs/research/literature-for-girls",
+    keywords: ["amaxa", "research", "literature", "women", "girls", "karina's library"],
+    noIndex: false,
+  }}
+>
+  <main>
+
+    <IntroMedia
+      heading="Impact of Literature on Women and Girls"
+      subhead="Grounding ámaxa's Karina's Library initiative in evidence-based research on how literature shapes the lives of women and girls."
+      imageSrc="/images/programs/research.png"
+      imageAlt="Impact of Literature on Women and Girls research"
+    />
+
+    <StatementBar
+      eyebrow="RESEARCH OBJECTIVE"
+      statement="Ground ámaxa's Karina's Library initiative in evidence-based academic research, and implement changes to project goals and delivery based on findings."
+    />
+
+    <!-- Research topic & responsibilities -->
+    <section class="bg-neutral-1-500 w-full px-12 py-16 flex flex-col gap-6">
+      <p class="font-semibold text-sm text-coral-dark-500 tracking-[1.12px]">RESEARCH TOPIC AND RESPONSIBILITIES</p>
+      <div class="bg-foreground/15 h-px w-full"></div>
+      <div class="max-w-[1000px] text-lg text-purple-dark-500/85 leading-[1.7] whitespace-pre-line">
+        {topic}
+      </div>
+    </section>
+
+    <section class="bg-purple-dark-500 w-full px-12 py-24 flex flex-col gap-7 items-center text-center">
+      <h2 class="font-semibold text-[40px] text-white max-w-[820px] leading-[1.2]">
+        Ready to make an impact?
+      </h2>
+      <p class="text-white/80 text-lg max-w-[620px]">Join hundreds of change makers from around the world who are creating meaningful change through Ámaxa programs.</p>
+      <div class="flex flex-wrap gap-4 justify-center">
+        <a
+          href="https://airtable.com/appPR9mkslbn3U8YZ/shrHHUtRzK4DqKt3F"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 bg-coral-dark-500 hover:bg-coral-dark-600 text-white text-base font-semibold px-6 py-3 rounded-full transition-colors"
+        >
+          Apply Now ↗
+        </a>
+        <a
+          href="https://collect.crowded.me/collection/8d1ba838-a38e-4803-b155-d102b7b131e4"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 border-[1.5px] border-white hover:bg-white hover:text-purple-dark-500 text-white text-base font-semibold px-6 py-3 rounded-full transition-colors"
+        >
+          Support Us
+        </a>
+      </div>
+    </section>
+
+    <ContactForm />
+
+    <NewsletterCta client:load />
+
+  </main>
+</AppLayout>

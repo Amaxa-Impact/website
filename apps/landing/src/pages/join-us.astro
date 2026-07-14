@@ -19,7 +19,7 @@ const ways = [
     title: "Partner with us",
     body: "Are you a nonprofit, school, or education leader? Bring students from 52+ countries to your community through a custom program.",
     ctaLabel: "Get in touch →",
-    href: "/contact-us",
+    href: "/programs/partnerships",
     external: false,
   },
   {
@@ -28,6 +28,31 @@ const ways = [
     ctaLabel: "Support us ↗",
     href: SUPPORT,
     external: true,
+  },
+];
+
+// NOTE: Placeholder roles — replace copy/openings to match the Figma
+// "Open Volunteer Roles" design once available.
+const volunteerRoles = [
+  {
+    title: "Program Coach",
+    meta: "Remote · ~3 hrs/week",
+    body: "Mentor a team of students through a 3-month cohort, guiding them from idea to real-world impact with one of our partners.",
+  },
+  {
+    title: "Partnerships Volunteer",
+    meta: "Remote · Flexible",
+    body: "Help grow and steward relationships with grassroots nonprofits, schools, and education leaders around the world.",
+  },
+  {
+    title: "Content & Storytelling Volunteer",
+    meta: "Remote · Flexible",
+    body: "Craft stories, articles, and social content that amplify the work of our students and partners.",
+  },
+  {
+    title: "Research Volunteer",
+    meta: "Remote · ~3-5 hrs/week",
+    body: "Support applied research that informs and strengthens the work of our partner projects and initiatives.",
   },
 ];
 ---
@@ -65,6 +90,35 @@ const ways = [
               class="inline-flex items-center gap-2 bg-purple-dark-500 hover:bg-purple-dark-600 text-white rounded-full px-6 py-3 text-base font-semibold transition-colors w-fit"
             >
               {w.ctaLabel}
+            </a>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Open Volunteer Roles -->
+    <section class="bg-neutral-2-500 w-full px-12 py-24 flex flex-col gap-10">
+      <div class="flex flex-col gap-3">
+        <h2 class="font-semibold text-[40px] text-purple-dark-500">Open Volunteer Roles</h2>
+        <p class="text-lg text-purple-dark-500/80 max-w-[680px]">
+          Lend your skills to grassroots impact. Explore our current openings and apply to join a fully remote, mission-driven team.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {volunteerRoles.map((role) => (
+          <div class="rounded-[28px] bg-white border border-purple-dark-500/10 p-8 flex flex-col gap-4">
+            <div class="flex flex-col gap-1">
+              <h3 class="font-semibold text-[22px] text-purple-dark-500 leading-tight">{role.title}</h3>
+              <p class="text-sm font-semibold text-coral-dark-500 tracking-[0.04em]">{role.meta}</p>
+            </div>
+            <p class="text-base text-purple-dark-500/80 leading-relaxed flex-1">{role.body}</p>
+            <a
+              href={APPLY}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 bg-purple-dark-500 hover:bg-purple-dark-600 text-white rounded-full px-6 py-3 text-base font-semibold transition-colors w-fit"
+            >
+              Apply now ↗
             </a>
           </div>
         ))}

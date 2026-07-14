@@ -1,9 +1,11 @@
 "use client";
 
+// Keep in sync with the desktop navbar (components/navbar/navbar.tsx).
 const navLinks = [
-  { label: "About Us", href: "/who-we-are" },
-  { label: "Our Program", href: "/pathways/cohorts" },
+  { label: "About Us", href: "/about-us" },
+  { label: "Our Programs", href: "/programs" },
   { label: "Discover Projects", href: "/project" },
+  { label: "Get Involved", href: "/join-us" },
   {
     label: "Support Us",
     href: "https://collect.crowded.me/collection/8d1ba838-a38e-4803-b155-d102b7b131e4",

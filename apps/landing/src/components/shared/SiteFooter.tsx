@@ -1,5 +1,5 @@
 const col1 = [
-  { label: "Meet Ámaxa", href: "/who-we-are" },
+  { label: "Meet Ámaxa", href: "/about-us" },
   { label: "Our Stories", href: "/project-stories" },
   { label: "Our Blog", href: "/blog" },
 ];

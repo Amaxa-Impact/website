@@ -4,48 +4,50 @@ interface Props {
   subhead?: string;
   ctaLabel?: string;
   ctaHref?: string;
-  imageSrc?: string;
-  imageAlt?: string;
+  /** Background images that auto-cross-fade as a slideshow. */
+  images?: string[];
 }
 
 const {
   title = "We are ámaxa.",
   subhead = "We champion grassroots projects around the globe and empower individuals—across age, location, and skillset—to lead the change that pushes them forward.",
   ctaLabel = "Learn More",
-  ctaHref = "/who-we-are",
-  imageSrc,
-  imageAlt = "Hero background",
+  ctaHref = "/about-us",
+  images = [
+    "/images/home/jumbotron/photo-1.jpg",
+    "/images/home/jumbotron/gaza-champions.webp",
+    "/images/home/jumbotron/isnad.jpg",
+    "/images/home/jumbotron/nyaka-library.jpg",
+    "/images/home/jumbotron/nyaka-2.jpg",
+  ],
 } = Astro.props;
 ---
 
-<section class="relative h-[720px] overflow-hidden w-full">
-  <!-- Background image -->
-  {imageSrc && (
+<section class="hero-slideshow relative h-[720px] overflow-hidden w-full" data-hero-slideshow>
+  <!-- Background slideshow -->
+  {images.map((src, i) => (
     <img
-      src={imageSrc}
-      alt={imageAlt}
-      class="absolute inset-0 w-full h-full object-cover"
+      src={src}
+      alt=""
+      aria-hidden="true"
+      data-slide
+      class:list={["hero-slide absolute inset-0 w-full h-full object-cover", { "is-active": i === 0 }]}
     />
-  )}
-  {!imageSrc && (
-    <div class="absolute inset-0 bg-purple-dark-700" />
-  )}
+  ))}
 
-  <!-- Legibility gradient overlay -->
-  <div class="absolute inset-0 bg-gradient-to-r from-black/50 via-black/12 to-transparent" />
-
-  <!-- Top cream accent bar -->
-  <div class="absolute top-0 left-0 right-0 h-2.5 bg-neutral-1-500" />
+  <!-- Darkening overlays: keep photos darker than the text for legibility -->
+  <div class="absolute inset-0 bg-black/45"></div>
+  <div class="absolute inset-0 bg-gradient-to-r from-black/65 via-black/30 to-black/20"></div>
 
   <!-- Bottom coral rule -->
-  <div class="absolute bottom-0 left-0 right-0 h-1.5 bg-coral-dark-500" />
+  <div class="absolute bottom-0 left-0 right-0 h-1.5 bg-coral-dark-500"></div>
 
   <!-- Content -->
   <div class="absolute left-20 top-[205px] flex flex-col gap-7 items-start max-w-[680px]">
-    <h1 class="font-semibold text-6xl text-white leading-[1.04]">
+    <h1 class="font-semibold text-6xl text-white leading-[1.04] drop-shadow-sm">
       {title}
     </h1>
-    <p class="font-normal text-[40px] leading-[1.38] text-white">
+    <p class="font-normal text-[40px] leading-[1.38] text-white drop-shadow-sm">
       {subhead}
     </p>
     <a
@@ -56,3 +58,31 @@ const {
     </a>
   </div>
 </section>
+
+<style>
+  .hero-slide {
+    opacity: 0;
+    transition: opacity 1.2s ease-in-out;
+  }
+  .hero-slide.is-active {
+    opacity: 1;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-slide {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-hero-slideshow]").forEach((root) => {
+    const slides = Array.from(root.querySelectorAll<HTMLElement>("[data-slide]"));
+    if (slides.length < 2) return;
+    let idx = 0;
+    setInterval(() => {
+      slides[idx].classList.remove("is-active");
+      idx = (idx + 1) % slides.length;
+      slides[idx].classList.add("is-active");
+    }, 5000);
+  });
+</script>
