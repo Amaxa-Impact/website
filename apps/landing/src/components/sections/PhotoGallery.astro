@@ -1,0 +1,297 @@
+---
+/**
+ * PhotoGallery — a full-bleed, clickable photo carousel.
+ *
+ * - Auto-advances through the photos on a timer.
+ * - Pauses on hover.
+ * - Prev/next arrows step one photo at a time.
+ * - Dots along the bottom show the current position and jump to a slide.
+ */
+interface GalleryImage {
+  src: string;
+  alt?: string;
+}
+
+interface Props {
+  images?: GalleryImage[];
+  /** CSS height of the band. */
+  height?: string;
+  /** Milliseconds between auto-advances. */
+  interval?: number;
+  ariaLabel?: string;
+}
+
+const {
+  images = [],
+  height = "clamp(320px, 62vh, 680px)",
+  interval = 4500,
+  ariaLabel = "Photo gallery",
+} = Astro.props;
+
+const hasImages = images.length > 0;
+
+// Branded placeholders so the component still renders before photos are added.
+const placeholders = [
+  { label: "Add photos", tone: "coral" },
+  { label: "to the gallery", tone: "lavender" },
+];
+
+const slides: GalleryImage[] = hasImages ? images : [];
+---
+
+<section
+  class="pg-section bg-neutral-1-500 w-full overflow-hidden"
+  data-gallery
+  aria-roledescription="carousel"
+  aria-label={ariaLabel}
+  style={`--pg-height:${height}; --pg-interval:${interval}`}
+>
+  <div class="pg-viewport">
+    <div class="pg-track" data-track>
+      {hasImages
+        ? slides.map((img, i) => (
+            <figure class="pg-slide" role="group" aria-roledescription="slide" aria-label={`${i + 1} of ${slides.length}`}>
+              <img src={img.src} alt={img.alt ?? ""} class="pg-img" loading={i < 2 ? "eager" : "lazy"} draggable="false" />
+            </figure>
+          ))
+        : placeholders.map((p) => (
+            <figure class:list={["pg-slide pg-placeholder", `pg-tone-${p.tone}`]}>
+              <span class="pg-placeholder-label">{p.label}</span>
+            </figure>
+          ))}
+    </div>
+
+    {hasImages && slides.length > 1 && (
+      <>
+        <button type="button" class="pg-arrow pg-arrow--prev" data-prev aria-label="Previous photo">
+          <span aria-hidden="true">←</span>
+        </button>
+        <button type="button" class="pg-arrow pg-arrow--next" data-next aria-label="Next photo">
+          <span aria-hidden="true">→</span>
+        </button>
+
+        <div class="pg-dots" role="tablist" aria-label="Choose photo">
+          {slides.map((_, i) => (
+            <button
+              type="button"
+              class:list={["pg-dot", { "is-active": i === 0 }]}
+              data-dot
+              data-index={i}
+              role="tab"
+              aria-label={`Go to photo ${i + 1}`}
+              aria-selected={i === 0 ? "true" : "false"}
+            />
+          ))}
+        </div>
+      </>
+    )}
+  </div>
+</section>
+
+<style>
+  .pg-section {
+    position: relative;
+  }
+  .pg-viewport {
+    position: relative;
+    width: 100%;
+    height: var(--pg-height);
+    overflow: hidden;
+  }
+  .pg-track {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+  }
+  .pg-slide {
+    position: relative;
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+  }
+  .pg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    user-select: none;
+  }
+
+  /* ── Arrows ─────────────────────────────────────────── */
+  .pg-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 56px;
+    height: 56px;
+    border-radius: 9999px;
+    border: none;
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--color-purple-dark-500, #2b1a4a);
+    font-size: 24px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    user-select: none;
+    touch-action: manipulation;
+  }
+  .pg-arrow:hover {
+    background: #fff;
+  }
+  .pg-arrow:active {
+    transform: translateY(-50%) scale(0.94);
+  }
+  .pg-arrow:focus-visible {
+    outline: 3px solid var(--color-coral-dark-500, #e0592a);
+    outline-offset: 2px;
+  }
+  .pg-arrow--prev {
+    left: 24px;
+  }
+  .pg-arrow--next {
+    right: 24px;
+  }
+
+  /* ── Dots ───────────────────────────────────────────── */
+  .pg-dots {
+    position: absolute;
+    left: 50%;
+    bottom: 20px;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    gap: 10px;
+    padding: 8px 14px;
+    border-radius: 9999px;
+    background: rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(4px);
+  }
+  .pg-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 9999px;
+    border: none;
+    padding: 0;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: background-color 0.2s ease, width 0.2s ease;
+  }
+  .pg-dot:hover {
+    background: rgba(255, 255, 255, 0.8);
+  }
+  .pg-dot.is-active {
+    width: 26px;
+    background: #fff;
+  }
+  .pg-dot:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+  }
+
+  /* ── Placeholders ───────────────────────────────────── */
+  .pg-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .pg-tone-coral {
+    background: var(--color-coral-light-500, #f7d7c4);
+  }
+  .pg-tone-lavender {
+    background: var(--color-neutral-2-500, #e7e1f3);
+  }
+  .pg-placeholder-label {
+    font-size: clamp(28px, 5vw, 56px);
+    font-weight: 600;
+    color: var(--color-purple-dark-500, #2b1a4a);
+    opacity: 0.55;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pg-track {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  function initGallery(root: HTMLElement) {
+    const track = root.querySelector<HTMLElement>("[data-track]");
+    const slides = Array.from(root.querySelectorAll<HTMLElement>(".pg-slide"));
+    const dots = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-dot]"));
+    const prev = root.querySelector<HTMLButtonElement>("[data-prev]");
+    const next = root.querySelector<HTMLButtonElement>("[data-next]");
+    if (!track || slides.length < 2) return;
+
+    const count = slides.length;
+    const interval = Number(root.style.getPropertyValue("--pg-interval")) || 4500;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let index = 0;
+    let timer: ReturnType<typeof setInterval> | null = null;
+
+    const render = () => {
+      track.style.transform = `translateX(${-index * 100}%)`;
+      dots.forEach((d, i) => {
+        const active = i === index;
+        d.classList.toggle("is-active", active);
+        d.setAttribute("aria-selected", active ? "true" : "false");
+      });
+    };
+
+    const goTo = (i: number) => {
+      index = (i + count) % count;
+      render();
+    };
+
+    const start = () => {
+      if (reduced || timer) return;
+      timer = setInterval(() => goTo(index + 1), interval);
+    };
+    const stop = () => {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+    };
+    // Reset the auto-advance clock after a manual interaction.
+    const bump = () => {
+      stop();
+      start();
+    };
+
+    prev?.addEventListener("click", () => {
+      goTo(index - 1);
+      bump();
+    });
+    next?.addEventListener("click", () => {
+      goTo(index + 1);
+      bump();
+    });
+    dots.forEach((d) =>
+      d.addEventListener("click", () => {
+        goTo(Number(d.dataset.index));
+        bump();
+      }),
+    );
+
+    // Pause on hover / focus.
+    root.addEventListener("mouseenter", stop);
+    root.addEventListener("mouseleave", start);
+    root.addEventListener("focusin", stop);
+    root.addEventListener("focusout", start);
+
+    render();
+    start();
+  }
+
+  document.querySelectorAll<HTMLElement>("[data-gallery]").forEach(initGallery);
+</script>

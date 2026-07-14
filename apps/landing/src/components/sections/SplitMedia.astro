@@ -10,17 +10,20 @@ interface Props {
   panelSide?: "left" | "right";
   /** large variant increases height */
   large?: boolean;
+  /** set false to hide the CTA button */
+  showCta?: boolean;
 }
 
 const {
   heading = "Locally rooted, globally connected",
   subhead = "Our regional teams guide our work, shape our strategies, and lead us to solutions to global poverty.",
-  ctaLabel = "Explore the map",
+  ctaLabel = "Learn More",
   ctaHref = "/project",
   mediaSrc,
   mediaAlt = "",
   panelSide = "right",
   large = false,
+  showCta = true,
 } = Astro.props;
 
 const heightMd = large ? "md:h-[691px]" : "md:h-[491px]";
@@ -48,12 +51,14 @@ const rowDir = panelSide === "left" ? "md:flex-row-reverse" : "md:flex-row";
         <h2 class="font-semibold text-3xl md:text-4xl leading-[1.18] max-w-[560px]">{heading}</h2>
         <p class="font-normal text-lg md:text-xl leading-[1.42] max-w-[450px]">{subhead}</p>
       </div>
-      <a
-        href={ctaHref}
-        class="inline-flex items-center gap-2 border-[1.5px] border-white rounded-full px-6 py-3 text-base font-semibold text-white hover:bg-white hover:text-purple-dark-500 transition-colors w-fit"
-      >
-        {ctaLabel}
-      </a>
+      {showCta && (
+        <a
+          href={ctaHref}
+          class="inline-flex items-center gap-2 border-[1.5px] border-white rounded-full px-6 py-3 text-base font-semibold text-white hover:bg-white hover:text-purple-dark-500 transition-colors w-fit"
+        >
+          {ctaLabel}
+        </a>
+      )}
     </div>
   </div>
 </section>

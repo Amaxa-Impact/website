@@ -36,35 +36,39 @@ import ContactForm from "@/components/sections/ContactForm.astro";
 
     <PhotoBanner
       eyebrow="FEATURED PROGRAM"
-      heading="Young Delegates Program"
+      heading="Young Delegates Liberia: Model UN with Scholarship Prizes for Liberian students"
       body="Raima, a 16 year old from Georgia, USA, transformed her passion for Model UN into a tool to educate and empower students in Monrovia, Liberia with public speaking, debate, and research skills."
-      buttonLabel="Explore the project"
-      buttonHref="/project/cross-border-access"
+      imageSrc="/images/programs/young-delegates-hero-image.jpg"
+      imageAlt="Young Delegates Model UN conference in Liberia"
+      buttonLabel="Learn More"
+      buttonHref="/project/cross-border-access/young-delegates"
     />
 
     <FeatureSlider3
       client:load
       heading="Cross-Border Access Portfolio: each founded by an ámaxa student"
       items={[
-        { id: "1", title: "Young Delegates", subtitle: "Public speaking & research-based conferences, with scholarship prizes", href: "#" },
-        { id: "2", title: "Early Financial Literacy", subtitle: "Equipping young students with financial skills through games & crafts", href: "#" },
-        { id: "3", title: "Book Club: Psychology 101", subtitle: "Discussing & sharing books and articles about psychology to curious minds", href: "#" },
-        { id: "4", title: "Connect through Creativity", subtitle: "Form friendships with global peers through weekly creativity activities", href: "#" },
-        { id: "5", title: "Flora & Fauna Documentary", subtitle: "Create a documentary about the nature in each of your communities", href: "#" },
-        { id: "6", title: "Cook Together", subtitle: "Try out a recipe from a global peer each week & assemble a custom cookbook", href: "#" },
+        { id: "1", title: "Young Delegates", subtitle: "Public speaking & research-based conferences, with scholarship prizes", href: "/project/cross-border-access/young-delegates", imageSrc: "/images/programs/young-delegates-hero-image.jpg" },
+        { id: "2", title: "Early Financial Literacy", subtitle: "Equipping young students with financial skills through games & crafts", href: "#", imageSrc: "/images/programs/portfolio/financial-literacy.png" },
+        { id: "3", title: "Book Club: Psychology 101", subtitle: "Discussing & sharing books and articles about psychology to curious minds", href: "#", imageSrc: "/images/programs/portfolio/psychology.png" },
+        { id: "4", title: "Connect through Creativity", subtitle: "Form friendships with global peers through weekly creativity activities", href: "#", imageSrc: "/images/programs/portfolio/connect-creativity.png" },
+        { id: "5", title: "Flora & Fauna Documentary", subtitle: "Create a documentary about the nature in each of your communities", href: "#", imageSrc: "/images/programs/portfolio/flora-fauna.png" },
+        { id: "6", title: "Cook Together", subtitle: "Try out a recipe from a global peer each week & assemble a custom cookbook", href: "#", imageSrc: "/images/programs/portfolio/cook-together.png" },
       ]}
     />
 
     <StatementMedia
       statement="Are you an education leader?"
       body="Bring students from 52+ countries to your classrooms. Our programs cater to ages 12-21 and are fully customized to your students' needs."
+      imageSrc="/images/programs/partner-with-us.png"
+      imageAlt="Partner with Ámaxa"
       ctaLabel="Partner with us →"
-      learnMoreHref="/contact-us"
+      learnMoreHref="/programs/partnerships"
     />
 
-    <NewsletterCta client:load />
-
     <ContactForm />
+
+    <NewsletterCta client:load />
 
   </main>
 </AppLayout>

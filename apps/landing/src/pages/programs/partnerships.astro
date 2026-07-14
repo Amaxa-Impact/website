@@ -1,0 +1,49 @@
+---
+import AppLayout from "@/layouts/app-layout.astro";
+import IntroMedia from "@/components/sections/IntroMedia.astro";
+import StatementDark from "@/components/sections/StatementDark.astro";
+import StatementMedia from "@/components/sections/StatementMedia.astro";
+import { NewsletterCta } from "@/components/sections/NewsletterCta";
+import ContactForm from "@/components/sections/ContactForm.astro";
+---
+
+<AppLayout
+  seo={{
+    title: "Ámaxa Partnerships",
+    description: "Ámaxa Partnerships — for professionals & institutions. Utilize your networks & skills to make a scaled impact on ámaxa projects.",
+    image: "https://b47pkz22xs.ufs.sh/f/OxFTTzjZGToOLWqVFDnAaWi0jLFr2BdSClosPxeIvEGUbwKy",
+    type: "website",
+    canonicalURL: "https://www.amaxaimpact.org/programs/partnerships",
+    keywords: ["amaxa", "partnerships", "professionals", "institutions", "impact"],
+    noIndex: false,
+  }}
+>
+  <main>
+
+    <IntroMedia
+      heading="Partnerships — for professionals & institutions"
+      subhead="Utilizing networks & skill-building to make a scaled impact on ámaxa projects."
+      imageSrc="/images/programs/partnerships.png"
+      imageAlt="Ámaxa Partnerships"
+    />
+
+    <StatementDark
+      statement="Partnership opportunities for individuals, companies, schools & beyond"
+      body="Digital transformation is shaping a new “future of work” for individuals and small enterprises alike. It is a critical moment to strengthen market systems and harness digital tools to ensure that everyone — from wage earners and smallholder farmers to gig workers and micro-entrepreneurs — can participate and thrive."
+    />
+
+    <StatementMedia
+      statement="Are you an education leader?"
+      body="Bring students from 52+ countries to your classrooms. Our programs cater to ages 12-21 and are fully customized to your students' needs."
+      imageSrc="/images/programs/partner-with-us-2.png"
+      imageAlt="Partner with Ámaxa"
+      ctaLabel="Partner with us →"
+      learnMoreHref="/contact-us"
+    />
+
+    <ContactForm />
+
+    <NewsletterCta client:load />
+
+  </main>
+</AppLayout>

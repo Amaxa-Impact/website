@@ -1,0 +1,100 @@
+---
+import AppLayout from "@/layouts/app-layout.astro";
+import IntroMedia from "@/components/sections/IntroMedia.astro";
+import StatementBar from "@/components/sections/StatementBar.astro";
+import { NewsletterCta } from "@/components/sections/NewsletterCta";
+import ContactForm from "@/components/sections/ContactForm.astro";
+
+const featuredBody = `Three students at University of Colorado were part of the Spring 2026 inaugural cohort of Ámaxa Research. They successfully completed research focusing on Sudanese music and dance, literature, and traditional perfumery.
+
+Ámaxa Research seeks to give undergraduates the opportunity to gain meaningful research experience that pushes forward the mission of our partnerships & initiatives. Their work directly supports ámaxa partner projects and initiatives by producing actionable research that informs decision-making and implementation.
+
+Through their three month intensive research internship, Ámaxa Research students produced a well-cited, robust essay that fulfills the mission of the Sudanese research initiative: to contribute accessible, well-sourced information about Sudan, contributing to a movement of ensuring Sudan is more understood as a country and people across the world.
+
+This research sets the foundation for the next steps of partnering with individuals and organizations to share this information with a wider audience, through creative campaigns, projects, data visualizations, and more. Connect with us today to get involved.`;
+
+const abstract = `This paper examines how contemporary Sudanese diaspora communities have cultivated resilience and maintained their cultural identities in the face of displacement. While Sudan's history is frequently defined by conflict, civil war, and forced relocation, these narratives often obscure the enduring traditions carried by Sudanese people far beyond the nation's borders. Shifting the focus from crisis to cultural perseverance, this paper explores how Sudanese migrants preserve their heritage and construct a "portable homeland" across the world. By examining music and dance, literature, and traditional perfumery, this research highlights how these practices function as forms of collective knowledge, communal healing, and resistance against cultural erasure. Ultimately, Sudanese identity is not diminished by displacement, but instead it is adapted and restrengthened through the sensory, auditory, and narrative traditions that bridge the physical distance between the diaspora and their homeland.`;
+---
+
+<AppLayout
+  seo={{
+    title: "Stories of Sudan — Ámaxa Research",
+    description: "Ámaxa Research students contribute accessible, well-sourced information about Sudan to raise awareness of Sudanese culture around the globe.",
+    image: "https://b47pkz22xs.ufs.sh/f/OxFTTzjZGToOTXSksZrPvV4ygRa57DXtJwU9SfhC1qxONmlA",
+    type: "website",
+    canonicalURL: "https://www.amaxaimpact.org/programs/research/sudan",
+    keywords: ["amaxa", "research", "sudan", "culture", "diaspora"],
+    noIndex: false,
+  }}
+>
+  <main>
+
+    <IntroMedia
+      heading="Stories of Sudan"
+      subhead="Contributing accessible, well-sourced information about Sudan in order to raise awareness of Sudanese culture."
+      imageSrc="/images/programs/research.png"
+      imageAlt="Stories of Sudan research"
+    />
+
+    <StatementBar
+      eyebrow="RESEARCH OBJECTIVE"
+      statement="Ámaxa Research students complete robust research that highlights the culture and people of Sudan in order to increase knowledge of Sudan around the globe."
+    />
+
+    <!-- Featured project -->
+    <section class="bg-neutral-1-500 w-full px-12 py-16 flex flex-col gap-6">
+      <p class="font-semibold text-sm text-coral-dark-500 tracking-[1.12px]">FEATURED PROJECT</p>
+      <h2 class="font-semibold text-[40px] text-purple-dark-500 leading-[1.15] max-w-[900px]">
+        How CU Boulder Students Brought Awareness about Sudan to Wider Audiences
+      </h2>
+      <div class="max-w-[900px] text-lg text-purple-dark-500/85 leading-[1.65] whitespace-pre-line">
+        {featuredBody}
+      </div>
+      <a
+        href="/contact-us"
+        class="mt-2 inline-flex items-center gap-2 bg-purple-dark-500 hover:bg-purple-dark-600 text-white text-base font-semibold px-6 py-3 rounded-full transition-colors w-fit"
+      >
+        Get involved →
+      </a>
+    </section>
+
+    <!-- Abstract -->
+    <section class="bg-neutral-2-500 w-full px-12 py-16 flex flex-col gap-6">
+      <p class="font-semibold text-sm text-purple-dark-500 tracking-[1.12px]">COHORT 1: ABSTRACT</p>
+      <div class="bg-purple-dark-500/20 h-px w-full"></div>
+      <p class="max-w-[1000px] text-lg text-purple-dark-500/85 leading-[1.7]">
+        {abstract}
+      </p>
+    </section>
+
+    <section class="bg-purple-dark-500 w-full px-12 py-24 flex flex-col gap-7 items-center text-center">
+      <h2 class="font-semibold text-[40px] text-white max-w-[820px] leading-[1.2]">
+        Ready to make an impact?
+      </h2>
+      <p class="text-white/80 text-lg max-w-[620px]">Join hundreds of change makers from around the world who are creating meaningful change through Ámaxa programs.</p>
+      <div class="flex flex-wrap gap-4 justify-center">
+        <a
+          href="https://airtable.com/appPR9mkslbn3U8YZ/shrHHUtRzK4DqKt3F"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 bg-coral-dark-500 hover:bg-coral-dark-600 text-white text-base font-semibold px-6 py-3 rounded-full transition-colors"
+        >
+          Apply Now ↗
+        </a>
+        <a
+          href="https://collect.crowded.me/collection/8d1ba838-a38e-4803-b155-d102b7b131e4"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 border-[1.5px] border-white hover:bg-white hover:text-purple-dark-500 text-white text-base font-semibold px-6 py-3 rounded-full transition-colors"
+        >
+          Support Us
+        </a>
+      </div>
+    </section>
+
+    <ContactForm />
+
+    <NewsletterCta client:load />
+
+  </main>
+</AppLayout>

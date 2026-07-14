@@ -10,7 +10,6 @@ interface FeatureSlide {
 
 interface ProjectFeatureSliderProps {
   heading?: string;
-  subhead?: string;
   slides?: FeatureSlide[];
 }
 
@@ -23,7 +22,6 @@ const defaultSlides: FeatureSlide[] = [
 
 export function ProjectFeatureSlider({
   heading = "Past projects with this partner",
-  subhead = "Every project we take on is a chance to learn and share — explore more of the work created alongside our partners.",
   slides = defaultSlides,
 }: ProjectFeatureSliderProps) {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -38,8 +36,7 @@ export function ProjectFeatureSlider({
     <section className="bg-purple-dark-500 w-full px-12 py-20 flex flex-col gap-12 overflow-hidden">
       {/* Header */}
       <div className="flex items-start justify-between gap-8">
-        <h2 className="font-semibold text-[40px] text-white whitespace-nowrap">{heading}</h2>
-        <p className="font-normal text-lg text-white max-w-[560px]">{subhead}</p>
+        <h2 className="font-semibold text-[40px] text-white">{heading}</h2>
       </div>
 
       {/* Slider track */}

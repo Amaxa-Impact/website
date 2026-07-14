@@ -1,0 +1,110 @@
+---
+import AppLayout from "@/layouts/app-layout.astro";
+import IntroMedia from "@/components/sections/IntroMedia.astro";
+import StatementBar from "@/components/sections/StatementBar.astro";
+import Quote from "@/components/sections/Quote.astro";
+import PhotoGallery from "@/components/sections/PhotoGallery.astro";
+import { NewsletterCta } from "@/components/sections/NewsletterCta";
+import ContactForm from "@/components/sections/ContactForm.astro";
+
+const galleryImages = Array.from({ length: 12 }, (_, i) => ({
+  src: `/images/programs/young-delegates/${String(i + 1).padStart(2, "0")}.jpg`,
+  alt: "Young Delegates conference",
+}));
+
+const featuredBodyTop = `Raima, a current high school student in Georgia, USA, has spearheaded and successfully implemented the pilot of ámaxa's new Cross-Border Access Program, a student-led international virtual exchange program, bringing extracurricular learning to students without access around the globe. Through this new program, ámaxa students design and implement a custom cross-cultural, international virtual exchange program with a community partner.
+
+In May, Raima planned, led, and delivered an incredible Model UN conference for 30 students in Monrovia, Liberia, through our partner, Educate Children Liberia. With the incredible support of our Educate Children Partnership Lead, Sahr Felle, coordinating on the ground, Raima led 6 virtual workshops in the weeks before the conference and then presided over the conference itself, which lasted about 8 hours over one day.`;
+
+const featuredBodyBottom = `To provide the full organization, planning, and training for an education program from across the world is no easy task, and Raima rose to each challenge. She woke up at all hours to equip students with the knowledge to succeed. For the conference itself, the students were assembled in one school hall, and Raima spoke via a monitor setup so all the students could see her, and students used microphones so she was able to speak to them. The event was a resounding success, thanks to Raima's passion and determination and Sahr's perseverance and organization.
+
+Ámaxa provided the funding for Starlink internet to ensure a reliable connection, as well as food, drinks, and transportation costs. We are honored to have awarded $900 in scholarship funding for winners of the conference, thanks to the fundraising conducted by University of Colorado Boulder students through a partnership between ámaxa and the professional development fraternity AKPsi.
+
+Raima is already hard at work to expand the program to more students, in Liberia and beyond. While this conference focused on renewable energy policy in Liberia, UN conference topics can range from humanitarian issues and technology to global health, economics, and beyond, so the program can also be customized based on the unique interests of the students.`;
+---
+
+<AppLayout
+  seo={{
+    title: "Young Delegates — Cross-Border Access — Ámaxa",
+    description: "The Young Delegates Cross-Border Access Program grants access to public speaking, writing, and research skills to global students through hybrid Model UN & other conferences.",
+    image: "https://b47pkz22xs.ufs.sh/f/OxFTTzjZGToOexh9L5yvrS3NH5LD0fGBOXwFydpiVbYzJMa1",
+    type: "website",
+    canonicalURL: "https://www.amaxaimpact.org/project/cross-border-access/young-delegates",
+    keywords: ["amaxa", "young delegates", "model un", "cross-border access", "liberia"],
+    noIndex: false,
+  }}
+>
+  <main>
+
+    <IntroMedia
+      heading="Young Delegates"
+      subhead="Public speaking & research-based conferences, with scholarship prizes."
+      imageSrc="/images/programs/young-delegates-hero-image.jpg"
+      imageAlt="Young Delegates program"
+    />
+
+    <StatementBar
+      eyebrow="MISSION"
+      statement="The Young Delegates Cross-Border Access Program, founded by Raima (Georgia, USA), grants access to public speaking, writing, and research skills to global students through hybrid Model UN & other conferences."
+    />
+
+    <!-- Featured project — narrative (part 1) -->
+    <section class="bg-neutral-1-500 w-full px-6 py-12 md:px-16 md:py-16 flex flex-col gap-6">
+      <p class="text-xl md:text-2xl font-normal text-purple-dark-500">FEATURED PROJECT</p>
+      <h2 class="text-[32px] md:text-[44px] font-bold text-purple-dark-500 leading-[1.12] whitespace-pre-line max-w-[1312px]">Young Delegates Liberia:
+Model UN with Scholarship Prizes for Liberian students</h2>
+      <div class="max-w-[1312px] text-lg md:text-2xl font-normal text-purple-dark-500 leading-[1.5] whitespace-pre-line">
+        {featuredBodyTop}
+      </div>
+    </section>
+
+    <Quote
+      quote="I started this program to expand the incredible opportunities Model United Nations gave me in high school to students all across the world. Model UN is a conference simulation where students represent United Nations delegates, debating global issues and drafting resolutions to address current international affairs."
+      attribution="Raima, 16, Georgia USA"
+    />
+
+    <!-- Photo gallery — full-width clickable carousel (auto-scroll, hover-pause, arrows, dots) -->
+    <PhotoGallery
+      ariaLabel="Young Delegates conference photos"
+      height="clamp(300px, 33vw, 470px)"
+      images={galleryImages}
+    />
+
+    <!-- Featured project — narrative (part 2) -->
+    <section class="bg-neutral-1-500 w-full px-6 py-12 md:px-16 md:py-16 flex flex-col gap-6">
+      <div class="max-w-[1312px] text-lg md:text-2xl font-normal text-purple-dark-500 leading-[1.5] whitespace-pre-line">
+        {featuredBodyBottom}
+      </div>
+    </section>
+
+    <section class="bg-purple-dark-500 w-full px-12 py-24 flex flex-col gap-7 items-center text-center">
+      <h2 class="font-semibold text-[40px] text-white max-w-[820px] leading-[1.2]">
+        Ready to make an impact?
+      </h2>
+      <p class="text-white/80 text-lg max-w-[620px]">Join hundreds of change makers from around the world who are creating meaningful change through Ámaxa programs.</p>
+      <div class="flex flex-wrap gap-4 justify-center">
+        <a
+          href="https://airtable.com/appPR9mkslbn3U8YZ/shrHHUtRzK4DqKt3F"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 bg-coral-dark-500 hover:bg-coral-dark-600 text-white text-base font-semibold px-6 py-3 rounded-full transition-colors"
+        >
+          Apply Now ↗
+        </a>
+        <a
+          href="https://collect.crowded.me/collection/8d1ba838-a38e-4803-b155-d102b7b131e4"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 border-[1.5px] border-white hover:bg-white hover:text-purple-dark-500 text-white text-base font-semibold px-6 py-3 rounded-full transition-colors"
+        >
+          Support Us
+        </a>
+      </div>
+    </section>
+
+    <ContactForm />
+
+    <NewsletterCta client:load />
+
+  </main>
+</AppLayout>
