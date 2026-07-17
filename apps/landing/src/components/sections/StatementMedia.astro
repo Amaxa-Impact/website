@@ -10,9 +10,9 @@ interface Props {
 const { statement, body, imageSrc, imageAlt = "", learnMoreHref, ctaLabel = "Learn more →" } = Astro.props;
 ---
 
-<section class="bg-white w-full py-20 px-12 flex items-center gap-20">
+<section class="bg-white w-full py-12 px-6 md:py-20 md:px-12 flex flex-col items-center gap-10 lg:flex-row lg:gap-20">
   <!-- Left: image placeholder -->
-  <div class="shrink-0 w-[800px] h-[600px] rounded-[56px] bg-neutral-2-500 border-[5px] border-white overflow-hidden">
+  <div class="shrink-0 w-full max-w-[800px] aspect-[4/3] rounded-3xl border-2 bg-neutral-2-500 border-white overflow-hidden md:rounded-[56px] md:border-[5px] lg:w-[800px] lg:h-[600px] lg:aspect-auto">
     {imageSrc && (
       <img src={imageSrc} alt={imageAlt} class="w-full h-full object-cover" />
     )}
@@ -20,7 +20,7 @@ const { statement, body, imageSrc, imageAlt = "", learnMoreHref, ctaLabel = "Lea
 
   <!-- Right: text -->
   <div class="flex flex-col gap-6 max-w-[440px]">
-    <p class="text-[30px] font-normal text-purple-dark-500 leading-[1.4]">{statement}</p>
+    <p class="text-xl md:text-[30px] font-normal text-purple-dark-500 leading-[1.4]">{statement}</p>
     {body && (
       <p class="text-base text-purple-dark-400 leading-[1.6]">{body}</p>
     )}

@@ -22,9 +22,9 @@ export function PartnerFeatureSlider({ heading = "Ámaxa Community Partners", it
   const visible = items.slice(page * perPage, page * perPage + perPage);
 
   return (
-    <div className="bg-purple-dark-500 w-full px-12 py-[100px] overflow-hidden">
+    <div className="bg-purple-dark-500 w-full px-6 md:px-12 py-[100px] overflow-hidden">
       <div className="flex flex-col gap-12">
-        <h2 className="text-[40px] font-semibold text-white">{heading}</h2>
+        <h2 className="text-2xl md:text-3xl lg:text-[40px] font-semibold text-white">{heading}</h2>
 
         <div className="flex gap-8">
           {visible.map((item) => (
@@ -46,7 +46,7 @@ export function PartnerFeatureSlider({ heading = "Ámaxa Community Partners", it
 
               {/* Info */}
               <div className="flex flex-col gap-1">
-                <p className="text-[30px] font-semibold text-white leading-normal">{item.name}</p>
+                <p className="text-xl md:text-[30px] font-semibold text-white leading-normal">{item.name}</p>
                 {item.location && (
                   <p className="text-2xl text-white tracking-[-0.02em]">{item.location}</p>
                 )}

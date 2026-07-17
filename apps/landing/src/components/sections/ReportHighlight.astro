@@ -19,10 +19,10 @@ const {
 } = Astro.props;
 ---
 
-<section class="bg-neutral-1-500 w-full py-12 px-12">
-  <div class="flex gap-[72px] items-center">
+<section class="bg-neutral-1-500 w-full py-12 px-6 md:px-12">
+  <div class="flex flex-col gap-8 items-center lg:flex-row lg:gap-[72px]">
     <!-- Left: large image -->
-    <div class="shrink-0 w-[814px] h-[530px] rounded-[32px] bg-neutral-2-500 border-[5px] border-white overflow-hidden">
+    <div class="shrink-0 w-full max-w-[814px] aspect-[814/530] rounded-[32px] bg-neutral-2-500 border-2 border-white overflow-hidden md:border-[5px] lg:w-[814px] lg:h-[530px] lg:aspect-auto">
       {imageSrc && (
         <img src={imageSrc} alt={imageAlt} class="w-full h-full object-cover" />
       )}
@@ -37,7 +37,7 @@ const {
         <p class="text-base font-semibold">{eyebrow}</p>
       </div>
 
-      <h2 class="text-[36px] font-semibold text-purple-dark-500 leading-[1.1]">{title}</h2>
+      <h2 class="text-2xl md:text-[36px] font-semibold text-purple-dark-500 leading-[1.1]">{title}</h2>
       <p class="text-base text-purple-dark-400 leading-[1.5]">{body}</p>
 
       <a

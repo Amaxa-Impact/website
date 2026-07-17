@@ -30,7 +30,7 @@ export function SiteFooter() {
         <div className="flex flex-col md:flex-row items-start justify-between gap-10">
           {/* Brand */}
           <div className="flex flex-col gap-4 items-center">
-            <span className="font-bold text-5xl text-background leading-none">ámaxa</span>
+            <span className="font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-background leading-none">ámaxa</span>
             <p className="font-normal text-base text-background text-center w-80">
               Empowering the next generation of changemakers
             </p>

@@ -23,11 +23,11 @@ export function FeatureSlider2({ heading = "Our Projects", subhead, items, perPa
   const visible = items.slice(page * perPage, page * perPage + perPage);
 
   return (
-    <div className="bg-purple-dark-500 w-full px-12 py-[100px] overflow-hidden">
+    <div className="bg-purple-dark-500 w-full px-6 md:px-12 py-[100px] overflow-hidden">
       <div className="flex flex-col gap-10">
         {/* Header */}
         <div className="flex flex-col gap-3">
-          <h2 className="text-[40px] font-semibold text-white leading-tight">{heading}</h2>
+          <h2 className="text-2xl md:text-3xl lg:text-[40px] font-semibold text-white leading-tight">{heading}</h2>
           {subhead && <p className="text-xl text-white/80 max-w-[1056px] leading-relaxed">{subhead}</p>}
         </div>
 
