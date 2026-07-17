@@ -1,8 +1,11 @@
-export type { ContactFormData, FormType } from "./types";
-export { contactFormSchema, formTypeLabels } from "./types";
+export type { ContactFormData, FormType, NewsletterData } from "./types";
+export { contactFormSchema, formTypeLabels, newsletterSchema } from "./types";
 
 export { sendContactEmail } from "./send-email";
 export type { SendEmailOptions, SendEmailResult } from "./send-email";
+
+export { subscribeToNewsletter } from "./subscribe";
+export type { SubscribeOptions, SubscribeResult } from "./subscribe";
 
 export { ContactEmail, generateEmailText } from "./templates/contact-email";
 

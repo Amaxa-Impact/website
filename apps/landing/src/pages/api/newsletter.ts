@@ -1,11 +1,7 @@
 import type { APIRoute } from "astro";
 import { type } from "arktype";
 
-import {
-  contactFormSchema,
-  RESEND_FROM_EMAIL,
-  sendContactEmail,
-} from "@amaxa/resend";
+import { newsletterSchema, subscribeToNewsletter } from "@amaxa/resend";
 
 // The site builds static by default; without this the route ships as a static
 // endpoint and POSTs 404 in production instead of running as a function.
@@ -14,32 +10,30 @@ export const prerender = false;
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body: unknown = await request.json();
-    const data = contactFormSchema(body);
+    const data = newsletterSchema(body);
 
-    // Arktype error handling
     if (data instanceof type.errors) {
-      return new Response(JSON.stringify({ error: data }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
-
-    const validatedData = data;
-    const recipientEmail = "lauren@amaxaimpact.org";
-
-    const resultEmail = await sendContactEmail({
-      formData: validatedData,
-      recipientEmail,
-      fromEmail: RESEND_FROM_EMAIL,
-    });
-
-    if (!resultEmail.success) {
       return new Response(
         JSON.stringify({
           success: false,
-          message: "Failed to send message. Please try again.",
-          error: resultEmail.error,
-          referenceId: resultEmail.referenceId,
+          message: "Please enter a valid email address.",
+        }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        },
+      );
+    }
+
+    const result = await subscribeToNewsletter({ email: data.email });
+
+    if (!result.success) {
+      console.error("Newsletter signup failed:", result.error);
+      return new Response(
+        JSON.stringify({
+          success: false,
+          message: "Couldn't subscribe you. Please try again.",
+          referenceId: result.referenceId,
         }),
         {
           status: 500,
@@ -51,9 +45,8 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response(
       JSON.stringify({
         success: true,
-        message: "Your message has been sent successfully!",
-        referenceId: resultEmail.referenceId,
-        calendarLink: resultEmail.calendarLink,
+        message: "Thanks for subscribing!",
+        referenceId: result.referenceId,
       }),
       {
         status: 200,
@@ -61,11 +54,11 @@ export const POST: APIRoute = async ({ request }) => {
       },
     );
   } catch (error) {
-    console.error("Error processing contact form:", error);
+    console.error("Error processing newsletter signup:", error);
     return new Response(
       JSON.stringify({
         success: false,
-        error: "Failed to send message. Please try again.",
+        message: "Couldn't subscribe you. Please try again.",
       }),
       {
         status: 500,
