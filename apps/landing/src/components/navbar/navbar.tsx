@@ -128,7 +128,7 @@ export function Navbar() {
       </nav>
 
       {/* Mobile Nav */}
-      <header className="flex h-[70px] items-center justify-between px-6 md:hidden bg-[#100b1d]">
+      <header className="flex h-[70px] items-center justify-between px-6 md:hidden bg-[#100b1d] text-white">
         <a href="/">
           <img src="/images/logo/amaxa-logo.png" alt="ámaxa" className="h-[28px] w-auto" />
         </a>
