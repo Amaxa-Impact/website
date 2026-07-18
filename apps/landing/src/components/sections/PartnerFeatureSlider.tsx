@@ -26,12 +26,12 @@ export function PartnerFeatureSlider({ heading = "Ámaxa Community Partners", it
       <div className="flex flex-col gap-12">
         <h2 className="text-2xl md:text-3xl lg:text-[40px] font-semibold text-white">{heading}</h2>
 
-        <div className="flex gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {visible.map((item) => (
             <a
               key={item.id}
               href={item.href ?? "#"}
-              className="group flex flex-col gap-6 flex-1 min-w-0"
+              className="group flex flex-col gap-6 min-w-0"
             >
               {/* Image placeholder */}
               <div className="w-full h-[440px] rounded-[56px] bg-neutral-2-500 border-[5px] border-white overflow-hidden">
