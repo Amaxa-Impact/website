@@ -25,8 +25,8 @@ export function Faq({ title = "Frequently Asked Questions", items = defaultItems
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section className="bg-neutral-1-500 w-full px-12 py-24 flex flex-col gap-10">
-      <h2 className="font-semibold text-[40px] text-foreground">{title}</h2>
+    <section className="bg-neutral-1-500 w-full px-6 md:px-12 py-24 flex flex-col gap-10">
+      <h2 className="font-semibold text-2xl md:text-3xl lg:text-[40px] text-foreground">{title}</h2>
       <div className="flex flex-col w-full">
         {items.map((item, i) => (
           <div

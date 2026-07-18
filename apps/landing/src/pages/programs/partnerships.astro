@@ -1,20 +1,21 @@
 ---
 import AppLayout from "@/layouts/app-layout.astro";
 import IntroMedia from "@/components/sections/IntroMedia.astro";
-import StatementDark from "@/components/sections/StatementDark.astro";
-import StatementMedia from "@/components/sections/StatementMedia.astro";
-import { NewsletterCta } from "@/components/sections/NewsletterCta";
+import ThreeUp from "@/components/sections/ThreeUp.astro";
 import ContactForm from "@/components/sections/ContactForm.astro";
+import SplitMedia from "@/components/sections/SplitMedia.astro";
+import { ProjectFeatureSlider } from "@/components/sections/ProjectFeatureSlider";
+import { NewsletterCta } from "@/components/sections/NewsletterCta";
 ---
 
 <AppLayout
   seo={{
     title: "Ámaxa Partnerships",
-    description: "Ámaxa Partnerships — for professionals & institutions. Utilize your networks & skills to make a scaled impact on ámaxa projects.",
+    description: "Ámaxa Partnerships — for professionals & institutions. Global projects, real-world skills, and cross-cultural experiences for your students, company, or community.",
     image: "https://b47pkz22xs.ufs.sh/f/OxFTTzjZGToOLWqVFDnAaWi0jLFr2BdSClosPxeIvEGUbwKy",
     type: "website",
     canonicalURL: "https://www.amaxaimpact.org/programs/partnerships",
-    keywords: ["amaxa", "partnerships", "professionals", "institutions", "impact"],
+    keywords: ["amaxa", "partnerships", "professionals", "institutions", "schools", "impact"],
     noIndex: false,
   }}
 >
@@ -22,26 +23,80 @@ import ContactForm from "@/components/sections/ContactForm.astro";
 
     <IntroMedia
       heading="Partnerships — for professionals & institutions"
-      subhead="Utilizing networks & skill-building to make a scaled impact on ámaxa projects."
+      subhead="Global projects, real-world skills, and cross-cultural experiences for your students, company, or community."
       imageSrc="/images/programs/partnerships.png"
       imageAlt="Ámaxa Partnerships"
     />
 
-    <StatementDark
-      statement="Partnership opportunities for individuals, companies, schools & beyond"
-      body="Digital transformation is shaping a new “future of work” for individuals and small enterprises alike. It is a critical moment to strengthen market systems and harness digital tools to ensure that everyone — from wage earners and smallholder farmers to gig workers and micro-entrepreneurs — can participate and thrive."
+    <ThreeUp
+      heading="Are you an education leader? Connect your students to the world through ámaxa."
+      items={[
+        {
+          imageSrc: "/images/intro-media/tree2.png",
+          title: "Global Collaboration",
+          body: "Give your students the opportunity to collaborate with peers from 48+ countries, working on real-world projects with nonprofits in Palestine, Uganda, and Liberia.",
+        },
+        {
+          imageSrc: "/images/programs/cohorts.png",
+          title: "100% Remote & Accessible",
+          body: "Accessible to all students with no additional burden on your staff — we provide trained coaches and a proven 3-month curriculum.",
+        },
+        {
+          imageSrc: "/images/programs/young-delegates-hero-image.jpg",
+          title: "Real-World Impact",
+          body: "Students work on meaningful projects that create tangible change, building portfolios that showcase leadership and empathy.",
+        },
+      ]}
     />
 
-    <StatementMedia
-      statement="Are you an education leader?"
-      body="Bring students from 52+ countries to your classrooms. Our programs cater to ages 12-21 and are fully customized to your students' needs."
-      imageSrc="/images/programs/partner-with-us-2.png"
-      imageAlt="Partner with Ámaxa"
-      ctaLabel="Partner with us →"
-      learnMoreHref="/contact-us"
+    <ContactForm
+      heading="Partnership Queries"
+      body={`If you believe your school, company, or institution aligns with our mission, reach out through the form below.
+
+Alternatively, reach out directly to lauren@amaxaimpact.org.`}
     />
 
-    <ContactForm />
+    <SplitMedia
+      heading="The Cross-Border Access Program"
+      subhead="A student-led international virtual exchange program, bringing extracurricular learning to students without access around the globe."
+      ctaLabel="Learn More"
+      ctaHref="/project/cross-border-access"
+      mediaSrc="/images/programs/cross-border-access.png"
+      mediaAlt="Cross-Border Access Program"
+      panelSide="left"
+      large={true}
+    />
+
+    <ProjectFeatureSlider
+      client:load
+      heading="Stories of Our Impact"
+      slides={[
+        {
+          title: "How Isabella and Zobia's Love for Music Changed Lives in Gaza",
+          ctaLabel: "Read the story",
+          ctaHref: "/stories/isabella-and-zobia-music-gaza",
+          imageSrc: "https://i.vimeocdn.com/video/1998508960-e287b921ab19e39fddebdc288e869b3b6dc4bf34f76346ffae1a7ad8db086b3e-d_1280x720?region=us",
+        },
+        {
+          title: "How An Nhi Sequestered Carbon by Planting Trees",
+          ctaLabel: "Read the story",
+          ctaHref: "/stories/an-nhi-carbon-trees",
+          imageSrc: "https://i.vimeocdn.com/video/1998318368-6efeb691943e0074562f7674d93fdefea13719b5bbe909efbad5f2b9596dadef-d_1280x720?region=us",
+        },
+        {
+          title: "How Damira and Aamna Launched Hoops4Hope in Qatar to Send Crucial Aid to Gazans",
+          ctaLabel: "Read the story",
+          ctaHref: "/stories/damira-aamna-hoops4hope",
+          imageSrc: "/images/stories/damira-aamna-hoops4hope/hoops4hope.jpg",
+        },
+        {
+          title: "How Panshul, Jad, and Yueqi Founded a Platform for Educational Accessibility",
+          ctaLabel: "Read the story",
+          ctaHref: "/stories/panshul-jad-yueqi-education",
+          imageSrc: "/images/stories/panshul-jad-yueqi-education/accessifyed.png",
+        },
+      ]}
+    />
 
     <NewsletterCta client:load />
 

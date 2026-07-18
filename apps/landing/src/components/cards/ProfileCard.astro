@@ -11,7 +11,7 @@ const { name, role, imageSrc, imageAlt = name, linkedinHref, tone = "coral" } = 
 const bgColor = tone === "lavender" ? "bg-neutral-2-500" : "bg-coral-light-500";
 ---
 
-<div class="relative w-[410px] h-[631px]">
+<div class="relative w-full max-w-[410px] h-[631px] sm:w-[410px]">
   <!-- Photo area -->
   <div class:list={["absolute top-0 left-0 right-0 h-[465px] rounded-[36px] overflow-hidden", bgColor]}>
     {imageSrc && (

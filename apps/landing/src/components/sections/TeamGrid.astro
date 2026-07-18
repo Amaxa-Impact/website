@@ -17,11 +17,11 @@ interface Props {
 const { heading = "Our Team", subhead = "Meet the people behind our work.", members } = Astro.props;
 ---
 
-<section class="bg-white w-full px-14 py-[72px]">
-  <div class="flex flex-col gap-12">
+<section class="bg-white w-full px-6 py-12 md:px-14 md:py-[72px]">
+  <div class="flex flex-col gap-8 md:gap-12">
     <!-- Header -->
     <div class="flex flex-col gap-2">
-      <h2 class="text-[36px] font-semibold text-purple-dark-500">{heading}</h2>
+      <h2 class="text-2xl md:text-[36px] font-semibold text-purple-dark-500">{heading}</h2>
       {subhead && <p class="text-base text-muted-foreground">{subhead}</p>}
     </div>
 
@@ -30,7 +30,7 @@ const { heading = "Our Team", subhead = "Meet the people behind our work.", memb
       {members.map((member) => {
         if (member.joinCard) {
           return (
-            <div class="relative w-[410px] h-[631px] shrink-0 bg-neutral-2-500 rounded-[36px] p-10 flex flex-col justify-between">
+            <div class="relative w-full max-w-[410px] h-[631px] shrink-0 bg-neutral-2-500 rounded-[36px] p-8 flex flex-col justify-between sm:w-[410px] sm:p-10">
               <div class="flex flex-col gap-5">
                 <p class="font-bold text-[22px] text-purple-dark-500 uppercase tracking-[0.04em]">JOIN THE TEAM</p>
                 <p class="text-base text-purple-dark-500 leading-relaxed">
@@ -51,7 +51,7 @@ const { heading = "Our Team", subhead = "Meet the people behind our work.", memb
 
         const bgColor = member.tone === "lavender" ? "bg-neutral-2-500" : "bg-coral-light-500";
         return (
-          <div class="relative w-[410px] h-[631px] shrink-0">
+          <div class="relative w-full max-w-[410px] h-[631px] shrink-0 sm:w-[410px]">
             <!-- Photo area -->
             <div class:list={["absolute top-0 left-0 right-0 h-[465px] rounded-[36px] overflow-hidden", bgColor]}>
               {member.imageSrc && (

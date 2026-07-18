@@ -51,7 +51,7 @@ export function CaseStudySlider({ items }: Props) {
               <span className="text-white">✦</span>
               <p className="text-base font-semibold text-white">{item.eyebrow ?? "Featured Project"}</p>
             </div>
-            <h2 className="text-[48px] font-semibold text-white">{item.title}</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[48px] font-semibold text-white">{item.title}</h2>
             <div className="h-px bg-white/25 w-full" />
             {(item.category || item.location || item.year) && (
               <div className="flex items-center gap-6 flex-wrap">
@@ -61,14 +61,14 @@ export function CaseStudySlider({ items }: Props) {
               </div>
             )}
             {item.summary && (
-              <p className="text-[30px] text-white leading-[1.22]">{item.summary}</p>
+              <p className="text-xl md:text-[30px] text-white leading-[1.22]">{item.summary}</p>
             )}
             <div className="h-px bg-white/25 w-full" />
             {item.stats && (
               <div className="flex gap-8">
                 {item.stats.map((stat, i) => (
                   <div key={i} className="flex flex-col gap-1.5 flex-1">
-                    <p className="text-[36px] font-semibold text-white">{stat.value}</p>
+                    <p className="text-2xl md:text-[36px] font-semibold text-white">{stat.value}</p>
                     <p className="text-sm text-white/85 leading-[1.35]">{stat.label}</p>
                   </div>
                 ))}

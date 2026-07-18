@@ -18,7 +18,7 @@ const {
 } = Astro.props;
 ---
 
-<div class="relative rounded-[56px] overflow-hidden w-[420px] h-[577px] flex flex-col justify-end pb-10 pt-7 px-7">
+<div class="relative rounded-[56px] overflow-hidden w-full max-w-[420px] aspect-[420/577] sm:w-[420px] flex flex-col justify-end pb-10 pt-7 px-7">
   <!-- Card background -->
   <div class="absolute inset-0 bg-neutral-2-500 border-[5px] border-white rounded-[56px]" />
   {imageSrc && (

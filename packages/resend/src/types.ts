@@ -1,15 +1,23 @@
 import { type } from "arktype";
 
+export const newsletterSchema = type({
+  email: "string.email",
+});
+
+export type NewsletterData = typeof newsletterSchema.infer;
+
 export const contactFormSchema = type({
   name: "string",
   email: "string.email",
   message: "string",
   formType: type.enumerated("internship", "high-school", "general", "demo"),
   organization: "string",
-  phone: "string | undefined",
-  preferredDate: "string | undefined",
-  preferredTime: "string | undefined",
-  timezone: "string | undefined",
+  // Optional keys, not "string | undefined": JSON.stringify drops undefined
+  // values, so the client never sends these keys at all.
+  "phone?": "string",
+  "preferredDate?": "string",
+  "preferredTime?": "string",
+  "timezone?": "string",
 });
 
 export type ContactFormData = typeof contactFormSchema.infer;

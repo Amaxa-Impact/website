@@ -23,7 +23,10 @@ const {
 } = Astro.props;
 ---
 
-<section class="hero-slideshow relative h-[720px] overflow-hidden w-full" data-hero-slideshow>
+<section
+  class="hero-slideshow relative h-[80svh] max-h-[720px] min-h-[560px] overflow-hidden w-full md:h-[720px]"
+  data-hero-slideshow
+>
   <!-- Background slideshow -->
   {images.map((src, i) => (
     <img
@@ -43,11 +46,13 @@ const {
   <div class="absolute bottom-0 left-0 right-0 h-1.5 bg-coral-dark-500"></div>
 
   <!-- Content -->
-  <div class="absolute left-20 top-[205px] flex flex-col gap-7 items-start max-w-[680px]">
-    <h1 class="font-semibold text-6xl text-white leading-[1.04] drop-shadow-sm">
+  <div
+    class="absolute inset-x-6 bottom-12 flex flex-col gap-4 items-start max-w-[680px] md:inset-x-auto md:bottom-auto md:left-20 md:top-[205px] md:gap-7"
+  >
+    <h1 class="font-semibold text-[2rem] sm:text-4xl md:text-5xl lg:text-6xl text-white leading-[1.04] drop-shadow-sm">
       {title}
     </h1>
-    <p class="font-normal text-[40px] leading-[1.38] text-white drop-shadow-sm">
+    <p class="font-normal text-base sm:text-lg md:text-2xl lg:text-[40px] leading-[1.38] text-white drop-shadow-sm">
       {subhead}
     </p>
     <a

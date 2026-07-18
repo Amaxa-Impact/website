@@ -22,8 +22,8 @@ export function ProjectSlider({ heading = "Our Projects", items, perPage = 3 }: 
   const visible = items.slice(page * perPage, page * perPage + perPage);
 
   return (
-    <div className="bg-neutral-1-500 w-full px-12 py-10 flex flex-col gap-7">
-      <h2 className="text-[36px] font-semibold text-purple-dark-500">{heading}</h2>
+    <div className="bg-neutral-1-500 w-full px-6 md:px-12 py-10 flex flex-col gap-7">
+      <h2 className="text-2xl md:text-[36px] font-semibold text-purple-dark-500">{heading}</h2>
 
       <div className="grid grid-cols-3 gap-8">
         {visible.map((item) => (
@@ -42,7 +42,7 @@ export function ProjectSlider({ heading = "Our Projects", items, perPage = 3 }: 
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
             <div className="relative z-10 flex flex-col items-end gap-4 w-full">
               <div className="text-white w-full flex flex-col gap-3">
-                <p className="text-[30px] font-bold leading-[1.18]">{item.title}</p>
+                <p className="text-xl md:text-[30px] font-bold leading-[1.18]">{item.title}</p>
                 {item.partner && (
                   <p className="text-[18px] font-semibold tracking-[0.06em]">{item.partner}</p>
                 )}
