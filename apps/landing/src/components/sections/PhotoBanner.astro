@@ -32,15 +32,17 @@ const {
     />
   )}
 
-  <!-- Purple gradient scrim -->
+  <!-- Purple gradient scrim (directional — text sits on the dark left on desktop) -->
   <div class="absolute inset-0 bg-gradient-to-r from-purple-dark-500/75 via-purple-dark-500/15 to-transparent"></div>
+  <!-- Extra uniform darkening on mobile, where the text spans the full width -->
+  <div class="absolute inset-0 bg-purple-dark-500/55 md:hidden"></div>
 
-  <!-- Content -->
-  <div class="absolute left-16 top-1/2 -translate-y-1/2 flex flex-col gap-6 max-w-[640px]">
-    <p class="text-2xl font-semibold uppercase tracking-[0.1em] text-white/90">{eyebrow}</p>
+  <!-- Content: even px-6 insets on mobile (matches the sections above/below), left-16 on desktop -->
+  <div class="absolute left-6 right-6 top-1/2 -translate-y-1/2 flex flex-col gap-5 max-w-[640px] md:left-16 md:right-auto md:gap-6">
+    <p class="text-lg md:text-2xl font-semibold uppercase tracking-[0.1em] text-white/90">{eyebrow}</p>
     <h2 class="text-2xl md:text-3xl lg:text-[44px] font-bold text-white leading-[1.15]">{heading}</h2>
     {showText && body && (
-      <p class="text-2xl text-white/85 leading-[1.4]">{body}</p>
+      <p class="text-lg md:text-2xl text-white/85 leading-[1.4]">{body}</p>
     )}
     {showButton && (
       <a
