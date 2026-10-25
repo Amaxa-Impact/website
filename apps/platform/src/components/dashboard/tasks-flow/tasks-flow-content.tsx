@@ -6,9 +6,11 @@ import type {
   Edge,
   Node,
   NodeMouseHandler,
+  Viewport,
 } from "@xyflow/react";
 import {
   useCallback,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -54,37 +56,54 @@ interface FlowInstanceBridge {
 }
 
 interface TasksCanvasProps {
+  defaultViewport?: Viewport;
   initialEdges: Edge[];
   initialNodes: Node[];
   onCreateEdge: (connection: Connection) => Promise<void>;
   onDataChange: (taskId: string, data: Partial<TaskNodeData>) => Promise<void>;
   onEdgeContextMenu: (event: MouseEvent | React.MouseEvent, edge: Edge) => void;
   onFlowInstanceReady: (instance: FlowInstanceBridge) => void;
+  onEdgesDelete: (edgeIds: string[]) => Promise<void>;
   onNodeContextMenu: NodeMouseHandler;
   onNodeDragStop: NodeMouseHandler;
+  onNodesDelete: (taskIds: string[]) => Promise<void>;
   onPaneContextMenu: (event: MouseEvent | React.MouseEvent) => void;
+  onQuickAddTask: (
+    taskId: string,
+    position: { x: number; y: number },
+  ) => Promise<void>;
   onStatusChange: (
     taskId: string,
     status: TaskNodeData["status"],
   ) => Promise<void>;
+  onViewportChange?: (viewport: Viewport) => void;
   projectMembers?: { userId: string; name: string }[];
 }
 
 function TasksCanvas({
+  defaultViewport,
   initialEdges,
   initialNodes,
   onCreateEdge,
   onDataChange,
   onEdgeContextMenu,
+  onEdgesDelete,
   onFlowInstanceReady,
   onNodeContextMenu,
   onNodeDragStop,
+  onNodesDelete,
   onPaneContextMenu,
+  onQuickAddTask,
   onStatusChange,
+  onViewportChange,
   projectMembers,
 }: TasksCanvasProps) {
-  const [nodes, _setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+
+  useEffect(() => {
+    setNodes(initialNodes);
+  }, [initialNodes, setNodes]);
 
   const nodesForRender = useMemo(
     () =>
@@ -96,10 +115,11 @@ function TasksCanvas({
             void onStatusChange(node.id, status),
           onDataChange: (data: Partial<TaskNodeData>) =>
             void onDataChange(node.id, data),
+          onQuickAddTask: () => void onQuickAddTask(node.id, node.position),
           projectMembers,
         },
       })),
-    [nodes, onDataChange, onStatusChange, projectMembers],
+    [nodes, onDataChange, onQuickAddTask, onStatusChange, projectMembers],
   );
 
   const handleConnect = useCallback(
@@ -116,11 +136,15 @@ function TasksCanvas({
 
   return (
     <TasksGraph
+      defaultViewport={defaultViewport}
       edges={edges}
       nodes={nodesForRender}
       onConnect={handleConnect}
       onEdgeContextMenu={onEdgeContextMenu}
       onEdgesChange={onEdgesChange}
+      onEdgesDelete={(deletedEdges) =>
+        void onEdgesDelete(deletedEdges.map((edge) => edge.id))
+      }
       onFlowInstanceReady={(instance) => {
         onFlowInstanceReady({
           screenToFlowPosition: instance.screenToFlowPosition.bind(instance),
@@ -130,7 +154,11 @@ function TasksCanvas({
       onNodeContextMenu={onNodeContextMenu}
       onNodeDragStop={onNodeDragStop}
       onNodesChange={onNodesChange}
+      onNodesDelete={(deletedNodes) =>
+        void onNodesDelete(deletedNodes.map((node) => node.id))
+      }
       onPaneContextMenu={onPaneContextMenu}
+      onViewportChange={onViewportChange}
     />
   );
 }
@@ -194,6 +222,14 @@ export function TasksFlowContent() {
   const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null);
 
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
+
+  // The canvas remounts whenever the graph shape changes (see graphStateKey),
+  // so remember the viewport to restore it. Null until the user first moves,
+  // which lets the initial mount fit the view instead.
+  const viewportRef = useRef<Viewport | null>(null);
+  const handleViewportChange = useCallback((viewport: Viewport) => {
+    viewportRef.current = viewport;
+  }, []);
 
   const handleMouseMove = useCallback(
     (event: React.MouseEvent) => {
@@ -310,6 +346,32 @@ export function TasksFlowContent() {
     [createTask, projectId, flowInstance],
   );
 
+  const handleQuickAddTask = useCallback(
+    async (sourceTaskId: string, sourcePosition: { x: number; y: number }) => {
+      try {
+        const newTaskId = await createTask({
+          projectId,
+          type: "task",
+          position: { x: sourcePosition.x + 320, y: sourcePosition.y },
+          data: {
+            label: "New Task",
+            status: "todo",
+            priority: "medium",
+          },
+        });
+        await createEdge({
+          projectId,
+          source: sourceTaskId as Id<"tasks">,
+          target: newTaskId,
+          type: "smoothstep",
+        });
+      } catch (error) {
+        console.error("Failed to quick-add connected task:", error);
+      }
+    },
+    [createEdge, createTask, projectId],
+  );
+
   const deleteTask = useCallback(
     async (taskId: string) => {
       await removeTask({ taskId: taskId as Id<"tasks"> });
@@ -322,6 +384,26 @@ export function TasksFlowContent() {
       await removeEdge({ edgeId: edgeId as Id<"edges"> });
     },
     [removeEdge],
+  );
+
+  const handleNodesDelete = useCallback(
+    async (taskIds: string[]) => {
+      await Promise.all(taskIds.map((taskId) => deleteTask(taskId)));
+    },
+    [deleteTask],
+  );
+
+  const handleEdgesDelete = useCallback(
+    async (edgeIds: string[]) => {
+      // Deleting a task cascades to its edges server-side, and React Flow
+      // fires onEdgesDelete for those same edges when a connected node is
+      // deleted in the same action — the edge may already be gone by the
+      // time this runs, which is the desired end state either way.
+      await Promise.all(
+        edgeIds.map((edgeId) => deleteEdge(edgeId).catch(() => undefined)),
+      );
+    },
+    [deleteEdge],
   );
 
   const handlePaneContextMenu = useCallback(
@@ -432,16 +514,21 @@ export function TasksFlowContent() {
       >
         <TasksCanvas
           key={graphStateKey}
+          defaultViewport={viewportRef.current ?? undefined}
           initialEdges={initialEdges}
           initialNodes={initialNodes}
           onCreateEdge={handleCreateEdge}
           onDataChange={handleDataChange}
           onEdgeContextMenu={handleEdgeContextMenu}
+          onEdgesDelete={handleEdgesDelete}
           onFlowInstanceReady={setFlowInstance}
           onNodeContextMenu={handleNodeContextMenu}
           onNodeDragStop={onNodeDragStop}
+          onNodesDelete={handleNodesDelete}
           onPaneContextMenu={handlePaneContextMenu}
+          onQuickAddTask={handleQuickAddTask}
           onStatusChange={handleStatusChange}
+          onViewportChange={handleViewportChange}
           projectMembers={projectMembersForNodes}
         />
 

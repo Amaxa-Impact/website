@@ -34,6 +34,7 @@ export interface TaskNodeData {
   priority?: "low" | "medium" | "high";
   onStatusChange?: (status: TaskNodeData["status"]) => void;
   onDataChange?: (data: Partial<TaskNodeData>) => void;
+  onQuickAddTask?: () => void;
   projectMembers?: { userId: string; name?: string }[];
 }
 
@@ -129,6 +130,14 @@ export const TaskNode = memo(({ data, id }: NodeProps) => {
       void form.reset();
     },
     [form],
+  );
+
+  const handleQuickAddTask = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      taskData.onQuickAddTask?.();
+    },
+    [taskData],
   );
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
@@ -316,7 +325,11 @@ export const TaskNode = memo(({ data, id }: NodeProps) => {
 
       <div className="flex flex-col gap-2">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="flex-1 text-sm leading-tight font-semibold">
+          <h3
+            className="flex-1 cursor-text text-sm leading-tight font-semibold"
+            onDoubleClick={handleEditClick}
+            title="Double-click to edit"
+          >
             {taskData.label}
           </h3>
           <div className="flex items-center gap-1">
@@ -365,7 +378,13 @@ export const TaskNode = memo(({ data, id }: NodeProps) => {
         )}
       </div>
 
-      <Handle className="h-3 w-3" position={Position.Right} type="source" />
+      <Handle
+        className="h-3 w-3 cursor-copy"
+        onClick={handleQuickAddTask}
+        position={Position.Right}
+        title="Click to create a connected task"
+        type="source"
+      />
     </div>
   );
 });

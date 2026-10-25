@@ -49,6 +49,9 @@ export interface TasksGraphProps {
   onEdgeContextMenu: (event: MouseEvent | React.MouseEvent, edge: Edge) => void;
   onFlowInstanceReady?: (instance: ReturnType<typeof useReactFlow>) => void;
   onViewportChange?: (viewport: Viewport) => void;
+  defaultViewport?: Viewport;
+  onNodesDelete?: (nodes: Node[]) => void;
+  onEdgesDelete?: (edges: Edge[]) => void;
 }
 
 const TasksGraphInner = memo(function TasksGraphInner({
@@ -63,6 +66,9 @@ const TasksGraphInner = memo(function TasksGraphInner({
   onEdgeContextMenu,
   onFlowInstanceReady,
   onViewportChange,
+  defaultViewport,
+  onNodesDelete,
+  onEdgesDelete,
 }: TasksGraphProps) {
   const reactFlowInstance = useReactFlow();
   useOnViewportChange(
@@ -98,18 +104,21 @@ const TasksGraphInner = memo(function TasksGraphInner({
       <ReactFlow
         colorMode="dark"
         defaultEdgeOptions={defaultEdgeOptions}
+        defaultViewport={defaultViewport}
         edges={edges}
-        fitView
+        fitView={!defaultViewport}
         fitViewOptions={fitViewOptions}
         nodes={nodes}
         nodeTypes={nodeTypes}
         onConnect={onConnect}
         onEdgeContextMenu={onEdgeContextMenu}
         onEdgesChange={onEdgesChange}
+        onEdgesDelete={onEdgesDelete}
         onlyRenderVisibleElements
         onNodeContextMenu={onNodeContextMenu}
         onNodeDragStop={onNodeDragStop}
         onNodesChange={onNodesChange}
+        onNodesDelete={onNodesDelete}
         onPaneContextMenu={onPaneContextMenu}
         proOptions={proOptions}
         snapGrid={snapGrid}
