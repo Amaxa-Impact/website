@@ -3,24 +3,12 @@ import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { projectMutation, projectQuery } from "./custom";
 import { assertUserInProject, requireAuth } from "./permissions";
-
-const taskDataValidator = v.object({
-  label: v.optional(v.string()),
-  description: v.optional(v.string()),
-  status: v.optional(
-    v.union(
-      v.literal("todo"),
-      v.literal("in_progress"),
-      v.literal("completed"),
-      v.literal("blocked"),
-    ),
-  ),
-  assignedTo: v.optional(v.string()),
-  dueDate: v.optional(v.number()),
-  priority: v.optional(
-    v.union(v.literal("low"), v.literal("medium"), v.literal("high")),
-  ),
-});
+import {
+  assertValidCcpmFields,
+  assertWorkstreamInProject,
+  definedFields,
+  taskDataValidator,
+} from "./taskFields";
 
 export const create = projectMutation({
   args: {
@@ -30,23 +18,7 @@ export const create = projectMutation({
       x: v.number(),
       y: v.number(),
     }),
-    data: v.object({
-      label: v.optional(v.string()),
-      description: v.optional(v.string()),
-      status: v.optional(
-        v.union(
-          v.literal("todo"),
-          v.literal("in_progress"),
-          v.literal("completed"),
-          v.literal("blocked"),
-        ),
-      ),
-      assignedTo: v.optional(v.string()),
-      dueDate: v.optional(v.number()),
-      priority: v.optional(
-        v.union(v.literal("low"), v.literal("medium"), v.literal("high")),
-      ),
-    }),
+    data: taskDataValidator,
     width: v.optional(v.number()),
     height: v.optional(v.number()),
   },
@@ -54,16 +26,15 @@ export const create = projectMutation({
   role: "member",
   handler: async (ctx, args) => {
     const type = args.type.trim() === "" ? "task" : args.type;
-    const label = args.data.label ?? "New Task";
+    const { label, ...rest } = args.data;
+
+    assertValidCcpmFields(rest);
+    await assertWorkstreamInProject(ctx, rest.workstreamId, ctx.projectId);
 
     const taskId = await ctx.db.insert("tasks", {
       projectId: ctx.projectId,
-      label,
-      description: args.data.description,
-      status: args.data.status,
-      assignedTo: args.data.assignedTo,
-      dueDate: args.data.dueDate,
-      priority: args.data.priority,
+      label: label ?? "New Task",
+      ...definedFields(rest),
     });
 
     await ctx.db.insert("taskNodes", {
@@ -129,6 +100,15 @@ export const listForProject = projectQuery({
             assignedTo: task.assignedTo,
             dueDate: task.dueDate,
             priority: task.priority,
+            bestDays: task.bestDays,
+            safeDays: task.safeDays,
+            workstreamId: task.workstreamId,
+            actualStart: task.actualStart,
+            actualFinish: task.actualFinish,
+            daysRemaining: task.daysRemaining,
+            isExternal: task.isExternal,
+            externalContact: task.externalContact,
+            followUpDate: task.followUpDate,
           },
           width: node.width,
           height: node.height,
@@ -200,23 +180,7 @@ export const updatePosition = mutation({
 export const updateData = mutation({
   args: {
     taskId: v.id("tasks"),
-    data: v.object({
-      label: v.optional(v.string()),
-      description: v.optional(v.string()),
-      status: v.optional(
-        v.union(
-          v.literal("todo"),
-          v.literal("in_progress"),
-          v.literal("completed"),
-          v.literal("blocked"),
-        ),
-      ),
-      assignedTo: v.optional(v.string()),
-      dueDate: v.optional(v.number()),
-      priority: v.optional(
-        v.union(v.literal("low"), v.literal("medium"), v.literal("high")),
-      ),
-    }),
+    data: taskDataValidator,
   },
   returns: v.null(),
   handler: async (ctx, args) => {
@@ -227,25 +191,10 @@ export const updateData = mutation({
     }
     await assertUserInProject(ctx, userId, task.projectId);
 
-    const updates: Record<string, unknown> = {};
-    if (args.data.label !== undefined) {
-      updates.label = args.data.label;
-    }
-    if (args.data.description !== undefined) {
-      updates.description = args.data.description;
-    }
-    if (args.data.status !== undefined) {
-      updates.status = args.data.status;
-    }
-    if (args.data.assignedTo !== undefined) {
-      updates.assignedTo = args.data.assignedTo;
-    }
-    if (args.data.dueDate !== undefined) {
-      updates.dueDate = args.data.dueDate;
-    }
-    if (args.data.priority !== undefined) {
-      updates.priority = args.data.priority;
-    }
+    const updates = definedFields(args.data);
+
+    assertValidCcpmFields({ ...task, ...updates });
+    await assertWorkstreamInProject(ctx, updates.workstreamId, task.projectId);
 
     if (Object.keys(updates).length > 0) {
       await ctx.db.patch(args.taskId, updates);

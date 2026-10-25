@@ -65,7 +65,21 @@ export default defineSchema({
     description: v.string(),
     // TODO: Migrate to v.id("workspaces") - requires data migration for existing records
     workspaceId: v.string(),
+    // Critical Chain v2. Dates are ISO calendar dates (YYYY-MM-DD). All
+    // optional so existing projects are unaffected; the builder only changes
+    // behaviour when ccpmV2 is true.
+    ccpmV2: v.optional(v.boolean()),
+    startDate: v.optional(v.string()),
+    deadline: v.optional(v.string()),
+    bufferMethod: v.optional(v.union(v.literal("half"), v.literal("rss"))),
+    safeRatio: v.optional(v.number()),
   }).index("by_workspaceId", ["workspaceId"]),
+
+  workstreams: defineTable({
+    projectId: v.id("projects"),
+    name: v.string(),
+    colour: v.string(),
+  }).index("by_project", ["projectId"]),
 
   projectTemplates: defineTable({
     name: v.string(),
@@ -101,12 +115,15 @@ export default defineSchema({
     projectId: v.id("projects"),
     label: v.optional(v.string()),
     description: v.optional(v.string()),
+    // Stored values are stable; v2 relabels them: completed = Done,
+    // blocked = Unable to Complete, waiting = Waiting on someone.
     status: v.optional(
       v.union(
         v.literal("todo"),
         v.literal("in_progress"),
         v.literal("completed"),
         v.literal("blocked"),
+        v.literal("waiting"),
       ),
     ),
     assignedTo: v.optional(v.string()),
@@ -114,6 +131,16 @@ export default defineSchema({
     priority: v.optional(
       v.union(v.literal("low"), v.literal("medium"), v.literal("high")),
     ),
+    // Critical Chain v2 (calendar days; dates are ISO YYYY-MM-DD)
+    bestDays: v.optional(v.number()),
+    safeDays: v.optional(v.number()),
+    workstreamId: v.optional(v.id("workstreams")),
+    actualStart: v.optional(v.string()),
+    actualFinish: v.optional(v.string()),
+    daysRemaining: v.optional(v.number()),
+    isExternal: v.optional(v.boolean()),
+    externalContact: v.optional(v.string()),
+    followUpDate: v.optional(v.string()),
     // Legacy fields - task data now stored in separate fields above
     data: v.optional(
       v.object({
@@ -200,6 +227,35 @@ export default defineSchema({
     .index("by_projectId", ["projectId"])
     .index("by_userId_and_projectId", ["userId", "projectId"])
     .index("by_projectId_and_role", ["projectId", "role"]),
+
+  taskUpdates: defineTable({
+    taskId: v.id("tasks"),
+    projectId: v.id("projects"),
+    userId: v.string(),
+    date: v.string(),
+    daysRemaining: v.optional(v.number()),
+    status: v.union(
+      v.literal("todo"),
+      v.literal("in_progress"),
+      v.literal("completed"),
+      v.literal("blocked"),
+      v.literal("waiting"),
+    ),
+  })
+    .index("by_task", ["taskId"])
+    .index("by_project_and_date", ["projectId", "date"]),
+
+  weeklySnapshots: defineTable({
+    projectId: v.id("projects"),
+    date: v.string(),
+    chainCompletePct: v.number(),
+    bufferUsedPct: v.number(),
+    bufferUsedDays: v.number(),
+    zone: v.union(v.literal("green"), v.literal("yellow"), v.literal("red")),
+    finishEarliest: v.string(),
+    finishLatest: v.string(),
+    note: v.optional(v.string()),
+  }).index("by_project_and_date", ["projectId", "date"]),
 
   applicationForms: defineTable({
     title: v.string(),

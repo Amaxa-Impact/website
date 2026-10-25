@@ -11,11 +11,22 @@ import {
 import {
   assertUserInProject,
   assertUserIsCoach,
+  canManageProject,
   getEffectiveWorkspaceRole,
   getUserRole,
   isSiteAdmin,
   requireAuth,
 } from "./permissions";
+import { assertIsoDate, bufferMethodValidator } from "./taskFields";
+
+/** Critical Chain v2 settings stored on a project (all optional). */
+const projectCcpmFields = {
+  ccpmV2: v.optional(v.boolean()),
+  startDate: v.optional(v.string()),
+  deadline: v.optional(v.string()),
+  bufferMethod: v.optional(bufferMethodValidator),
+  safeRatio: v.optional(v.number()),
+};
 
 /**
  * Create a new project
@@ -180,6 +191,7 @@ export const get = projectQuery({
       name: v.string(),
       description: v.string(),
       workspaceId: v.string(),
+      ...projectCcpmFields,
     }),
     v.null(),
   ),
@@ -255,6 +267,7 @@ export const listByWorkspace = workspaceQuery({
       name: v.string(),
       description: v.string(),
       workspaceId: v.string(),
+      ...projectCcpmFields,
     }),
   ),
   role: "member",
@@ -281,6 +294,74 @@ export const update = projectMutation({
   handler: async (ctx, args) => {
     const { projectId, ...updates } = args;
     await ctx.db.patch(projectId, updates);
+    return null;
+  },
+});
+
+/**
+ * Whether the current user may change Critical Chain settings for a project:
+ * a project coach, a workspace admin/owner, or a site admin.
+ */
+export const canManage = query({
+  args: { projectId: v.id("projects") },
+  returns: v.boolean(),
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity?.subject) {
+      return false;
+    }
+    return await canManageProject(ctx, identity.subject, args.projectId);
+  },
+});
+
+/**
+ * Update Critical Chain settings, including the per-project ccpmV2 switch.
+ * Coaches, workspace admins/owners and site admins may call this.
+ */
+export const updateCcpmSettings = mutation({
+  args: {
+    projectId: v.id("projects"),
+    ...projectCcpmFields,
+  },
+  returns: v.null(),
+  handler: async (ctx, args) => {
+    const userId = await requireAuth(ctx);
+    if (!(await canManageProject(ctx, userId, args.projectId))) {
+      throw new ConvexError(
+        "Only coaches, workspace admins and site admins can change these settings",
+      );
+    }
+
+    const project = await ctx.db.get(args.projectId);
+    if (!project) {
+      throw new ConvexError("Project not found");
+    }
+
+    const { projectId, ...changes } = args;
+    const updates = Object.fromEntries(
+      Object.entries(changes).filter(([, value]) => value !== undefined),
+    ) as Partial<typeof changes>;
+
+    const merged = { ...project, ...updates };
+    assertIsoDate(merged.startDate, "startDate");
+    assertIsoDate(merged.deadline, "deadline");
+    if (
+      merged.startDate !== undefined &&
+      merged.deadline !== undefined &&
+      merged.deadline < merged.startDate
+    ) {
+      throw new ConvexError("deadline cannot be before startDate");
+    }
+    if (
+      merged.safeRatio !== undefined &&
+      !(Number.isFinite(merged.safeRatio) && merged.safeRatio >= 1)
+    ) {
+      throw new ConvexError("safeRatio must be 1 or more");
+    }
+
+    if (Object.keys(updates).length > 0) {
+      await ctx.db.patch(projectId, updates);
+    }
     return null;
   },
 });
@@ -340,6 +421,34 @@ export const remove = workspaceMutation({
 
     for (const assignment of userAssignments) {
       await ctx.db.delete(assignment._id);
+    }
+
+    const workstreams = await ctx.db
+      .query("workstreams")
+      .withIndex("by_project", (q) => q.eq("projectId", args.projectId))
+      .collect();
+    for (const workstream of workstreams) {
+      await ctx.db.delete(workstream._id);
+    }
+
+    const updates = await ctx.db
+      .query("taskUpdates")
+      .withIndex("by_project_and_date", (q) =>
+        q.eq("projectId", args.projectId),
+      )
+      .collect();
+    for (const update of updates) {
+      await ctx.db.delete(update._id);
+    }
+
+    const snapshots = await ctx.db
+      .query("weeklySnapshots")
+      .withIndex("by_project_and_date", (q) =>
+        q.eq("projectId", args.projectId),
+      )
+      .collect();
+    for (const snapshot of snapshots) {
+      await ctx.db.delete(snapshot._id);
     }
 
     await ctx.db.delete(args.projectId);
