@@ -6,7 +6,7 @@ import { v } from "convex/values";
 import type { DataModel } from "./_generated/dataModel";
 import { components, internal } from "./_generated/api";
 import { query } from "./_generated/server";
-import { isSiteAdmin, requireAuth } from "./permissions";
+import { isSiteAdmin } from "./permissions";
 import { upsertUserRecord } from "./users";
 
 const authFunctions: AuthFunctions = internal.auth;
@@ -85,9 +85,11 @@ export const getIsSiteAdmin = query({
   args: {},
   returns: v.boolean(),
   handler: async (ctx) => {
-    const userId = await requireAuth(ctx);
-    const isAdmin = await isSiteAdmin(ctx, userId);
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity?.subject) {
+      return false;
+    }
 
-    return isAdmin;
+    return isSiteAdmin(ctx, identity.subject);
   },
 });
