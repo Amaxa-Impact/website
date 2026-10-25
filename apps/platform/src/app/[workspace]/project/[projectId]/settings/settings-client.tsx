@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useDashboardContext } from "@/components/dashboard/context";
 import { SaveAsTemplateDialog } from "@/components/templates/save-as-template-dialog";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 
 import type { Id } from "@amaxa/backend/_generated/dataModel";
 import { api } from "@amaxa/backend/_generated/api";
@@ -19,11 +19,14 @@ import {
 } from "@amaxa/ui/card";
 import { Input } from "@amaxa/ui/input";
 
+import { CcpmSettingsCard } from "./ccpm-settings-card";
+
 export default function SettingsPageClient() {
   const { projectId } = useParams<{ projectId: Id<"projects"> }>();
   const { project, userRole } = useDashboardContext();
   const isCoach = userRole === "coach";
 
+  const canManage = useQuery(api.projects.canManage, { projectId });
   const updateProject = useMutation(api.projects.update);
 
   const [name, setName] = useState("");
@@ -71,7 +74,11 @@ export default function SettingsPageClient() {
     }
   };
 
-  if (!isCoach) {
+  if (!isCoach && canManage === undefined) {
+    return null;
+  }
+
+  if (!isCoach && !canManage) {
     return (
       <div className="container mx-auto p-6">
         <Card>
@@ -100,45 +107,49 @@ export default function SettingsPageClient() {
         <SaveAsTemplateDialog projectId={projectId} />
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Project Information</CardTitle>
-          <CardDescription>
-            Update the project name and description
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <label className="mb-2 block text-sm font-medium" htmlFor="name">
-              Project Name
-            </label>
-            <Input
-              id="name"
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Enter project name"
-              value={name}
-            />
-          </div>
-          <div>
-            <label
-              className="mb-2 block text-sm font-medium"
-              htmlFor="description"
-            >
-              Description
-            </label>
-            <textarea
-              className="min-h-25 w-full rounded-md border px-3 py-2"
-              id="description"
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Enter project description"
-              value={description}
-            />
-          </div>
-          <Button disabled={isSaving} onClick={handleSave}>
-            {isSaving ? "Saving..." : "Save Changes"}
-          </Button>
-        </CardContent>
-      </Card>
+      {isCoach && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Project Information</CardTitle>
+            <CardDescription>
+              Update the project name and description
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <label className="mb-2 block text-sm font-medium" htmlFor="name">
+                Project Name
+              </label>
+              <Input
+                id="name"
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Enter project name"
+                value={name}
+              />
+            </div>
+            <div>
+              <label
+                className="mb-2 block text-sm font-medium"
+                htmlFor="description"
+              >
+                Description
+              </label>
+              <textarea
+                className="min-h-25 w-full rounded-md border px-3 py-2"
+                id="description"
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Enter project description"
+                value={description}
+              />
+            </div>
+            <Button disabled={isSaving} onClick={handleSave}>
+              {isSaving ? "Saving..." : "Save Changes"}
+            </Button>
+          </CardContent>
+        </Card>
+      )}
+
+      {canManage && <CcpmSettingsCard projectId={projectId} />}
     </div>
   );
 }

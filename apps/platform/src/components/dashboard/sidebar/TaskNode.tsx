@@ -3,6 +3,9 @@
 
 import type { NodeProps } from "@xyflow/react";
 import { memo, useCallback, useRef, useState } from "react";
+import { useDashboardContext } from "@/components/dashboard/context";
+import { statusOptions } from "@/lib/task-status";
+import type { TaskStatus } from "@/lib/task-status";
 import { IconCheck, IconPencil, IconX } from "@tabler/icons-react";
 import { useForm } from "@tanstack/react-form";
 import { Handle, Position } from "@xyflow/react";
@@ -28,7 +31,7 @@ import { Textarea } from "@amaxa/ui/textarea";
 export interface TaskNodeData {
   label: string;
   description?: string;
-  status?: "todo" | "in_progress" | "completed" | "blocked";
+  status?: TaskStatus;
   assignedTo?: string;
   dueDate?: number;
   priority?: "low" | "medium" | "high";
@@ -45,6 +48,8 @@ const statusColors = {
   completed:
     "bg-green-50 dark:bg-green-950 border-green-400 dark:border-green-600",
   blocked: "bg-red-50 dark:bg-red-950 border-red-400 dark:border-red-600",
+  waiting:
+    "bg-amber-50 dark:bg-amber-950 border-amber-400 dark:border-amber-600",
 };
 
 const priorityColors = {
@@ -52,13 +57,6 @@ const priorityColors = {
   medium: "text-yellow-600 dark:text-yellow-500",
   high: "text-red-600 dark:text-red-500",
 };
-
-const statusOptions = [
-  { value: "todo", label: "To Do" },
-  { value: "in_progress", label: "In Progress" },
-  { value: "completed", label: "Completed" },
-  { value: "blocked", label: "Blocked" },
-] as const;
 
 const priorityOptions = [
   { value: "low", label: "Low" },
@@ -68,6 +66,7 @@ const priorityOptions = [
 
 export const TaskNode = memo(({ data, id }: NodeProps) => {
   const taskData = data as unknown as TaskNodeData;
+  const { project } = useDashboardContext();
   const [isEditing, setIsEditing] = useState(false);
   const labelInputRef = useRef<HTMLInputElement>(null);
 
@@ -359,7 +358,7 @@ export const TaskNode = memo(({ data, id }: NodeProps) => {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              {statusOptions.map((opt) => (
+              {statusOptions(project.ccpmV2).map((opt) => (
                 <SelectItem key={opt.value} value={opt.value}>
                   {opt.label}
                 </SelectItem>

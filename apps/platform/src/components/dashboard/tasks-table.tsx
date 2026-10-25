@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useDashboardContext } from "@/components/dashboard/context";
 import { getUserDisplayName } from "@/components/user-dropdown";
+import { statusLabel, statusOptions } from "@/lib/task-status";
+import type { TaskStatus } from "@/lib/task-status";
 import { usePaginatedQuery, useQuery } from "convex/react";
 
 import type { Id } from "@amaxa/backend/_generated/dataModel";
@@ -32,7 +35,6 @@ interface TasksTableProps {
   projectId: Id<"projects">;
 }
 
-type TaskStatus = "todo" | "in_progress" | "completed" | "blocked";
 
 interface Filters {
   status: TaskStatus | undefined;
@@ -46,13 +48,6 @@ interface ProjectUser {
 
 const PAGE_SIZE = 10;
 
-const statusLabels: Record<TaskStatus, string> = {
-  todo: "To Do",
-  in_progress: "In Progress",
-  completed: "Completed",
-  blocked: "Blocked",
-};
-
 const statusVariants: Record<
   TaskStatus,
   "default" | "secondary" | "destructive" | "outline"
@@ -61,6 +56,7 @@ const statusVariants: Record<
   in_progress: "secondary",
   completed: "default",
   blocked: "destructive",
+  waiting: "secondary",
 };
 
 function useDebounce<T>(value: T, delay: number): T {
@@ -109,6 +105,8 @@ function TableSkeleton() {
 }
 
 export function TasksTable({ projectId }: TasksTableProps) {
+  const { project } = useDashboardContext();
+  const ccpmV2 = project.ccpmV2 ?? false;
   const [filters, setFilters] = useState<Filters>({
     status: undefined,
     assignedTo: undefined,
@@ -184,10 +182,11 @@ export function TasksTable({ projectId }: TasksTableProps) {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Statuses</SelectItem>
-              <SelectItem value="todo">To Do</SelectItem>
-              <SelectItem value="in_progress">In Progress</SelectItem>
-              <SelectItem value="completed">Completed</SelectItem>
-              <SelectItem value="blocked">Blocked</SelectItem>
+              {statusOptions(ccpmV2).map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
 
@@ -266,7 +265,7 @@ export function TasksTable({ projectId }: TasksTableProps) {
                     <TableCell>
                       {task.status ? (
                         <Badge variant={statusVariants[task.status]}>
-                          {statusLabels[task.status]}
+                          {statusLabel(task.status, ccpmV2)}
                         </Badge>
                       ) : (
                         <Badge variant="outline">Not Set</Badge>

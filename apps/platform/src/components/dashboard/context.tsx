@@ -18,6 +18,11 @@ interface Project {
   name: string;
   description: string;
   id: Id<"projects">;
+  ccpmV2?: boolean;
+  startDate?: string;
+  deadline?: string;
+  bufferMethod?: "half" | "rss";
+  safeRatio?: number;
 }
 
 export type UserRole = "coach" | "member" | null;
@@ -55,6 +60,11 @@ export const DashboardProvider = ({
             name: project.name,
             description: project.description,
             id: project._id,
+            ccpmV2: project.ccpmV2,
+            startDate: project.startDate,
+            deadline: project.deadline,
+            bufferMethod: project.bufferMethod,
+            safeRatio: project.safeRatio,
           }
         : { name: "", description: "", id: "" as Id<"projects"> },
       userRole: (userRole ?? null) as UserRole,
