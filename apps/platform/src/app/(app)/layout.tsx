@@ -1,4 +1,7 @@
 import type { ReactNode } from "react";
+import { AppSidebar } from "@/components/navbar/app-sidebar";
+
+import { SidebarInset, SidebarProvider } from "@amaxa/ui/sidebar";
 
 import { TopNavbar } from "@/components/navbar/top-navbar";
 
@@ -8,9 +11,12 @@ interface AppLayoutProps {
 
 export default function AppLayout({ children }: AppLayoutProps) {
   return (
-    <>
-      <TopNavbar />
-      {children}
-    </>
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <TopNavbar />
+        {children}
+      </SidebarInset>
+    </SidebarProvider>
   );
 }
