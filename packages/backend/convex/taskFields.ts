@@ -32,6 +32,31 @@ export const taskDataValidator = v.object({
   followUpDate: v.optional(v.string()),
 });
 
+/** Optional fields that updateData can remove (unset means "no change"). */
+export const clearableTaskFields = [
+  "bestDays",
+  "safeDays",
+  "workstreamId",
+  "actualStart",
+  "actualFinish",
+  "daysRemaining",
+  "followUpDate",
+  "externalContact",
+] as const;
+
+export const clearFieldsValidator = v.array(
+  v.union(
+    v.literal("bestDays"),
+    v.literal("safeDays"),
+    v.literal("workstreamId"),
+    v.literal("actualStart"),
+    v.literal("actualFinish"),
+    v.literal("daysRemaining"),
+    v.literal("followUpDate"),
+    v.literal("externalContact"),
+  ),
+);
+
 export const bufferMethodValidator = v.union(
   v.literal("half"),
   v.literal("rss"),

@@ -154,6 +154,76 @@ describe("task CCPM fields", () => {
     expect(counts.totalAll).toBe(1);
   });
 
+  it("clears optional fields only when asked to", async () => {
+    const { projectId, asMember } = await setup();
+    const taskId = await asMember.mutation(api.tasks.create, {
+      projectId,
+      type: "task",
+      position: { x: 0, y: 0 },
+      data: { label: "T", bestDays: 4, safeDays: 7, daysRemaining: 2 },
+    });
+
+    // Leaving a field out changes nothing.
+    await asMember.mutation(api.tasks.updateData, {
+      taskId,
+      data: { label: "Renamed" },
+    });
+    let node = (
+      await asMember.query(api.tasks.listForProject, { projectId })
+    )[0];
+    expect(node.data).toMatchObject({ bestDays: 4, safeDays: 7 });
+
+    await asMember.mutation(api.tasks.updateData, {
+      taskId,
+      data: {},
+      clear: ["safeDays", "daysRemaining"],
+    });
+    node = (await asMember.query(api.tasks.listForProject, { projectId }))[0];
+    expect(node.data.bestDays).toBe(4);
+    expect(node.data.safeDays).toBeUndefined();
+    expect(node.data.daysRemaining).toBeUndefined();
+    expect(node.data.label).toBe("Renamed");
+  });
+
+  it("refuses to set and clear the same field", async () => {
+    const { projectId, asMember } = await setup();
+    const taskId = await asMember.mutation(api.tasks.create, {
+      projectId,
+      type: "task",
+      position: { x: 0, y: 0 },
+      data: { label: "T", bestDays: 4 },
+    });
+    await expect(
+      asMember.mutation(api.tasks.updateData, {
+        taskId,
+        data: { bestDays: 5 },
+        clear: ["bestDays"],
+      }),
+    ).rejects.toThrow(/set and clear/);
+  });
+
+  it("validates the result after clearing (safe still >= best)", async () => {
+    const { projectId, asMember } = await setup();
+    const taskId = await asMember.mutation(api.tasks.create, {
+      projectId,
+      type: "task",
+      position: { x: 0, y: 0 },
+      data: { label: "T", bestDays: 4, safeDays: 7 },
+    });
+    // Clearing best while raising nothing else is fine (safe-only is allowed).
+    await asMember.mutation(api.tasks.updateData, {
+      taskId,
+      data: {},
+      clear: ["bestDays"],
+    });
+    await expect(
+      asMember.mutation(api.tasks.updateData, {
+        taskId,
+        data: { bestDays: 9 },
+      }),
+    ).rejects.toThrow(/greater than or equal to bestDays/);
+  });
+
   describe("validation", () => {
     async function oneTask() {
       const ctx = await setup();

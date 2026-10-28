@@ -1,6 +1,9 @@
 "use client";
 
-import type { TaskNodeData } from "@/components/dashboard/sidebar/TaskNode";
+import type {
+  ClearableTaskField,
+  TaskNodeData,
+} from "@/components/dashboard/sidebar/TaskNode";
 import type {
   Connection,
   Edge,
@@ -60,7 +63,11 @@ interface TasksCanvasProps {
   initialEdges: Edge[];
   initialNodes: Node[];
   onCreateEdge: (connection: Connection) => Promise<void>;
-  onDataChange: (taskId: string, data: Partial<TaskNodeData>) => Promise<void>;
+  onDataChange: (
+    taskId: string,
+    data: Partial<TaskNodeData>,
+    clear?: ClearableTaskField[],
+  ) => Promise<void>;
   onEdgeContextMenu: (event: MouseEvent | React.MouseEvent, edge: Edge) => void;
   onFlowInstanceReady: (instance: FlowInstanceBridge) => void;
   onEdgesDelete: (edgeIds: string[]) => Promise<void>;
@@ -113,8 +120,10 @@ function TasksCanvas({
           ...(node.data as unknown as TaskNodeData),
           onStatusChange: (status: TaskNodeData["status"]) =>
             void onStatusChange(node.id, status),
-          onDataChange: (data: Partial<TaskNodeData>) =>
-            void onDataChange(node.id, data),
+          onDataChange: (
+            data: Partial<TaskNodeData>,
+            clear?: ClearableTaskField[],
+          ) => void onDataChange(node.id, data, clear),
           onQuickAddTask: () => void onQuickAddTask(node.id, node.position),
           projectMembers,
         },
@@ -298,10 +307,15 @@ export function TasksFlowContent() {
   );
 
   const handleDataChange = useCallback(
-    async (taskId: string, data: Partial<TaskNodeData>) => {
+    async (
+      taskId: string,
+      data: Partial<TaskNodeData>,
+      clear?: ClearableTaskField[],
+    ) => {
       await updateTaskData({
         taskId: taskId as Id<"tasks">,
         data,
+        ...(clear?.length ? { clear } : {}),
       });
     },
     [updateTaskData],

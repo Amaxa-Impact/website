@@ -1,4 +1,4 @@
-import { v } from "convex/values";
+import { ConvexError, v } from "convex/values";
 
 import { mutation, query } from "./_generated/server";
 import { projectMutation, projectQuery } from "./custom";
@@ -6,6 +6,7 @@ import { assertUserInProject, requireAuth } from "./permissions";
 import {
   assertValidCcpmFields,
   assertWorkstreamInProject,
+  clearFieldsValidator,
   definedFields,
   taskDataValidator,
 } from "./taskFields";
@@ -181,6 +182,8 @@ export const updateData = mutation({
   args: {
     taskId: v.id("tasks"),
     data: taskDataValidator,
+    /** Fields to remove. A field can't be both set and cleared. */
+    clear: v.optional(clearFieldsValidator),
   },
   returns: v.null(),
   handler: async (ctx, args) => {
@@ -192,12 +195,27 @@ export const updateData = mutation({
     await assertUserInProject(ctx, userId, task.projectId);
 
     const updates = definedFields(args.data);
+    const cleared = [...new Set(args.clear ?? [])];
+    const conflicting = cleared.filter((field) => field in updates);
+    if (conflicting.length > 0) {
+      throw new ConvexError(
+        `Cannot set and clear the same field: ${conflicting.join(", ")}`,
+      );
+    }
 
-    assertValidCcpmFields({ ...task, ...updates });
+    const merged: Record<string, unknown> = { ...task, ...updates };
+    for (const field of cleared) {
+      delete merged[field];
+    }
+    assertValidCcpmFields(merged);
     await assertWorkstreamInProject(ctx, updates.workstreamId, task.projectId);
 
-    if (Object.keys(updates).length > 0) {
-      await ctx.db.patch(args.taskId, updates);
+    const patch = {
+      ...updates,
+      ...Object.fromEntries(cleared.map((field) => [field, undefined])),
+    };
+    if (Object.keys(patch).length > 0) {
+      await ctx.db.patch(args.taskId, patch);
     }
     return null;
   },
