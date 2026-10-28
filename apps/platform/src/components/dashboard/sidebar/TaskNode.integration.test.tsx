@@ -85,6 +85,15 @@ describe("TaskNode on a v1 project", () => {
     expect(screen.getByText("High")).toBeTruthy();
   });
 
+  it("ignores chain data on a v1 project", () => {
+    renderNode(
+      { chain: { onChain: true, overlapsWith: ["Other"] } },
+      { ccpmV2: false },
+    );
+    expect(screen.queryByText("Critical chain")).toBeNull();
+    expect(screen.queryByText(/Same owner/)).toBeNull();
+  });
+
   it("shows the v1 status label", () => {
     renderNode({}, { ccpmV2: false });
     expect(screen.getByText("To Do")).toBeTruthy();
@@ -113,6 +122,22 @@ describe("TaskNode view on a v2 project", () => {
     expect(screen.getByText(/No estimate yet/)).toBeTruthy();
     expect(screen.getByText("No owner yet.")).toBeTruthy();
     expect(screen.queryByText("MEDIUM")).toBeNull();
+  });
+
+  it("marks a critical chain task", () => {
+    renderNode({ chain: { onChain: true, overlapsWith: [] } });
+    expect(screen.getByText("Critical chain")).toBeTruthy();
+  });
+
+  it("warns when the owner is on another task at the same time", () => {
+    renderNode({
+      assignedTo: "u1",
+      chain: { onChain: false, overlapsWith: ["Take photos"] },
+    });
+    expect(screen.queryByText("Critical chain")).toBeNull();
+    expect(
+      screen.getByText(/Same owner is on “Take photos” at the same time/),
+    ).toBeTruthy();
   });
 
   it("shows the status label, not the stored value", () => {

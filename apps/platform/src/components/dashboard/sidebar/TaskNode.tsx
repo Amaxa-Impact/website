@@ -12,7 +12,12 @@ import {
   formatDays,
 } from "@/lib/estimates";
 import { statusOptions } from "@/lib/task-status";
-import { IconCheck, IconPencil, IconX } from "@tabler/icons-react";
+import {
+  IconAlertTriangle,
+  IconCheck,
+  IconPencil,
+  IconX,
+} from "@tabler/icons-react";
 import { useForm, useStore } from "@tanstack/react-form";
 import { Handle, Position } from "@xyflow/react";
 
@@ -47,6 +52,8 @@ export interface TaskNodeData {
   priority?: "low" | "medium" | "high";
   bestDays?: number;
   safeDays?: number;
+  /** Set on v2 projects once the critical chain can be worked out. */
+  chain?: { onChain: boolean; overlapsWith: string[] };
   onStatusChange?: (status: TaskNodeData["status"]) => void;
   onDataChange?: (
     data: Partial<TaskNodeData>,
@@ -90,6 +97,8 @@ export const TaskNode = memo(({ data, id }: NodeProps) => {
   const status = taskData.status ?? "todo";
   const priority = taskData.priority ?? "medium";
   const statuses = statusOptions(ccpmV2);
+  const onChain = ccpmV2 && (taskData.chain?.onChain ?? false);
+  const overlapsWith = ccpmV2 ? (taskData.chain?.overlapsWith ?? []) : [];
 
   const form = useForm({
     defaultValues: {
@@ -470,11 +479,20 @@ export const TaskNode = memo(({ data, id }: NodeProps) => {
 
   return (
     <div
-      className={`text-foreground min-w-50 rounded-lg border-2 px-3 py-2.5 shadow-md ${statusColors[status]}`}
+      className={`text-foreground min-w-50 rounded-lg border-2 px-3 py-2.5 shadow-md ${statusColors[status]} ${
+        onChain
+          ? "ring-primary ring-offset-background ring-2 ring-offset-2"
+          : ""
+      }`}
     >
       <Handle className="h-3 w-3" position={Position.Left} type="target" />
 
       <div className="flex flex-col gap-2">
+        {onChain && (
+          <p className="text-primary text-[10px] font-semibold tracking-wide uppercase">
+            Critical chain
+          </p>
+        )}
         <div className="flex items-start justify-between gap-2">
           <h3
             className="flex-1 cursor-text text-sm leading-tight font-semibold"
@@ -555,6 +573,21 @@ export const TaskNode = memo(({ data, id }: NodeProps) => {
               No owner yet.
             </p>
           )
+        )}
+
+        {overlapsWith.length > 0 && (
+          // w-0 + min-w-full: wrap to the card's width instead of widening it.
+          <p className="flex w-0 min-w-full gap-1 text-xs text-amber-600 dark:text-amber-500">
+            <IconAlertTriangle
+              aria-hidden
+              className="mt-px size-3.5 shrink-0"
+            />
+            <span>
+              Same owner is on{" "}
+              {overlapsWith.map((name) => `“${name}”`).join(", ")} at the same
+              time.
+            </span>
+          </p>
         )}
       </div>
 

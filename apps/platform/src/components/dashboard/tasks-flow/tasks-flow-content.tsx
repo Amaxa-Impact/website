@@ -4,6 +4,8 @@ import type {
   ClearableTaskField,
   TaskNodeData,
 } from "@/components/dashboard/sidebar/TaskNode";
+import type { UserOption } from "@/components/user-dropdown";
+import type { ChainView } from "@/lib/chain-view";
 import type {
   Connection,
   Edge,
@@ -11,37 +13,48 @@ import type {
   NodeMouseHandler,
   Viewport,
 } from "@xyflow/react";
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { useDashboardContext } from "@/components/dashboard/context";
 import { Cursor } from "@/components/dashboard/cursor";
 import { getUserDisplayName } from "@/components/user-dropdown";
 import usePresence from "@/hooks/use-presence";
+import {
+  BUFFER_BOX,
+  buildChainView,
+  linkKey,
+  localIsoDate,
+  placeBuffers,
+} from "@/lib/chain-view";
 import { omitUndefined } from "@/lib/omit-undefined";
 import { useQueryWithStatus } from "@/lib/rich-query";
 import { useAuth } from "@workos-inc/authkit-nextjs/components";
 import {
   addEdge,
+  MarkerType,
   useEdgesState,
   useNodesState,
 } from "@xyflow/react";
 import { useConvexAuth, useMutation, useQuery } from "convex/react";
 
 import type { Id } from "@amaxa/backend/_generated/dataModel";
-import type { UserOption } from "@/components/user-dropdown";
 import { api } from "@amaxa/backend/_generated/api";
 
+import type { BufferNodeData } from "./buffer-node";
 import type { ContextMenuState, CursorPresenceData } from "./types";
+import { ChainStatusPanel } from "./chain-status-panel";
 import { TasksContextMenu } from "./tasks-context-menu";
 import { TasksGraph } from "./tasks-graph";
 import { TasksHeader } from "./tasks-header";
 import { getStableUserId, getUserColor } from "./utils";
+
+// Ids of the drawn-only buffer nodes and edges, which aren't tasks or links.
+const CCPM_PREFIX = "ccpm:";
+const CHAIN_COLOR = "var(--primary)";
+// Before React Flow has measured a task box.
+const DEFAULT_TASK_BOX = { width: 280, height: 150 };
+
+const isDrawnOnly = (id: string) => id.startsWith(CCPM_PREFIX);
 
 interface ProjectMember {
   userId: string;
@@ -85,9 +98,13 @@ interface TasksCanvasProps {
   ) => Promise<void>;
   onViewportChange?: (viewport: Viewport) => void;
   projectMembers?: { userId: string; name: string }[];
+  chainView: ChainView | null;
+  settingsHref: string;
 }
 
 function TasksCanvas({
+  chainView,
+  settingsHref,
   defaultViewport,
   initialEdges,
   initialNodes,
@@ -131,6 +148,91 @@ function TasksCanvas({
     [nodes, onDataChange, onQuickAddTask, onStatusChange, projectMembers],
   );
 
+  // Buffers follow the live (dragged, measured) task boxes, not saved positions.
+  const bufferNodes = useMemo((): Node[] => {
+    if (chainView?.status !== "ready") {
+      return [];
+    }
+    const boxes = new Map(
+      nodes.map((node) => [
+        node.id,
+        {
+          x: node.position.x,
+          y: node.position.y,
+          width: node.measured?.width ?? DEFAULT_TASK_BOX.width,
+          height: node.measured?.height ?? DEFAULT_TASK_BOX.height,
+        },
+      ]),
+    );
+    return placeBuffers(chainView, boxes).map((placement) => {
+      const data: BufferNodeData =
+        placement.kind === "project"
+          ? { kind: "project", sizeDays: placement.sizeDays }
+          : {
+              kind: "feeding",
+              sizeDays: placement.sizeDays,
+              startNow: placement.startNow,
+              ...(placement.latestStartDate
+                ? { latestStartDate: placement.latestStartDate }
+                : {}),
+            };
+      return {
+        id: `${CCPM_PREFIX}${placement.id}`,
+        type: "buffer",
+        position: { x: placement.x, y: placement.y },
+        data: data as unknown as Record<string, unknown>,
+        // Buffers aren't in the canvas state, so React Flow's measurement
+        // never reaches them; without a known size they stay hidden.
+        width: BUFFER_BOX.width,
+        height: BUFFER_BOX.height,
+        measured: BUFFER_BOX,
+        connectable: false,
+        deletable: false,
+        draggable: false,
+        focusable: false,
+        selectable: false,
+      };
+    });
+  }, [chainView, nodes]);
+
+  const edgesForRender = useMemo((): Edge[] => {
+    if (chainView?.status !== "ready") {
+      return edges;
+    }
+    const chainMarker = {
+      type: MarkerType.ArrowClosed,
+      width: 20,
+      height: 20,
+      color: CHAIN_COLOR,
+    };
+    const styled = edges.map((edge) =>
+      chainView.chainLinks.has(linkKey(edge.source, edge.target))
+        ? {
+            ...edge,
+            markerEnd: chainMarker,
+            style: { ...edge.style, stroke: CHAIN_COLOR, strokeWidth: 2.5 },
+          }
+        : edge,
+    );
+    const lastChainTask = chainView.chain.at(-1);
+    const projectBuffer = bufferNodes.find(
+      (node) => (node.data as unknown as BufferNodeData).kind === "project",
+    );
+    if (lastChainTask && projectBuffer) {
+      styled.push({
+        id: `${CCPM_PREFIX}project-buffer-link`,
+        source: lastChainTask,
+        target: projectBuffer.id,
+        deletable: false,
+        focusable: false,
+        selectable: false,
+        markerEnd: chainMarker,
+        style: { stroke: CHAIN_COLOR, strokeDasharray: "6 4", strokeWidth: 2 },
+      });
+    }
+    return styled;
+  }, [bufferNodes, chainView, edges]);
+
   const handleConnect = useCallback(
     (connection: Connection) => {
       if (!connection.source || !connection.target) {
@@ -146,8 +248,12 @@ function TasksCanvas({
   return (
     <TasksGraph
       defaultViewport={defaultViewport}
-      edges={edges}
-      nodes={nodesForRender}
+      edges={edgesForRender}
+      nodes={
+        bufferNodes.length > 0
+          ? [...nodesForRender, ...bufferNodes]
+          : nodesForRender
+      }
       onConnect={handleConnect}
       onEdgeContextMenu={onEdgeContextMenu}
       onEdgesChange={onEdgesChange}
@@ -168,12 +274,19 @@ function TasksCanvas({
       }
       onPaneContextMenu={onPaneContextMenu}
       onViewportChange={onViewportChange}
-    />
+    >
+      {chainView && (
+        <ChainStatusPanel settingsHref={settingsHref} view={chainView} />
+      )}
+    </TasksGraph>
   );
 }
 
 export function TasksFlowContent() {
-  const { projectId } = useParams<{ projectId: Id<"projects"> }>();
+  const { projectId, workspace } = useParams<{
+    projectId: Id<"projects">;
+    workspace: string;
+  }>();
   const { project, userRole } = useDashboardContext();
   const { isAuthenticated } = useConvexAuth();
   const { user } = useAuth();
@@ -253,14 +366,53 @@ export function TasksFlowContent() {
     [updatePresence, isAuthenticated, flowInstance],
   );
 
-  const initialNodes = useMemo(() => (convexNodes ?? []) as Node[], [convexNodes]);
-  const initialEdges = useMemo(() => (convexEdges ?? []) as Edge[], [convexEdges]);
+  // Worked out on every change to tasks, links or estimates; never stored.
+  const [today] = useState(localIsoDate);
+  const chainView = useMemo(
+    () =>
+      project.ccpmV2 && convexNodes && convexEdges
+        ? buildChainView({
+            project,
+            tasks: convexNodes,
+            links: convexEdges,
+            today,
+          })
+        : null,
+    [convexEdges, convexNodes, project, today],
+  );
+
+  const initialNodes = useMemo(
+    () =>
+      (convexNodes ?? []).map((node) =>
+        chainView?.status === "ready"
+          ? {
+              ...node,
+              data: {
+                ...node.data,
+                chain: {
+                  onChain: chainView.chain.includes(node.id),
+                  overlapsWith: chainView.overlaps.get(node.id) ?? [],
+                },
+              },
+            }
+          : node,
+      ) as Node[],
+    [chainView, convexNodes],
+  );
+  const initialEdges = useMemo(
+    () => (convexEdges ?? []) as Edge[],
+    [convexEdges],
+  );
 
   const graphStateKey = useMemo(
     () =>
       JSON.stringify({
         edges: initialEdges.map((edge) => [edge.id, edge.source, edge.target]),
-        nodes: initialNodes.map((node) => [node.id, node.position.x, node.position.y]),
+        nodes: initialNodes.map((node) => [
+          node.id,
+          node.position.x,
+          node.position.y,
+        ]),
       }),
     [initialEdges, initialNodes],
   );
@@ -436,6 +588,9 @@ export function TasksFlowContent() {
 
   const handleNodeContextMenu: NodeMouseHandler = useCallback((event, node) => {
     event.preventDefault();
+    if (isDrawnOnly(node.id)) {
+      return;
+    }
     if (reactFlowWrapper.current) {
       const rect = reactFlowWrapper.current.getBoundingClientRect();
       setContextMenu({
@@ -449,6 +604,9 @@ export function TasksFlowContent() {
   const handleEdgeContextMenu = useCallback(
     (event: MouseEvent | React.MouseEvent, edge: Edge) => {
       event.preventDefault();
+      if (isDrawnOnly(edge.id)) {
+        return;
+      }
       if (reactFlowWrapper.current) {
         const rect = reactFlowWrapper.current.getBoundingClientRect();
         setContextMenu({
@@ -528,6 +686,8 @@ export function TasksFlowContent() {
       >
         <TasksCanvas
           key={graphStateKey}
+          chainView={chainView}
+          settingsHref={`/${workspace}/project/${projectId}/settings`}
           defaultViewport={viewportRef.current ?? undefined}
           initialEdges={initialEdges}
           initialNodes={initialNodes}

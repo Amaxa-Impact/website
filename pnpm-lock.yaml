@@ -205,6 +205,9 @@ importers:
       '@amaxa/backend':
         specifier: workspace:*
         version: link:../../packages/backend
+      '@amaxa/ccpm':
+        specifier: workspace:*
+        version: link:../../packages/ccpm
       '@amaxa/ui':
         specifier: workspace:*
         version: link:../../packages/ui

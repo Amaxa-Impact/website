@@ -10,6 +10,7 @@ import type {
   OnNodesChange,
   Viewport,
 } from "@xyflow/react";
+import type { ReactNode } from "react";
 import { memo, useEffect, useMemo } from "react";
 import { TaskNode } from "@/components/dashboard/sidebar/TaskNode";
 import {
@@ -23,9 +24,12 @@ import {
   useReactFlow,
 } from "@xyflow/react";
 
+import { BufferNode } from "./buffer-node";
+
 const nodeTypes: NodeTypes = {
   task: TaskNode,
   default: TaskNode,
+  buffer: BufferNode,
 };
 
 const defaultEdgeOptions = {
@@ -52,6 +56,8 @@ export interface TasksGraphProps {
   defaultViewport?: Viewport;
   onNodesDelete?: (nodes: Node[]) => void;
   onEdgesDelete?: (edges: Edge[]) => void;
+  /** Overlays drawn inside the canvas, such as a React Flow <Panel>. */
+  children?: ReactNode;
 }
 
 const TasksGraphInner = memo(function TasksGraphInner({
@@ -69,6 +75,7 @@ const TasksGraphInner = memo(function TasksGraphInner({
   defaultViewport,
   onNodesDelete,
   onEdgesDelete,
+  children,
 }: TasksGraphProps) {
   const reactFlowInstance = useReactFlow();
   useOnViewportChange(
@@ -128,6 +135,7 @@ const TasksGraphInner = memo(function TasksGraphInner({
         <Background />
         <Controls />
         <MiniMap />
+        {children}
       </ReactFlow>
     </div>
   );

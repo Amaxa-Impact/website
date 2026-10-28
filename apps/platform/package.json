@@ -30,6 +30,7 @@
   "dependencies": {
     "@ai-sdk/google": "^3.0.2",
     "@amaxa/backend": "workspace:*",
+    "@amaxa/ccpm": "workspace:*",
     "@amaxa/ui": "workspace:*",
     "@amaxa/validators": "workspace:*",
     "@aws-sdk/client-s3": "^3.966.0",
