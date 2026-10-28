@@ -141,6 +141,19 @@ export function TasksTable({ projectId }: TasksTableProps) {
     return map;
   }, [allUsers]);
 
+  // Passed to the filter Selects so their triggers show labels, not raw values.
+  const statusFilterItems = [
+    { value: "all", label: "All Statuses" },
+    ...statusOptions(ccpmV2),
+  ];
+  const userFilterItems = [
+    { value: "all", label: "All Users" },
+    ...(projectUsers ?? []).map((user) => ({
+      value: user.userId,
+      label: userMap.get(user.userId) ?? user.userId,
+    })),
+  ];
+
   const formatDate = (timestamp: number | null) => {
     if (!timestamp) {
       return "-";
@@ -169,6 +182,7 @@ export function TasksTable({ projectId }: TasksTableProps) {
           />
 
           <Select
+            items={statusFilterItems}
             onValueChange={(value) =>
               setFilters((prev) => ({
                 ...prev,
@@ -181,8 +195,7 @@ export function TasksTable({ projectId }: TasksTableProps) {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Statuses</SelectItem>
-              {statusOptions(ccpmV2).map((option) => (
+              {statusFilterItems.map((option) => (
                 <SelectItem key={option.value} value={option.value}>
                   {option.label}
                 </SelectItem>
@@ -191,6 +204,7 @@ export function TasksTable({ projectId }: TasksTableProps) {
           </Select>
 
           <Select
+            items={userFilterItems}
             onValueChange={(value) => {
               const newValue =
                 value === null || value === "all" ? undefined : value;
@@ -205,10 +219,9 @@ export function TasksTable({ projectId }: TasksTableProps) {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Users</SelectItem>
-              {projectUsers?.map((user) => (
-                <SelectItem key={user.userId} value={user.userId}>
-                  {userMap.get(user.userId) ?? user.userId}
+              {userFilterItems.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
                 </SelectItem>
               ))}
             </SelectContent>

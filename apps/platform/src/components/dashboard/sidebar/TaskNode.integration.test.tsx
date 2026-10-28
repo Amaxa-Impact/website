@@ -82,6 +82,12 @@ describe("TaskNode on a v1 project", () => {
     expect(screen.queryByText("Best case, how many days?")).toBeNull();
     expect(screen.getByText("Priority")).toBeTruthy();
     expect(screen.getByText("Assigned To")).toBeTruthy();
+    expect(screen.getByText("High")).toBeTruthy();
+  });
+
+  it("shows the v1 status label", () => {
+    renderNode({}, { ccpmV2: false });
+    expect(screen.getByText("To Do")).toBeTruthy();
   });
 
   it("saves priority as before", async () => {
@@ -107,6 +113,12 @@ describe("TaskNode view on a v2 project", () => {
     expect(screen.getByText(/No estimate yet/)).toBeTruthy();
     expect(screen.getByText("No owner yet.")).toBeTruthy();
     expect(screen.queryByText("MEDIUM")).toBeNull();
+  });
+
+  it("shows the status label, not the stored value", () => {
+    renderNode({ status: "waiting" });
+    expect(screen.getByText("Waiting on someone")).toBeTruthy();
+    expect(screen.queryByText("waiting")).toBeNull();
   });
 
   it("shows both numbers", () => {

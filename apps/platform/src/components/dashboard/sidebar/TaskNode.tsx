@@ -89,6 +89,7 @@ export const TaskNode = memo(({ data, id }: NodeProps) => {
 
   const status = taskData.status ?? "todo";
   const priority = taskData.priority ?? "medium";
+  const statuses = statusOptions(ccpmV2);
 
   const form = useForm({
     defaultValues: {
@@ -379,6 +380,7 @@ export const TaskNode = memo(({ data, id }: NodeProps) => {
                         </FieldLabel>
                         <FieldContent>
                           <Select
+                            items={priorityOptions}
                             onValueChange={(value) => {
                               if (value != null) {
                                 field.handleChange(value);
@@ -522,12 +524,16 @@ export const TaskNode = memo(({ data, id }: NodeProps) => {
           ))}
 
         <div className="nodrag nopan flex items-center gap-2">
-          <Select onValueChange={handleStatusChange} value={status}>
+          <Select
+            items={statuses}
+            onValueChange={handleStatusChange}
+            value={status}
+          >
             <SelectTrigger className="h-6 w-full text-xs" size="sm">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              {statusOptions(project.ccpmV2).map((opt) => (
+              {statuses.map((opt) => (
                 <SelectItem key={opt.value} value={opt.value}>
                   {opt.label}
                 </SelectItem>

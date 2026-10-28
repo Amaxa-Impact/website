@@ -101,6 +101,10 @@ export function ConditionEditor({
           <Field>
             <FieldLabel className="text-xs">Show when</FieldLabel>
             <Select
+              items={sourceFields.map((field) => ({
+                value: field._id,
+                label: field.label || "Untitled Question",
+              }))}
               value={condition.sourceFieldId}
               onValueChange={(e) => {
                 if (!e) return;
@@ -125,6 +129,7 @@ export function ConditionEditor({
               <Field>
                 <FieldLabel className="text-xs">Condition</FieldLabel>
                 <Select
+                  items={OPERATORS}
                   value={condition.operator}
                   onValueChange={(e) => {
                     if (!e) return;

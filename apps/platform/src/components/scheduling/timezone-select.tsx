@@ -59,8 +59,17 @@ export function TimezoneSelect({
     (tz) => tz.value === userTimezone,
   );
 
+  // Passed to the Select so the trigger shows the label, not the IANA name.
+  const items = [
+    ...(!isUserTimezoneInList && userTimezone
+      ? [{ value: userTimezone, label: userTimezone }]
+      : []),
+    ...COMMON_TIMEZONES,
+  ];
+
   return (
     <Select
+      items={items}
       onValueChange={(newValue) => {
         if (newValue) {
           onValueChange(newValue);

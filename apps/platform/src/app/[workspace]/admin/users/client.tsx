@@ -68,6 +68,12 @@ const roleBadgeStyles: Record<WorkspaceRole, string> = {
   member: "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300",
 };
 
+// Passed to the role Selects so the trigger shows "Member", not "member".
+const inviteRoleItems = [
+  { value: "member", label: "Member" },
+  { value: "admin", label: "Admin" },
+] as const;
+
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const EMAIL_HEADER_CANDIDATES = new Set([
   "email",
@@ -621,6 +627,7 @@ function InviteUserDialog({
               <FieldLabel htmlFor={field.name}>Role</FieldLabel>
               <FieldContent>
                 <Select
+                  items={inviteRoleItems}
                   value={field.state.value}
                   onValueChange={(value: "admin" | "member" | null) => {
                     if (value) {
@@ -632,8 +639,11 @@ function InviteUserDialog({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="member">Member</SelectItem>
-                    <SelectItem value="admin">Admin</SelectItem>
+                    {inviteRoleItems.map((role) => (
+                      <SelectItem key={role.value} value={role.value}>
+                        {role.label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 <p className="text-muted-foreground mt-1 text-xs">
@@ -664,6 +674,7 @@ function InviteUserDialog({
               <FieldLabel htmlFor="csv-role">Role for CSV invites</FieldLabel>
               <FieldContent>
                 <Select
+                  items={inviteRoleItems}
                   value={csvRole}
                   onValueChange={(value: "admin" | "member" | null) => {
                     if (value) {
@@ -675,8 +686,11 @@ function InviteUserDialog({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="member">Member</SelectItem>
-                    <SelectItem value="admin">Admin</SelectItem>
+                    {inviteRoleItems.map((role) => (
+                      <SelectItem key={role.value} value={role.value}>
+                        {role.label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </FieldContent>

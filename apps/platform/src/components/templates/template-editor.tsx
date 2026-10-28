@@ -431,6 +431,7 @@ export function TemplateEditor({
                   Status
                 </label>
                 <Select
+                  items={taskStatusOptions}
                   onValueChange={(value: TemplateTaskStatus | null) => {
                     if (value) {
                       updateSelectedTaskDraft({ status: value });
@@ -459,6 +460,7 @@ export function TemplateEditor({
                   Priority
                 </label>
                 <Select
+                  items={taskPriorityOptions}
                   onValueChange={(value: TemplateTaskPriority | null) => {
                     if (value) {
                       updateSelectedTaskDraft({ priority: value });
