@@ -2,7 +2,7 @@
 
 import type { NodeProps } from "@xyflow/react";
 import { memo } from "react";
-import { BUFFER_BOX } from "@/lib/chain-view";
+import { BUFFER_BOX, formatPlanDate } from "@/lib/chain-view";
 import { formatDays } from "@/lib/estimates";
 import { Handle, Position } from "@xyflow/react";
 
@@ -11,14 +11,6 @@ export interface BufferNodeData {
   sizeDays: number;
   startNow?: boolean;
   latestStartDate?: string;
-}
-
-function formatShortDate(iso: string): string {
-  return new Date(`${iso}T00:00:00Z`).toLocaleDateString(undefined, {
-    month: "short",
-    day: "numeric",
-    timeZone: "UTC",
-  });
 }
 
 /** A calculated buffer: drawn from the plan, never edited or stored. */
@@ -31,7 +23,7 @@ export const BufferNode = memo(({ data }: NodeProps) => {
     if (buffer.startNow) {
       note = "Start this chain now";
     } else if (buffer.latestStartDate) {
-      note = `Start by ${formatShortDate(buffer.latestStartDate)}`;
+      note = `Start by ${formatPlanDate(buffer.latestStartDate)}`;
     }
   }
 

@@ -4,6 +4,7 @@ import type { Box, ChainTaskInput, ChainView } from "./chain-view";
 import {
   BUFFER_BOX,
   buildChainView,
+  formatPlanDate,
   linkKey,
   localIsoDate,
   placeBuffers,
@@ -81,6 +82,83 @@ describe("buildChainView", () => {
     expect(view.chainLinks.has(linkKey("F2", "T4"))).toBe(false);
     expect(view.overlaps.size).toBe(0);
     expect(view.datesKnown).toBe(true);
+  });
+
+  it("gives the finish range and commitment (golden fixture, day 0)", () => {
+    const view = ready(
+      buildChainView({
+        project,
+        tasks: goldenTasks,
+        links: goldenLinks,
+        today: "2026-01-05",
+      }),
+    );
+    // Chain finishes on day 32; commitment is day 48 (32 + 16), before day 56.
+    expect(view.finish).toEqual({
+      earliest: "2026-02-06",
+      latest: "2026-02-22",
+    });
+    expect(view.commitment).toEqual({
+      date: "2026-02-22",
+      daysOverDeadline: 0,
+    });
+    expect(view.progressWarnings).toEqual([]);
+  });
+
+  it("counts the days the commitment runs past the deadline", () => {
+    const view = ready(
+      buildChainView({
+        project: { ...project, deadline: "2026-02-15" },
+        tasks: goldenTasks,
+        links: goldenLinks,
+        today: "2026-01-05",
+      }),
+    );
+    expect(view.commitment.daysOverDeadline).toBe(7);
+  });
+
+  it("moves the finish range with progress (golden checkpoint, day 7)", () => {
+    const tasks = goldenTasks.map((t) =>
+      t.id === "T1"
+        ? {
+            ...t,
+            data: {
+              ...t.data,
+              status: "in_progress" as const,
+              actualStart: "2026-01-05",
+              daysRemaining: 3,
+            },
+          }
+        : t,
+    );
+    const view = ready(
+      buildChainView({
+        project,
+        tasks,
+        links: goldenLinks,
+        today: "2026-01-12",
+      }),
+    );
+    // Buffer used is 5 days, so the chain now finishes on day 37.
+    expect(view.finish.earliest).toBe("2026-02-11");
+    expect(view.finish.latest).toBe("2026-02-22");
+  });
+
+  it("reports progress the projection had to guess", () => {
+    const tasks = goldenTasks.map((t) =>
+      t.id === "T1"
+        ? { ...t, data: { ...t.data, status: "in_progress" as const } }
+        : t,
+    );
+    const view = ready(
+      buildChainView({
+        project,
+        tasks,
+        links: goldenLinks,
+        today: "2026-01-12",
+      }),
+    );
+    expect(view.progressWarnings.length).toBeGreaterThan(0);
   });
 
   it("uses the project's buffer method", () => {
@@ -310,6 +388,17 @@ describe("placeBuffers", () => {
       }),
     );
     expect(placeBuffers(view, new Map())).toEqual([]);
+  });
+});
+
+describe("formatPlanDate", () => {
+  it("leaves the year out for dates this year", () => {
+    expect(formatPlanDate("2026-03-02", "2026-10-29")).toMatch(/Mar/);
+    expect(formatPlanDate("2026-03-02", "2026-10-29")).not.toMatch(/2026/);
+  });
+
+  it("adds the year for other years", () => {
+    expect(formatPlanDate("2027-01-04", "2026-10-29")).toMatch(/2027/);
   });
 });
 

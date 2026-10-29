@@ -50,6 +50,12 @@ export type ChainView =
       overlaps: Map<string, string[]>;
       /** False when the project has no start date, so planned dates mean nothing. */
       datesKnown: boolean;
+      /** Projected chain finish (earliest) to the end of the buffer (latest). */
+      finish: { earliest: string; latest: string };
+      /** Start + chain + project buffer: the date the team can commit to. */
+      commitment: { date: string; daysOverDeadline: number };
+      /** Tasks whose progress details the projection had to guess around. */
+      progressWarnings: { taskId: string; message: string }[];
     }
   | { status: "empty" }
   | { status: "needs_estimates"; taskIds: string[] }
@@ -57,6 +63,17 @@ export type ChainView =
   | { status: "error"; message: string };
 
 export const linkKey = (from: string, to: string) => `${from}->${to}`;
+
+/** "Mar 2", or "Mar 2, 2027" outside the current year. */
+export function formatPlanDate(iso: string, today = localIsoDate()): string {
+  const sameYear = iso.slice(0, 4) === today.slice(0, 4);
+  return new Date(`${iso}T00:00:00Z`).toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+    ...(sameYear ? {} : { year: "numeric" }),
+    timeZone: "UTC",
+  });
+}
 
 /** Today's local date as YYYY-MM-DD. */
 export function localIsoDate(date = new Date()): string {
@@ -125,7 +142,7 @@ export function buildChainView({
     return { status: "error", message: error.message };
   }
 
-  const { plan } = result;
+  const { plan, projection, warnings } = result;
   if (plan.chain.length === 0) {
     return { status: "empty" };
   }
@@ -164,6 +181,18 @@ export function buildChainView({
     chainLinks,
     overlaps,
     datesKnown: project.startDate !== undefined,
+    finish: {
+      earliest: projection.finish.earliest,
+      latest: projection.finish.latest,
+    },
+    commitment: {
+      date: plan.commitment.date,
+      daysOverDeadline: plan.commitment.daysOverDeadline,
+    },
+    progressWarnings: warnings.map(({ taskId, message }) => ({
+      taskId,
+      message,
+    })),
   };
 }
 

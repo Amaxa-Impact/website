@@ -43,6 +43,7 @@ import { api } from "@amaxa/backend/_generated/api";
 import type { BufferNodeData } from "./buffer-node";
 import type { ContextMenuState, CursorPresenceData } from "./types";
 import { ChainStatusPanel } from "./chain-status-panel";
+import { FinishRange } from "./finish-range";
 import { TasksContextMenu } from "./tasks-context-menu";
 import { TasksGraph } from "./tasks-graph";
 import { TasksHeader } from "./tasks-header";
@@ -640,6 +641,8 @@ export function TasksFlowContent() {
     [projectMembers, userNameById],
   );
 
+  const settingsHref = `/${workspace}/project/${projectId}/settings`;
+
   const layoutStyle = useMemo(
     () => ({
       width: "100%",
@@ -677,6 +680,16 @@ export function TasksFlowContent() {
         userRole={userRole}
       />
 
+      {chainView && (
+        <FinishRange
+          {...(project.deadline === undefined
+            ? {}
+            : { deadline: project.deadline })}
+          settingsHref={settingsHref}
+          view={chainView}
+        />
+      )}
+
       <div
         aria-label="Task flow canvas"
         className="relative flex-1"
@@ -687,7 +700,7 @@ export function TasksFlowContent() {
         <TasksCanvas
           key={graphStateKey}
           chainView={chainView}
-          settingsHref={`/${workspace}/project/${projectId}/settings`}
+          settingsHref={settingsHref}
           defaultViewport={viewportRef.current ?? undefined}
           initialEdges={initialEdges}
           initialNodes={initialNodes}
