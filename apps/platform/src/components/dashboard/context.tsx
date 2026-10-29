@@ -23,6 +23,7 @@ interface Project {
   deadline?: string;
   bufferMethod?: "half" | "rss";
   safeRatio?: number;
+  commitment?: { date: string; confirmedAt: number; confirmedBy: string };
 }
 
 export type UserRole = "coach" | "member" | null;
@@ -65,6 +66,7 @@ export const DashboardProvider = ({
             deadline: project.deadline,
             bufferMethod: project.bufferMethod,
             safeRatio: project.safeRatio,
+            commitment: project.commitment,
           }
         : { name: "", description: "", id: "" as Id<"projects"> },
       userRole: (userRole ?? null) as UserRole,

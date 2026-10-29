@@ -73,6 +73,14 @@ export default defineSchema({
     deadline: v.optional(v.string()),
     bufferMethod: v.optional(v.union(v.literal("half"), v.literal("rss"))),
     safeRatio: v.optional(v.number()),
+    // The finish date the team agreed to at the end of guided setup.
+    commitment: v.optional(
+      v.object({
+        date: v.string(),
+        confirmedAt: v.number(),
+        confirmedBy: v.string(),
+      }),
+    ),
   }).index("by_workspaceId", ["workspaceId"]),
 
   workstreams: defineTable({

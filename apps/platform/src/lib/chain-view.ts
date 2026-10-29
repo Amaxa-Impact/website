@@ -32,6 +32,8 @@ export interface FeedingBufferView {
   /** The last feeding task, and the chain task it joins. */
   endTaskId: string;
   mergeTaskId: string;
+  /** The feeding chain's tasks in order. */
+  taskIds: string[];
   sizeDays: number;
   startNow: boolean;
   latestStartDate: string;
@@ -174,6 +176,7 @@ export function buildChainView({
       id: fb.id,
       endTaskId: fb.endTaskId,
       mergeTaskId: fb.mergeTaskId,
+      taskIds: fb.taskIds,
       sizeDays: fb.sizeDays,
       startNow: fb.startNow,
       latestStartDate: fb.latestStartDate,

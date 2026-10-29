@@ -1,7 +1,14 @@
 "use client";
 
 import { useWorkspace } from "@/components/workspace/context";
-import { Layout, ListChecks, MapIcon, PieChart, Settings } from "lucide-react";
+import {
+  Layout,
+  ListChecks,
+  MapIcon,
+  PieChart,
+  Settings,
+  Wand2,
+} from "lucide-react";
 
 import type { Id } from "@amaxa/backend/_generated/dataModel";
 import {
@@ -48,6 +55,11 @@ export function AppSidebar({
     },
     ...(isCoach
       ? [
+          {
+            name: "Guided setup",
+            url: `/${workspace.slug}/project/${projectId}/setup`,
+            icon: Wand2,
+          },
           {
             name: "Settings",
             url: `/${workspace.slug}/project/${projectId}/settings`,

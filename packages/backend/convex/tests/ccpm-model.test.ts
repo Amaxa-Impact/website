@@ -540,3 +540,64 @@ describe("deleting a project", () => {
     expect(leftovers).toEqual({ workstreams: [], updates: [], snapshots: [] });
   });
 });
+
+describe("commitment", () => {
+  it("lets a coach confirm the finish date, and replaces it on reconfirm", async () => {
+    const { projectId, asCoach } = await setup();
+    await asCoach.mutation(api.projects.updateCcpmSettings, {
+      projectId,
+      startDate: "2026-01-05",
+    });
+
+    await asCoach.mutation(api.projects.confirmCommitment, {
+      projectId,
+      date: "2026-02-22",
+    });
+    let project = await asCoach.query(api.projects.get, { projectId });
+    expect(project.commitment).toMatchObject({
+      date: "2026-02-22",
+      confirmedBy: "coach_user",
+    });
+
+    await asCoach.mutation(api.projects.confirmCommitment, {
+      projectId,
+      date: "2026-02-25",
+    });
+    project = await asCoach.query(api.projects.get, { projectId });
+    expect(project.commitment?.date).toBe("2026-02-25");
+  });
+
+  it("lets workspace admins confirm, but not members", async () => {
+    const { projectId, asMember, asWsAdmin } = await setup();
+    await expect(
+      asMember.mutation(api.projects.confirmCommitment, {
+        projectId,
+        date: "2026-02-22",
+      }),
+    ).rejects.toThrow(/Only coaches/);
+    await asWsAdmin.mutation(api.projects.confirmCommitment, {
+      projectId,
+      date: "2026-02-22",
+    });
+  });
+
+  it("rejects bad dates", async () => {
+    const { projectId, asCoach } = await setup();
+    await asCoach.mutation(api.projects.updateCcpmSettings, {
+      projectId,
+      startDate: "2026-01-05",
+    });
+    await expect(
+      asCoach.mutation(api.projects.confirmCommitment, {
+        projectId,
+        date: "22/02/2026",
+      }),
+    ).rejects.toThrow();
+    await expect(
+      asCoach.mutation(api.projects.confirmCommitment, {
+        projectId,
+        date: "2026-01-01",
+      }),
+    ).rejects.toThrow(/before the start date/);
+  });
+});

@@ -12,9 +12,12 @@ const plural = (count: number, word: string) =>
 export function ChainStatusPanel({
   view,
   settingsHref,
+  setupHref,
 }: {
   view: ChainView;
   settingsHref: string;
+  /** Offered on an empty chart to people who can run guided setup. */
+  setupHref?: string;
 }) {
   let body: React.ReactNode;
   switch (view.status) {
@@ -58,7 +61,22 @@ export function ChainStatusPanel({
       body = <p>{view.message}</p>;
       break;
     case "empty":
-      body = <p>Add tasks and link them to see the critical chain.</p>;
+      body = (
+        <p>
+          Add tasks and link them to see the critical chain
+          {setupHref ? (
+            <>
+              , or{" "}
+              <Link className="underline" href={setupHref}>
+                use the guided setup
+              </Link>
+              .
+            </>
+          ) : (
+            "."
+          )}
+        </p>
+      );
       break;
   }
 

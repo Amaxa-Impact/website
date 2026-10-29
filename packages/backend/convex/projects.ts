@@ -192,6 +192,13 @@ export const get = projectQuery({
       description: v.string(),
       workspaceId: v.string(),
       ...projectCcpmFields,
+      commitment: v.optional(
+        v.object({
+          date: v.string(),
+          confirmedAt: v.number(),
+          confirmedBy: v.string(),
+        }),
+      ),
     }),
     v.null(),
   ),
@@ -362,6 +369,36 @@ export const updateCcpmSettings = mutation({
     if (Object.keys(updates).length > 0) {
       await ctx.db.patch(projectId, updates);
     }
+    return null;
+  },
+});
+
+/**
+ * Records the finish date the team commits to (start + critical chain +
+ * project buffer, worked out on the client). Same permissions as the
+ * Critical Chain settings; confirming again replaces the old date.
+ */
+export const confirmCommitment = mutation({
+  args: { projectId: v.id("projects"), date: v.string() },
+  returns: v.null(),
+  handler: async (ctx, { projectId, date }) => {
+    const userId = await requireAuth(ctx);
+    if (!(await canManageProject(ctx, userId, projectId))) {
+      throw new ConvexError(
+        "Only coaches, workspace admins and site admins can confirm the commitment",
+      );
+    }
+    const project = await ctx.db.get(projectId);
+    if (!project) {
+      throw new ConvexError("Project not found");
+    }
+    assertIsoDate(date, "date");
+    if (project.startDate !== undefined && date < project.startDate) {
+      throw new ConvexError("The commitment can't be before the start date");
+    }
+    await ctx.db.patch(projectId, {
+      commitment: { date, confirmedAt: Date.now(), confirmedBy: userId },
+    });
     return null;
   },
 });

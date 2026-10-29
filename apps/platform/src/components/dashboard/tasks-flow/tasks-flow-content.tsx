@@ -101,11 +101,13 @@ interface TasksCanvasProps {
   projectMembers?: { userId: string; name: string }[];
   chainView: ChainView | null;
   settingsHref: string;
+  setupHref?: string;
 }
 
 function TasksCanvas({
   chainView,
   settingsHref,
+  setupHref,
   defaultViewport,
   initialEdges,
   initialNodes,
@@ -277,7 +279,11 @@ function TasksCanvas({
       onViewportChange={onViewportChange}
     >
       {chainView && (
-        <ChainStatusPanel settingsHref={settingsHref} view={chainView} />
+        <ChainStatusPanel
+          settingsHref={settingsHref}
+          view={chainView}
+          {...(setupHref ? { setupHref } : {})}
+        />
       )}
     </TasksGraph>
   );
@@ -685,6 +691,9 @@ export function TasksFlowContent() {
           {...(project.deadline === undefined
             ? {}
             : { deadline: project.deadline })}
+          {...(project.commitment
+            ? { committedDate: project.commitment.date }
+            : {})}
           settingsHref={settingsHref}
           view={chainView}
         />
@@ -701,6 +710,9 @@ export function TasksFlowContent() {
           key={graphStateKey}
           chainView={chainView}
           settingsHref={settingsHref}
+          {...(userRole === "coach"
+            ? { setupHref: `/${workspace}/project/${projectId}/setup` }
+            : {})}
           defaultViewport={viewportRef.current ?? undefined}
           initialEdges={initialEdges}
           initialNodes={initialNodes}

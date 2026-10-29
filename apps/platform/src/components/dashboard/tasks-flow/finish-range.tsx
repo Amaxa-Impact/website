@@ -10,10 +10,13 @@ import { IconAlertTriangle } from "@tabler/icons-react";
 export function FinishRange({
   view,
   deadline,
+  committedDate,
   settingsHref,
 }: {
   view: ChainView;
   deadline?: string;
+  /** The date confirmed at the end of guided setup. */
+  committedDate?: string;
   settingsHref: string;
 }) {
   const settingsLink = (text: string) => (
@@ -75,6 +78,15 @@ export function FinishRange({
           settingsLink("not set")
         ) : (
           <span className="text-foreground">{formatPlanDate(deadline)}</span>
+        )}
+        {committedDate && (
+          <>
+            {" · "}
+            <span className="font-medium">Committed:</span>{" "}
+            <span className="text-foreground">
+              {formatPlanDate(committedDate)}
+            </span>
+          </>
         )}
         {guessedTasks > 0 && (
           <span
