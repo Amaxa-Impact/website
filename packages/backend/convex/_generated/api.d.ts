@@ -36,6 +36,7 @@ import type * as schedulingEmail from "../schedulingEmail.js";
 import type * as schedulingInternal from "../schedulingInternal.js";
 import type * as schedulingTokens from "../schedulingTokens.js";
 import type * as taskFields from "../taskFields.js";
+import type * as taskUpdates from "../taskUpdates.js";
 import type * as tasks from "../tasks.js";
 import type * as templateTasks from "../templateTasks.js";
 import type * as userToProjects from "../userToProjects.js";
@@ -81,6 +82,7 @@ declare const fullApi: ApiFromModules<{
   schedulingInternal: typeof schedulingInternal;
   schedulingTokens: typeof schedulingTokens;
   taskFields: typeof taskFields;
+  taskUpdates: typeof taskUpdates;
   tasks: typeof tasks;
   templateTasks: typeof templateTasks;
   userToProjects: typeof userToProjects;

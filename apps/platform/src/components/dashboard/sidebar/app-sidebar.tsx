@@ -1,7 +1,7 @@
 "use client";
 
 import { useWorkspace } from "@/components/workspace/context";
-import { Layout, MapIcon, PieChart, Settings } from "lucide-react";
+import { Layout, ListChecks, MapIcon, PieChart, Settings } from "lucide-react";
 
 import type { Id } from "@amaxa/backend/_generated/dataModel";
 import {
@@ -35,6 +35,11 @@ export function AppSidebar({
       name: "Tasks",
       url: `/${workspace.slug}/project/${projectId}/tasks`,
       icon: PieChart,
+    },
+    {
+      name: "My tasks",
+      url: `/${workspace.slug}/project/${projectId}/my-tasks`,
+      icon: ListChecks,
     },
     {
       name: "Users",
