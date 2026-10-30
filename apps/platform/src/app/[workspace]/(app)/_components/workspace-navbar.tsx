@@ -13,6 +13,7 @@ import {
   BreadcrumbSeparator,
 } from "@amaxa/ui/breadcrumb";
 import { buttonVariants } from "@amaxa/ui/button";
+import { SidebarTrigger } from "@amaxa/ui/sidebar";
 
 import { useAuthContext } from "~/lib/auth/auth-context";
 
@@ -46,6 +47,7 @@ export const WorkspaceNavbar = memo(function WorkspaceNavbar() {
     <nav className="h-16 border-b">
       <div className="flex h-full items-center justify-between px-6">
         <div className="flex items-center gap-4">
+          <SidebarTrigger />
           <div className="flex items-center gap-2">
             <Breadcrumb>
               <BreadcrumbList>

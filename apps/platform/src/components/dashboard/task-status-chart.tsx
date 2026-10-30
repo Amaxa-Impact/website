@@ -1,5 +1,6 @@
 "use client";
 
+import { statusLabel, TASK_STATUSES } from "@/lib/task-status";
 import { Label, Pie, PieChart } from "recharts";
 
 import type { ChartConfig } from "@amaxa/ui/chart";
@@ -21,57 +22,50 @@ interface StatusCounts {
   in_progress: number;
   completed: number;
   blocked: number;
+  waiting: number;
 }
 
 interface TaskStatusChartProps {
+  ccpmV2?: boolean;
   title: string;
   description?: string;
   data?: StatusCounts;
   total?: number;
 }
 
-const chartConfig: ChartConfig = {
-  count: {
-    label: "Tasks",
-  },
-  todo: {
-    label: "To Do",
-    color: "var(--chart-1)",
-  },
-  in_progress: {
-    label: "In Progress",
-    color: "var(--chart-2)",
-  },
-  completed: {
-    label: "Completed",
-    color: "var(--chart-3)",
-  },
-  blocked: {
-    label: "Blocked",
-    color: "var(--chart-4)",
-  },
-};
+const statusColours = {
+  todo: "var(--chart-1)",
+  in_progress: "var(--chart-2)",
+  completed: "var(--chart-3)",
+  blocked: "var(--chart-4)",
+  waiting: "var(--chart-5)",
+} as const;
+
+function buildChartConfig(ccpmV2: boolean): ChartConfig {
+  return {
+    count: { label: "Tasks" },
+    ...Object.fromEntries(
+      TASK_STATUSES.map((status) => [
+        status,
+        { label: statusLabel(status, ccpmV2), color: statusColours[status] },
+      ]),
+    ),
+  };
+}
 
 export function TaskStatusChart({
+  ccpmV2 = false,
   title,
   description,
   data,
   total,
 }: TaskStatusChartProps) {
-  const chartData = [
-    { status: "todo", count: data?.todo, fill: "var(--color-todo)" },
-    {
-      status: "in_progress",
-      count: data?.in_progress,
-      fill: "var(--color-in_progress)",
-    },
-    {
-      status: "completed",
-      count: data?.completed,
-      fill: "var(--color-completed)",
-    },
-    { status: "blocked", count: data?.blocked, fill: "var(--color-blocked)" },
-  ].filter((d) => d.count != null && d.count > 0);
+  const chartConfig = buildChartConfig(ccpmV2);
+  const chartData = TASK_STATUSES.map((status) => ({
+    status,
+    count: data?.[status],
+    fill: `var(--color-${status})`,
+  })).filter((d) => d.count != null && d.count > 0);
 
   return (
     <Card className="flex flex-col">

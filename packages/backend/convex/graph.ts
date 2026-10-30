@@ -11,7 +11,8 @@ const taskDataValidator = v.object({
       v.literal("todo"),
       v.literal("in_progress"),
       v.literal("completed"),
-      v.literal("blocked")
+      v.literal("blocked"),
+      v.literal("waiting")
     )
   ),
   assignedTo: v.optional(v.string()),
@@ -60,6 +61,15 @@ export const replaceProjectGraph = mutation({
   handler: async (ctx, args) => {
     const userId = await requireAuth(ctx);
     await assertUserInProject(ctx, userId, args.projectId);
+
+    // This rebuilds every task with a new id and only copies the v1 fields, so
+    // it would destroy estimates, updates and snapshots on a v2 project.
+    const project = await ctx.db.get(args.projectId);
+    if (project?.ccpmV2) {
+      throw new Error(
+        "replaceProjectGraph is not supported on Critical Chain v2 projects",
+      );
+    }
 
     const existingEdges = await ctx.db
       .query("edges")

@@ -19,6 +19,8 @@ import { useDashboardContext } from "./context";
 const PAGE_NAMES: Record<string, string> = {
   "": "Dashboard",
   tasks: "Tasks",
+  "my-tasks": "My tasks",
+  setup: "Guided setup",
   users: "Users",
   settings: "Settings",
 };

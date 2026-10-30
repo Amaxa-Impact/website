@@ -573,7 +573,10 @@ export const createFromProject = mutation({
       } = {
         templateId,
         label: task.label ?? "Untitled Task",
-        status: task.status ?? "todo",
+        // Templates only know the original four statuses; "waiting" is work
+        // that has started.
+        status:
+          task.status === "waiting" ? "in_progress" : (task.status ?? "todo"),
         priority: task.priority ?? "medium",
         position: node?.position ?? defaultPosition(index),
         dependencies: [],

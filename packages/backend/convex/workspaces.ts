@@ -362,7 +362,11 @@ export const listForUser = query({
     }),
   ),
   handler: async (ctx) => {
-    const userId = await requireAuth(ctx);
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity?.subject) {
+      return [];
+    }
+    const userId = identity.subject;
 
     const memberships = await ctx.db
       .query("workspaceToUser")

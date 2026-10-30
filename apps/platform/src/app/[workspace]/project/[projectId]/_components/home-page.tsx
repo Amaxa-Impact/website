@@ -26,12 +26,14 @@ export function HomePage({
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <TaskStatusChart
+          ccpmV2={project.ccpmV2}
           data={statusCounts.allTasks}
           description="Task breakdown by status"
           title="All Tasks"
           total={statusCounts.totalAll}
         />
         <TaskStatusChart
+          ccpmV2={project.ccpmV2}
           data={statusCounts.userTasks}
           description="Your assigned tasks by status"
           title="My Tasks"

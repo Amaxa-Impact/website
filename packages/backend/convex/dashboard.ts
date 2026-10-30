@@ -2,13 +2,17 @@ import { paginationOptsValidator } from "convex/server";
 import { v } from "convex/values";
 
 import { projectQuery } from "./custom";
+import { taskStatusValidator } from "./taskFields";
 
-const statusValidator = v.union(
-  v.literal("todo"),
-  v.literal("in_progress"),
-  v.literal("completed"),
-  v.literal("blocked"),
-);
+const statusValidator = taskStatusValidator;
+
+const statusCountsValidator = v.object({
+  todo: v.number(),
+  in_progress: v.number(),
+  completed: v.number(),
+  blocked: v.number(),
+  waiting: v.number(),
+});
 
 /**
  * Get task status counts for charts - returns both all tasks and current user's tasks
@@ -18,18 +22,8 @@ export const getTaskStatusCounts = projectQuery({
     projectId: v.id("projects"),
   },
   returns: v.object({
-    allTasks: v.object({
-      todo: v.number(),
-      in_progress: v.number(),
-      completed: v.number(),
-      blocked: v.number(),
-    }),
-    userTasks: v.object({
-      todo: v.number(),
-      in_progress: v.number(),
-      completed: v.number(),
-      blocked: v.number(),
-    }),
+    allTasks: statusCountsValidator,
+    userTasks: statusCountsValidator,
     totalAll: v.number(),
     totalUser: v.number(),
   }),
@@ -40,8 +34,15 @@ export const getTaskStatusCounts = projectQuery({
       .withIndex("by_project", (q) => q.eq("projectId", ctx.project._id))
       .collect();
 
-    const allCounts = { todo: 0, in_progress: 0, completed: 0, blocked: 0 };
-    const userCounts = { todo: 0, in_progress: 0, completed: 0, blocked: 0 };
+    const emptyCounts = () => ({
+      todo: 0,
+      in_progress: 0,
+      completed: 0,
+      blocked: 0,
+      waiting: 0,
+    });
+    const allCounts = emptyCounts();
+    const userCounts = emptyCounts();
 
     for (const task of tasks) {
       const status = task.status ?? "todo";

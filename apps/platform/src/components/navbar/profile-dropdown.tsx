@@ -52,14 +52,18 @@ export const ProfileDropdown = memo(function ProfileDropdown() {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel className="font-normal">
-          <div className="flex flex-col space-y-1">
-            <p className="text-sm leading-none font-medium">{displayName}</p>
-            <p className="text-muted-foreground text-xs leading-none">
-              {user.email}
-            </p>
-          </div>
-        </DropdownMenuLabel>
+        <DropdownMenuGroup>
+          <DropdownMenuLabel className="font-normal">
+            <div className="flex flex-col space-y-1">
+              <p className="text-sm leading-none font-medium">
+                {displayName}
+              </p>
+              <p className="text-muted-foreground text-xs leading-none">
+                {user.email}
+              </p>
+            </div>
+          </DropdownMenuLabel>
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem render={<Link href="/settings" />}>

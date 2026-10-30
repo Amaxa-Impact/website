@@ -10,6 +10,7 @@ import type {
   OnNodesChange,
   Viewport,
 } from "@xyflow/react";
+import type { ReactNode } from "react";
 import { memo, useEffect, useMemo } from "react";
 import { TaskNode } from "@/components/dashboard/sidebar/TaskNode";
 import {
@@ -23,9 +24,12 @@ import {
   useReactFlow,
 } from "@xyflow/react";
 
+import { BufferNode } from "./buffer-node";
+
 const nodeTypes: NodeTypes = {
   task: TaskNode,
   default: TaskNode,
+  buffer: BufferNode,
 };
 
 const defaultEdgeOptions = {
@@ -49,6 +53,11 @@ export interface TasksGraphProps {
   onEdgeContextMenu: (event: MouseEvent | React.MouseEvent, edge: Edge) => void;
   onFlowInstanceReady?: (instance: ReturnType<typeof useReactFlow>) => void;
   onViewportChange?: (viewport: Viewport) => void;
+  defaultViewport?: Viewport;
+  onNodesDelete?: (nodes: Node[]) => void;
+  onEdgesDelete?: (edges: Edge[]) => void;
+  /** Overlays drawn inside the canvas, such as a React Flow <Panel>. */
+  children?: ReactNode;
 }
 
 const TasksGraphInner = memo(function TasksGraphInner({
@@ -63,6 +72,10 @@ const TasksGraphInner = memo(function TasksGraphInner({
   onEdgeContextMenu,
   onFlowInstanceReady,
   onViewportChange,
+  defaultViewport,
+  onNodesDelete,
+  onEdgesDelete,
+  children,
 }: TasksGraphProps) {
   const reactFlowInstance = useReactFlow();
   useOnViewportChange(
@@ -98,18 +111,21 @@ const TasksGraphInner = memo(function TasksGraphInner({
       <ReactFlow
         colorMode="dark"
         defaultEdgeOptions={defaultEdgeOptions}
+        defaultViewport={defaultViewport}
         edges={edges}
-        fitView
+        fitView={!defaultViewport}
         fitViewOptions={fitViewOptions}
         nodes={nodes}
         nodeTypes={nodeTypes}
         onConnect={onConnect}
         onEdgeContextMenu={onEdgeContextMenu}
         onEdgesChange={onEdgesChange}
+        onEdgesDelete={onEdgesDelete}
         onlyRenderVisibleElements
         onNodeContextMenu={onNodeContextMenu}
         onNodeDragStop={onNodeDragStop}
         onNodesChange={onNodesChange}
+        onNodesDelete={onNodesDelete}
         onPaneContextMenu={onPaneContextMenu}
         proOptions={proOptions}
         snapGrid={snapGrid}
@@ -119,6 +135,7 @@ const TasksGraphInner = memo(function TasksGraphInner({
         <Background />
         <Controls />
         <MiniMap />
+        {children}
       </ReactFlow>
     </div>
   );

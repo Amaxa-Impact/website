@@ -4,6 +4,7 @@ import { memo, useMemo } from "react";
 import Link from "next/link";
 
 import { buttonVariants } from "@amaxa/ui/button";
+import { SidebarTrigger } from "@amaxa/ui/sidebar";
 
 import { useAuthContext } from "~/lib/auth/auth-context";
 import { ProfileDropdown } from "./profile-dropdown";
@@ -35,6 +36,7 @@ export const TopNavbar = memo(function TopNavbar() {
     <nav className="border-border bg-card h-14 border-b">
       <div className="flex h-full items-center justify-between px-6">
         <div className="flex items-center gap-2">
+          <SidebarTrigger />
           <Link href="/" className="text-lg font-semibold">
             Amaxa
           </Link>

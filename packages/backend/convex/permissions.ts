@@ -260,3 +260,30 @@ export async function getEffectiveWorkspaceRole(
 
   return await getWorkspaceRole(ctx, userId, workspaceId);
 }
+
+/**
+ * Coach of the project, owner/admin of its workspace, or a site admin. Used for
+ * project-level settings that site and workspace admins must also be able to
+ * change without being a project member.
+ */
+export async function canManageProject(
+  ctx: QueryCtx | MutationCtx,
+  userId: string,
+  projectId: Id<"projects">,
+): Promise<boolean> {
+  if (await isCoach(ctx, userId, projectId)) {
+    return true;
+  }
+
+  const project = await ctx.db.get(projectId);
+  if (!project) {
+    return false;
+  }
+
+  const role = await getEffectiveWorkspaceRole(
+    ctx,
+    userId,
+    project.workspaceId as Id<"workspaces">,
+  );
+  return role === "owner" || role === "admin";
+}

@@ -35,6 +35,8 @@ import type * as reactFlowExample from "../reactFlowExample.js";
 import type * as schedulingEmail from "../schedulingEmail.js";
 import type * as schedulingInternal from "../schedulingInternal.js";
 import type * as schedulingTokens from "../schedulingTokens.js";
+import type * as taskFields from "../taskFields.js";
+import type * as taskUpdates from "../taskUpdates.js";
 import type * as tasks from "../tasks.js";
 import type * as templateTasks from "../templateTasks.js";
 import type * as userToProjects from "../userToProjects.js";
@@ -43,6 +45,7 @@ import type * as workspaceInvitationEmail from "../workspaceInvitationEmail.js";
 import type * as workspaceInvitations from "../workspaceInvitations.js";
 import type * as workspaceToUser from "../workspaceToUser.js";
 import type * as workspaces from "../workspaces.js";
+import type * as workstreams from "../workstreams.js";
 
 import type {
   ApiFromModules,
@@ -78,6 +81,8 @@ declare const fullApi: ApiFromModules<{
   schedulingEmail: typeof schedulingEmail;
   schedulingInternal: typeof schedulingInternal;
   schedulingTokens: typeof schedulingTokens;
+  taskFields: typeof taskFields;
+  taskUpdates: typeof taskUpdates;
   tasks: typeof tasks;
   templateTasks: typeof templateTasks;
   userToProjects: typeof userToProjects;
@@ -86,6 +91,7 @@ declare const fullApi: ApiFromModules<{
   workspaceInvitations: typeof workspaceInvitations;
   workspaceToUser: typeof workspaceToUser;
   workspaces: typeof workspaces;
+  workstreams: typeof workstreams;
 }>;
 
 /**
@@ -825,6 +831,43 @@ export declare const components: {
             | "failed";
         },
         null
+      >;
+    };
+  };
+  workOSAuthKit: {
+    lib: {
+      enqueueWebhookEvent: FunctionReference<
+        "mutation",
+        "internal",
+        {
+          apiKey: string;
+          event: string;
+          eventId: string;
+          eventTypes?: Array<string>;
+          logLevel?: "DEBUG";
+          onEventHandle?: string;
+          updatedAt?: string;
+        },
+        any
+      >;
+      getAuthUser: FunctionReference<
+        "query",
+        "internal",
+        { id: string },
+        {
+          createdAt: string;
+          email: string;
+          emailVerified: boolean;
+          externalId?: null | string;
+          firstName?: null | string;
+          id: string;
+          lastName?: null | string;
+          lastSignInAt?: null | string;
+          locale?: null | string;
+          metadata: Record<string, any>;
+          profilePictureUrl?: null | string;
+          updatedAt: string;
+        } | null
       >;
     };
   };

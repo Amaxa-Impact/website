@@ -11,11 +11,34 @@ import {
 import {
   assertUserInProject,
   assertUserIsCoach,
+  canManageProject,
   getEffectiveWorkspaceRole,
   getUserRole,
   isSiteAdmin,
   requireAuth,
 } from "./permissions";
+import { assertIsoDate, bufferMethodValidator } from "./taskFields";
+
+/** Critical Chain v2 settings stored on a project (all optional). */
+const projectCcpmFields = {
+  ccpmV2: v.optional(v.boolean()),
+  startDate: v.optional(v.string()),
+  deadline: v.optional(v.string()),
+  bufferMethod: v.optional(bufferMethodValidator),
+  safeRatio: v.optional(v.number()),
+};
+
+/** Every stored project field queries hand back, including the commitment. */
+const projectDocFields = {
+  ...projectCcpmFields,
+  commitment: v.optional(
+    v.object({
+      date: v.string(),
+      confirmedAt: v.number(),
+      confirmedBy: v.string(),
+    }),
+  ),
+};
 
 /**
  * Create a new project
@@ -180,6 +203,7 @@ export const get = projectQuery({
       name: v.string(),
       description: v.string(),
       workspaceId: v.string(),
+      ...projectDocFields,
     }),
     v.null(),
   ),
@@ -255,6 +279,7 @@ export const listByWorkspace = workspaceQuery({
       name: v.string(),
       description: v.string(),
       workspaceId: v.string(),
+      ...projectDocFields,
     }),
   ),
   role: "member",
@@ -281,6 +306,104 @@ export const update = projectMutation({
   handler: async (ctx, args) => {
     const { projectId, ...updates } = args;
     await ctx.db.patch(projectId, updates);
+    return null;
+  },
+});
+
+/**
+ * Whether the current user may change Critical Chain settings for a project:
+ * a project coach, a workspace admin/owner, or a site admin.
+ */
+export const canManage = query({
+  args: { projectId: v.id("projects") },
+  returns: v.boolean(),
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity?.subject) {
+      return false;
+    }
+    return await canManageProject(ctx, identity.subject, args.projectId);
+  },
+});
+
+/**
+ * Update Critical Chain settings, including the per-project ccpmV2 switch.
+ * Coaches, workspace admins/owners and site admins may call this.
+ */
+export const updateCcpmSettings = mutation({
+  args: {
+    projectId: v.id("projects"),
+    ...projectCcpmFields,
+  },
+  returns: v.null(),
+  handler: async (ctx, args) => {
+    const userId = await requireAuth(ctx);
+    if (!(await canManageProject(ctx, userId, args.projectId))) {
+      throw new ConvexError(
+        "Only coaches, workspace admins and site admins can change these settings",
+      );
+    }
+
+    const project = await ctx.db.get(args.projectId);
+    if (!project) {
+      throw new ConvexError("Project not found");
+    }
+
+    const { projectId, ...changes } = args;
+    const updates = Object.fromEntries(
+      Object.entries(changes).filter(([, value]) => value !== undefined),
+    ) as Partial<typeof changes>;
+
+    const merged = { ...project, ...updates };
+    assertIsoDate(merged.startDate, "startDate");
+    assertIsoDate(merged.deadline, "deadline");
+    if (
+      merged.startDate !== undefined &&
+      merged.deadline !== undefined &&
+      merged.deadline < merged.startDate
+    ) {
+      throw new ConvexError("deadline cannot be before startDate");
+    }
+    if (
+      merged.safeRatio !== undefined &&
+      !(Number.isFinite(merged.safeRatio) && merged.safeRatio >= 1)
+    ) {
+      throw new ConvexError("safeRatio must be 1 or more");
+    }
+
+    if (Object.keys(updates).length > 0) {
+      await ctx.db.patch(projectId, updates);
+    }
+    return null;
+  },
+});
+
+/**
+ * Records the finish date the team commits to (start + critical chain +
+ * project buffer, worked out on the client). Same permissions as the
+ * Critical Chain settings; confirming again replaces the old date.
+ */
+export const confirmCommitment = mutation({
+  args: { projectId: v.id("projects"), date: v.string() },
+  returns: v.null(),
+  handler: async (ctx, { projectId, date }) => {
+    const userId = await requireAuth(ctx);
+    if (!(await canManageProject(ctx, userId, projectId))) {
+      throw new ConvexError(
+        "Only coaches, workspace admins and site admins can confirm the commitment",
+      );
+    }
+    const project = await ctx.db.get(projectId);
+    if (!project) {
+      throw new ConvexError("Project not found");
+    }
+    assertIsoDate(date, "date");
+    if (project.startDate !== undefined && date < project.startDate) {
+      throw new ConvexError("The commitment can't be before the start date");
+    }
+    await ctx.db.patch(projectId, {
+      commitment: { date, confirmedAt: Date.now(), confirmedBy: userId },
+    });
     return null;
   },
 });
@@ -340,6 +463,34 @@ export const remove = workspaceMutation({
 
     for (const assignment of userAssignments) {
       await ctx.db.delete(assignment._id);
+    }
+
+    const workstreams = await ctx.db
+      .query("workstreams")
+      .withIndex("by_project", (q) => q.eq("projectId", args.projectId))
+      .collect();
+    for (const workstream of workstreams) {
+      await ctx.db.delete(workstream._id);
+    }
+
+    const updates = await ctx.db
+      .query("taskUpdates")
+      .withIndex("by_project_and_date", (q) =>
+        q.eq("projectId", args.projectId),
+      )
+      .collect();
+    for (const update of updates) {
+      await ctx.db.delete(update._id);
+    }
+
+    const snapshots = await ctx.db
+      .query("weeklySnapshots")
+      .withIndex("by_project_and_date", (q) =>
+        q.eq("projectId", args.projectId),
+      )
+      .collect();
+    for (const snapshot of snapshots) {
+      await ctx.db.delete(snapshot._id);
     }
 
     await ctx.db.delete(args.projectId);
