@@ -28,6 +28,18 @@ const projectCcpmFields = {
   safeRatio: v.optional(v.number()),
 };
 
+/** Every stored project field queries hand back, including the commitment. */
+const projectDocFields = {
+  ...projectCcpmFields,
+  commitment: v.optional(
+    v.object({
+      date: v.string(),
+      confirmedAt: v.number(),
+      confirmedBy: v.string(),
+    }),
+  ),
+};
+
 /**
  * Create a new project
  */
@@ -191,14 +203,7 @@ export const get = projectQuery({
       name: v.string(),
       description: v.string(),
       workspaceId: v.string(),
-      ...projectCcpmFields,
-      commitment: v.optional(
-        v.object({
-          date: v.string(),
-          confirmedAt: v.number(),
-          confirmedBy: v.string(),
-        }),
-      ),
+      ...projectDocFields,
     }),
     v.null(),
   ),
@@ -274,7 +279,7 @@ export const listByWorkspace = workspaceQuery({
       name: v.string(),
       description: v.string(),
       workspaceId: v.string(),
-      ...projectCcpmFields,
+      ...projectDocFields,
     }),
   ),
   role: "member",

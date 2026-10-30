@@ -543,7 +543,7 @@ describe("deleting a project", () => {
 
 describe("commitment", () => {
   it("lets a coach confirm the finish date, and replaces it on reconfirm", async () => {
-    const { projectId, asCoach } = await setup();
+    const { projectId, asCoach, asWsAdmin } = await setup();
     await asCoach.mutation(api.projects.updateCcpmSettings, {
       projectId,
       startDate: "2026-01-05",
@@ -565,6 +565,14 @@ describe("commitment", () => {
     });
     project = await asCoach.query(api.projects.get, { projectId });
     expect(project.commitment?.date).toBe("2026-02-25");
+
+    // The workspace project list returns committed projects too.
+    const listed = await asWsAdmin.query(api.projects.listByWorkspace, {
+      workspaceSlug: "cohort",
+    });
+    expect(listed.find((p) => p._id === projectId)?.commitment?.date).toBe(
+      "2026-02-25",
+    );
   });
 
   it("lets workspace admins confirm, but not members", async () => {
