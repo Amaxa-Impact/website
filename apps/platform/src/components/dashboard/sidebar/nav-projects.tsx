@@ -3,6 +3,7 @@
 import type { LucideIcon } from "lucide-react";
 import { memo } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import {
   SidebarGroup,
@@ -18,14 +19,18 @@ export const NavProjects = memo(
   }: {
     projects: { name: string; url: string; icon: LucideIcon }[];
   }) => {
+    const pathname = usePathname();
+    // The first link is the project's home, which every other page sits under.
+    const isActive = (url: string, index: number) =>
+      index === 0 ? pathname === url : pathname.startsWith(url);
     return (
       <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-        <SidebarGroupLabel>Projects</SidebarGroupLabel>
+        <SidebarGroupLabel>Project</SidebarGroupLabel>
         <SidebarMenu>
-          {projects.map((item) => (
+          {projects.map((item, index) => (
             <SidebarMenuItem key={item.name}>
               <Link className="flex items-center gap-2" href={item.url}>
-                <SidebarMenuButton>
+                <SidebarMenuButton isActive={isActive(item.url, index)}>
                   <item.icon />
                   <span>{item.name}</span>
                 </SidebarMenuButton>

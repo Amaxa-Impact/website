@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Logo } from "@/components/brand/logo";
 
 import {
   Breadcrumb,
@@ -46,7 +47,7 @@ export function BreadcrumbHeader() {
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink href="/" render={<Link href="/" />}>
-                Àmaxa
+                <Logo />
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />

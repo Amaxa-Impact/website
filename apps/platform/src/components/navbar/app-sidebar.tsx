@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Logo } from "@/components/brand/logo";
 import { NavUser } from "@/components/dashboard/sidebar/nav-user";
 import { LayoutTemplate, ShieldCheck } from "lucide-react";
 
@@ -30,10 +31,8 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <Link className="flex items-center gap-2" href="/">
-              <SidebarMenuButton tooltip="Àmaxa">
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">Àmaxa</span>
-                </div>
+              <SidebarMenuButton tooltip="ámaxa">
+                <Logo className="text-base" />
               </SidebarMenuButton>
             </Link>
           </SidebarMenuItem>
@@ -57,7 +56,7 @@ export function AppSidebar() {
 
         {isSiteAdmin && (
           <SidebarGroup>
-            <SidebarGroupLabel>Àmaxa Admin</SidebarGroupLabel>
+            <SidebarGroupLabel>Admin</SidebarGroupLabel>
             <SidebarMenu>
               <SidebarMenuItem>
                 <Link className="flex items-center gap-2" href="/workspaces">

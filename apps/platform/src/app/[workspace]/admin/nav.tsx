@@ -31,7 +31,7 @@ function NavTab({ href, isActive, icon, children }: NavTabProps) {
         "flex items-center gap-2 border-b-2 px-3 py-2.5 text-sm font-medium transition-colors",
         isActive
           ? "border-primary text-foreground"
-          : "border-transparent text-muted-foreground hover:border-border/60 hover:text-foreground",
+          : "text-muted-foreground hover:border-border/60 hover:text-foreground border-transparent",
       )}
     >
       {icon}
@@ -55,13 +55,13 @@ export function WorkspaceNav() {
   const baseUrl = `/${workspace.slug}/admin`;
 
   return (
-    <nav className="border-border/40 bg-background/95 sticky top-0 z-50 border-b backdrop-blur-sm">
+    <nav className="border-border bg-background/95 sticky top-0 z-50 border-b backdrop-blur-sm">
       <div className="mx-auto flex max-w-5xl items-center gap-4 px-6 py-2">
         <Link
           href="/workspaces"
           className={cn(
             buttonVariants({ variant: "ghost", size: "sm" }),
-            "group gap-1.5 text-muted-foreground hover:text-foreground",
+            "group text-muted-foreground hover:text-foreground gap-1.5",
           )}
         >
           <IconArrowLeft className="size-4 transition-transform group-hover:-translate-x-0.5" />
@@ -70,16 +70,14 @@ export function WorkspaceNav() {
 
         <div className="bg-border h-5 w-px" />
 
-        <div className="flex min-w-0 items-center gap-2">
+        <div className="flex min-w-0 flex-1 items-center gap-2">
           <h1 className="truncate text-sm font-semibold">{workspace.name}</h1>
-          <span className="bg-muted text-muted-foreground hidden rounded px-1.5 py-0.5 font-mono text-xs sm:inline">
+          <span className="bg-muted text-muted-foreground hidden shrink-0 rounded-full px-2 py-0.5 font-mono text-xs whitespace-nowrap lg:inline">
             /{workspace.slug}
           </span>
         </div>
 
-        <div className="flex-1" />
-
-        <div className="-mb-px flex">
+        <div className="-mb-px flex shrink-0">
           <NavTab
             href={`${baseUrl}/projects`}
             isActive={activeTab === "projects"}

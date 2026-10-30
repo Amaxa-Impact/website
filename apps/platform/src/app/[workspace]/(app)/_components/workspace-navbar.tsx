@@ -2,6 +2,7 @@
 
 import { memo, useMemo } from "react";
 import Link from "next/link";
+import { Logo } from "@/components/brand/logo";
 import { ProfileDropdown } from "@/components/navbar/profile-dropdown";
 import { useWorkspace } from "@/components/workspace/context";
 
@@ -44,7 +45,7 @@ export const WorkspaceNavbar = memo(function WorkspaceNavbar() {
   const links = isAdmin ? adminLinks : [];
 
   return (
-    <nav className="h-16 border-b">
+    <nav className="bg-background h-16 border-b">
       <div className="flex h-full items-center justify-between px-6">
         <div className="flex items-center gap-4">
           <SidebarTrigger />
@@ -61,11 +62,13 @@ export const WorkspaceNavbar = memo(function WorkspaceNavbar() {
                       )
                     }
                   >
-                    Àmaxa
+                    <Logo />
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
-                <BreadcrumbItem>{workspace.name}</BreadcrumbItem>
+                <BreadcrumbItem className="text-foreground font-medium">
+                  {workspace.name}
+                </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
           </div>
@@ -79,8 +82,8 @@ export const WorkspaceNavbar = memo(function WorkspaceNavbar() {
                   key={link.href}
                   href={link.href}
                   className={buttonVariants({
-                    variant: "secondary",
-                    className: "text-primary-foreground hover:text-primary",
+                    variant: "ghost",
+                    className: "hover:text-primary hover:bg-transparent",
                   })}
                 >
                   {link.label}
@@ -89,7 +92,7 @@ export const WorkspaceNavbar = memo(function WorkspaceNavbar() {
             </div>
           )}
           {isLoading ? (
-            <div className="bg-primary-foreground/20 h-8 w-8 animate-pulse rounded-full" />
+            <div className="bg-muted h-8 w-8 animate-pulse rounded-full" />
           ) : (
             user && <ProfileDropdown />
           )}
