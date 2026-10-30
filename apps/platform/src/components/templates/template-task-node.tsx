@@ -15,16 +15,16 @@ export interface TemplateTaskNodeData extends Record<string, unknown> {
 }
 
 const statusStyles: Record<TemplateTaskStatus, string> = {
-  todo: "bg-slate-100 text-slate-700 border-slate-200",
-  in_progress: "bg-blue-100 text-blue-700 border-blue-200",
-  completed: "bg-emerald-100 text-emerald-700 border-emerald-200",
-  blocked: "bg-rose-100 text-rose-700 border-rose-200",
+  todo: "bg-neutral-soft text-neutral border-neutral-border",
+  in_progress: "bg-info-soft text-info border-info-border",
+  completed: "bg-success-soft text-success border-success-border",
+  blocked: "bg-danger-soft text-danger border-danger-border",
 };
 
 const priorityStyles: Record<TemplateTaskPriority, string> = {
-  low: "text-slate-500",
-  medium: "text-amber-600",
-  high: "text-rose-600",
+  low: "text-neutral",
+  medium: "text-warning",
+  high: "text-danger",
 };
 
 export const TemplateTaskNode = memo(({ data }: NodeProps) => {

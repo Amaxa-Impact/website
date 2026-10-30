@@ -31,8 +31,8 @@ export const BufferNode = memo(({ data }: NodeProps) => {
     <div
       className={`flex flex-col justify-center rounded-lg border-2 border-dashed px-3 text-xs ${
         isProject
-          ? "border-primary bg-card text-foreground"
-          : "border-muted-foreground/60 bg-card text-foreground"
+          ? "border-info bg-info-soft text-foreground"
+          : "border-info-border bg-card text-foreground"
       }`}
       style={{ width: BUFFER_BOX.width, height: BUFFER_BOX.height }}
       title={

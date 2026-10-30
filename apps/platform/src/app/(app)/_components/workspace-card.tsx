@@ -13,9 +13,9 @@ interface WorkspaceCardProps {
 }
 
 const roleBadgeStyles: Record<WorkspaceRole, string> = {
-  owner: "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400",
-  admin: "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400",
-  member: "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300",
+  owner: "bg-coral-dark-0 text-coral-dark-700",
+  admin: "bg-info-soft text-info",
+  member: "bg-neutral-soft text-neutral",
 };
 
 export function WorkspaceCard({ workspace, role }: WorkspaceCardProps) {

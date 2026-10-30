@@ -52,6 +52,7 @@ import { getStableUserId, getUserColor } from "./utils";
 // Ids of the drawn-only buffer nodes and edges, which aren't tasks or links.
 const CCPM_PREFIX = "ccpm:";
 const CHAIN_COLOR = "var(--primary)";
+const BUFFER_COLOR = "var(--info)";
 // Before React Flow has measured a task box.
 const DEFAULT_TASK_BOX = { width: 280, height: 150 };
 
@@ -229,8 +230,8 @@ function TasksCanvas({
         deletable: false,
         focusable: false,
         selectable: false,
-        markerEnd: chainMarker,
-        style: { stroke: CHAIN_COLOR, strokeDasharray: "6 4", strokeWidth: 2 },
+        markerEnd: { ...chainMarker, color: BUFFER_COLOR },
+        style: { stroke: BUFFER_COLOR, strokeDasharray: "6 4", strokeWidth: 2 },
       });
     }
     return styled;

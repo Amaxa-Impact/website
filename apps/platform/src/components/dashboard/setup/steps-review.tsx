@@ -48,7 +48,7 @@ function Blocked({ data, goTo }: Pick<ReviewProps, "data" | "goTo">) {
     return null;
   }
   return (
-    <div className="space-y-2 rounded-md border border-amber-500/50 p-3 text-sm">
+    <div className="border-warning-border space-y-2 rounded-md border p-3 text-sm">
       <p>{message}</p>
       <Button
         onClick={() => goTo(step)}
@@ -157,7 +157,7 @@ export function ReviewStep({
 
           {view.overlaps.size > 0 && (
             <section
-              className="space-y-1 text-amber-600 dark:text-amber-500"
+              className="text-warning space-y-1"
               aria-labelledby="review-overlaps"
             >
               <h3
@@ -285,7 +285,7 @@ export function CommitStep({
 
       {overBy > 0 && (
         <div
-          className="space-y-2 rounded-md border border-amber-500/50 p-3 text-sm text-amber-600 dark:text-amber-500"
+          className="border-warning-border text-warning space-y-2 rounded-md border p-3 text-sm"
           role="alert"
         >
           <p className="flex items-start gap-1.5">
@@ -319,7 +319,7 @@ export function CommitStep({
 
       {current ? (
         <div className="space-y-2 text-sm">
-          <p className="flex items-center gap-1.5 text-green-600 dark:text-green-400">
+          <p className="text-success flex items-center gap-1.5">
             <IconCircleCheck aria-hidden className="size-4" />
             Committed to {formatPlanDate(date, data.today)}.
           </p>

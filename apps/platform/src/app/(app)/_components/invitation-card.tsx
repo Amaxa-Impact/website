@@ -7,8 +7,8 @@ import { toast } from "sonner";
 
 import type { Id } from "@amaxa/backend/_generated/dataModel";
 import { api } from "@amaxa/backend/_generated/api";
-import { Button } from "@amaxa/ui/button";
 import { cn } from "@amaxa/ui";
+import { Button } from "@amaxa/ui/button";
 
 type InvitationRole = "admin" | "member";
 
@@ -26,8 +26,8 @@ interface InvitationCardProps {
 }
 
 const roleBadgeStyles: Record<InvitationRole, string> = {
-  admin: "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400",
-  member: "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300",
+  admin: "bg-info-soft text-info",
+  member: "bg-neutral-soft text-neutral",
 };
 
 export function InvitationCard({ invitation }: InvitationCardProps) {
@@ -35,8 +35,12 @@ export function InvitationCard({ invitation }: InvitationCardProps) {
   const [isAccepting, setIsAccepting] = useState(false);
   const [isDeclining, setIsDeclining] = useState(false);
 
-  const acceptInvitation = useMutation(api.workspaceInvitations.acceptInvitation);
-  const declineInvitation = useMutation(api.workspaceInvitations.declineInvitation);
+  const acceptInvitation = useMutation(
+    api.workspaceInvitations.acceptInvitation,
+  );
+  const declineInvitation = useMutation(
+    api.workspaceInvitations.declineInvitation,
+  );
 
   const handleAccept = async () => {
     setIsAccepting(true);
@@ -47,7 +51,7 @@ export function InvitationCard({ invitation }: InvitationCardProps) {
     } catch (error) {
       console.error("Failed to accept invitation:", error);
       toast.error(
-        error instanceof Error ? error.message : "Failed to accept invitation"
+        error instanceof Error ? error.message : "Failed to accept invitation",
       );
     } finally {
       setIsAccepting(false);
@@ -62,7 +66,7 @@ export function InvitationCard({ invitation }: InvitationCardProps) {
     } catch (error) {
       console.error("Failed to decline invitation:", error);
       toast.error(
-        error instanceof Error ? error.message : "Failed to decline invitation"
+        error instanceof Error ? error.message : "Failed to decline invitation",
       );
     } finally {
       setIsDeclining(false);
@@ -101,11 +105,7 @@ export function InvitationCard({ invitation }: InvitationCardProps) {
         >
           {isDeclining ? "Declining..." : "Decline"}
         </Button>
-        <Button
-          size="sm"
-          onClick={handleAccept}
-          disabled={isLoading}
-        >
+        <Button size="sm" onClick={handleAccept} disabled={isLoading}>
           {isAccepting ? "Accepting..." : "Accept"}
         </Button>
       </div>

@@ -216,9 +216,9 @@ export function FormQuestionOptions({
   return (
     <div className="space-y-3">
       {hasSuggestions && (
-        <div className="rounded-lg border border-dashed border-purple-300 bg-purple-50 p-3 dark:border-purple-700 dark:bg-purple-950/20">
+        <div className="border-info-border bg-info-soft rounded-lg border border-dashed p-3">
           <div className="mb-2 flex items-center justify-between">
-            <div className="flex items-center gap-1.5 text-sm font-medium text-purple-700 dark:text-purple-300">
+            <div className="text-info flex items-center gap-1.5 text-sm font-medium">
               <IconSparkles className="h-4 w-4" />
               AI Suggested Options
             </div>
@@ -226,7 +226,7 @@ export function FormQuestionOptions({
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-7 text-xs text-purple-700 hover:bg-purple-100 dark:text-purple-300 dark:hover:bg-purple-900/30"
+                className="text-info hover:bg-purple-light-100 h-7 text-xs"
                 onClick={handleAcceptAllSuggestions}
               >
                 <IconCheck className="mr-1 h-3 w-3" />
@@ -235,7 +235,7 @@ export function FormQuestionOptions({
               <Button
                 variant="ghost"
                 size="icon-sm"
-                className="h-7 w-7 text-purple-700 hover:bg-purple-100 dark:text-purple-300 dark:hover:bg-purple-900/30"
+                className="text-info hover:bg-purple-light-100 h-7 w-7"
                 onClick={handleDismissSuggestions}
                 title="Dismiss suggestions"
               >
@@ -249,7 +249,7 @@ export function FormQuestionOptions({
                 key={suggestion}
                 type="button"
                 onClick={() => handleAcceptSuggestion(suggestion)}
-                className="inline-flex items-center gap-1 rounded-full bg-white px-3 py-1 text-sm text-purple-800 shadow-sm transition-colors hover:bg-purple-100 dark:bg-purple-900/30 dark:text-purple-200 dark:hover:bg-purple-900/50"
+                className="text-info hover:bg-purple-light-100 inline-flex items-center gap-1 rounded-full bg-white px-3 py-1 text-sm shadow-sm transition-colors"
               >
                 <IconPlus className="h-3 w-3" />
                 {suggestion}

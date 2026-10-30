@@ -14,8 +14,8 @@ import { Card, CardContent, CardFooter, CardHeader } from "@amaxa/ui/card";
 type InvitationRole = "admin" | "member";
 
 const roleBadgeStyles: Record<InvitationRole, string> = {
-  admin: "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400",
-  member: "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300",
+  admin: "bg-info-soft text-info",
+  member: "bg-neutral-soft text-neutral",
 };
 
 interface InviteAcceptClientProps {
@@ -70,10 +70,10 @@ export function InviteAcceptClient({
 
   if (success) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-green-50 to-white p-4 dark:from-green-950/20 dark:to-background">
+      <div className="from-success-soft to-background flex min-h-screen items-center justify-center bg-gradient-to-b p-4">
         <Card className="w-full max-w-md">
           <CardContent className="flex flex-col items-center py-12 text-center">
-            <CheckCircle className="mb-4 h-16 w-16 text-green-500" />
+            <CheckCircle className="text-success mb-4 h-16 w-16" />
             <h1 className="mb-2 text-2xl font-bold">Welcome!</h1>
             <p className="text-muted-foreground">
               You've joined <strong>{invitation.workspaceName}</strong>.
@@ -119,18 +119,16 @@ export function InviteAcceptClient({
           </div>
 
           {emailMismatch && (
-            <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-900 dark:bg-amber-950/50">
-              <XCircle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
+            <div className="border-warning-border bg-warning-soft flex items-start gap-3 rounded-lg border p-4">
+              <XCircle className="text-warning mt-0.5 h-5 w-5 shrink-0" />
               <div>
-                <p className="font-medium text-amber-800 dark:text-amber-200">
-                  Email Mismatch
-                </p>
-                <p className="text-sm text-amber-700 dark:text-amber-300">
+                <p className="text-warning font-medium">Email Mismatch</p>
+                <p className="text-warning text-sm">
                   This invitation was sent to{" "}
                   <strong>{invitation.email}</strong>, but you're signed in as{" "}
                   <strong>{userEmail}</strong>.
                 </p>
-                <p className="mt-2 text-sm text-amber-700 dark:text-amber-300">
+                <p className="text-warning mt-2 text-sm">
                   Please sign in with the correct email address to accept this
                   invitation.
                 </p>
@@ -139,13 +137,11 @@ export function InviteAcceptClient({
           )}
 
           {error && (
-            <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-900 dark:bg-red-950/50">
-              <XCircle className="mt-0.5 h-5 w-5 shrink-0 text-red-600" />
+            <div className="border-danger-border bg-danger-soft flex items-start gap-3 rounded-lg border p-4">
+              <XCircle className="text-danger mt-0.5 h-5 w-5 shrink-0" />
               <div>
-                <p className="font-medium text-red-800 dark:text-red-200">
-                  Error
-                </p>
-                <p className="text-sm text-red-700 dark:text-red-300">{error}</p>
+                <p className="text-danger font-medium">Error</p>
+                <p className="text-danger text-sm">{error}</p>
               </div>
             </div>
           )}

@@ -32,8 +32,8 @@ export function ApplyPageClient({ formId }: ApplyPageClientProps) {
       <div className="flex min-h-[60vh] items-center justify-center px-4">
         <Card className="mx-auto max-w-md text-center">
           <CardContent className="flex flex-col items-center py-12">
-            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900/20">
-              <IconLock className="h-7 w-7 text-amber-600 dark:text-amber-400" />
+            <div className="bg-warning-soft mb-4 flex h-14 w-14 items-center justify-center rounded-full">
+              <IconLock className="text-warning h-7 w-7" />
             </div>
             <h2 className="mb-2 text-lg font-semibold">Form Not Available</h2>
             <p className="text-muted-foreground text-sm">

@@ -43,7 +43,7 @@ export function FinishRange({
     // ISO dates compare correctly as strings.
     const tone = (iso: string) =>
       deadline !== undefined && iso > deadline
-        ? "text-red-600 dark:text-red-400"
+        ? "text-danger"
         : "text-foreground";
     finish =
       earliest === latest ? (
@@ -100,10 +100,7 @@ export function FinishRange({
         )}
       </p>
       {overBy > 0 && view.status === "ready" && (
-        <p
-          className="flex items-start gap-1.5 text-amber-600 dark:text-amber-500"
-          role="alert"
-        >
+        <p className="text-warning flex items-start gap-1.5" role="alert">
           <IconAlertTriangle aria-hidden className="mt-0.5 size-4 shrink-0" />
           <span>
             The plan needs until {formatPlanDate(view.commitment.date)},{" "}

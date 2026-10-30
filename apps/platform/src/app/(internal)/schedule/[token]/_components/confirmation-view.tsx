@@ -43,8 +43,8 @@ export function ConfirmationView({
   return (
     <div className="bg-background flex min-h-screen items-center justify-center">
       <div className="mx-auto max-w-md px-4 text-center">
-        <div className="mx-auto mb-6 flex size-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
-          <IconCheck className="size-8 text-green-600 dark:text-green-400" />
+        <div className="bg-success-soft mx-auto mb-6 flex size-16 items-center justify-center rounded-full">
+          <IconCheck className="text-success size-8" />
         </div>
 
         <h1 className="text-2xl font-semibold">Interview Scheduled!</h1>

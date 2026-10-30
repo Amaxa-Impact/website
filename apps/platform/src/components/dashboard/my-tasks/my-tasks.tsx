@@ -111,7 +111,7 @@ function UpdateCard({ task, today }: { task: MyTask; today: string }) {
           </p>
         </div>
         {updatedRecently && task.lastUpdateDate && (
-          <span className="flex shrink-0 items-center gap-1 text-xs text-green-600 dark:text-green-400">
+          <span className="text-success flex shrink-0 items-center gap-1 text-xs">
             <IconCircleCheck aria-hidden className="size-4" />
             Updated {formatPlanDate(task.lastUpdateDate, today)}
           </span>
@@ -248,7 +248,7 @@ export function MyTasks() {
           days are left, or mark it done.
         </p>
         {!project.ccpmV2 && (
-          <p className="text-sm text-amber-600 dark:text-amber-500">
+          <p className="text-warning text-sm">
             This project doesn&apos;t use Critical Chain v2 yet, so updates here
             won&apos;t change the plan. Ask your coach to turn it on.
           </p>

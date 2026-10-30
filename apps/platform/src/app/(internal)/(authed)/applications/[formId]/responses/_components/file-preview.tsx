@@ -52,7 +52,10 @@ const initialPreviewState: PreviewState = {
   hasError: false,
 };
 
-function previewReducer(state: PreviewState, action: PreviewAction): PreviewState {
+function previewReducer(
+  state: PreviewState,
+  action: PreviewAction,
+): PreviewState {
   switch (action.type) {
     case "openPreview":
       return { ...state, isPreviewOpen: true };
@@ -125,7 +128,10 @@ function GetFileIcon({ contentType, className }: GetFileIconProps) {
 }
 
 export function FilePreview({ file }: FilePreviewProps) {
-  const [previewState, dispatch] = useReducer(previewReducer, initialPreviewState);
+  const [previewState, dispatch] = useReducer(
+    previewReducer,
+    initialPreviewState,
+  );
 
   const getPreview = useAction(api.files.getApplicationFilePreview);
 
@@ -223,8 +229,8 @@ export function FilePreview({ file }: FilePreviewProps) {
             onClick={() => dispatch({ type: "openPreview" })}
             type="button"
           >
-            <div className="relative flex aspect-video w-full items-center justify-center bg-red-50 dark:bg-red-950/20">
-              <IconFileTypePdf className="h-16 w-16 text-red-500" />
+            <div className="bg-danger-soft relative flex aspect-video w-full items-center justify-center">
+              <IconFileTypePdf className="text-danger h-16 w-16" />
               <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all group-hover:bg-black/40 group-hover:opacity-100">
                 <IconMaximize className="h-8 w-8 text-white" />
               </div>
@@ -298,7 +304,7 @@ function FilePreviewModal({
         onClick={onClose}
         type="button"
       />
-      <div className="relative z-10 absolute top-0 right-0 left-0 flex items-center justify-between bg-linear-to-b from-black/60 to-transparent p-4">
+      <div className="absolute relative top-0 right-0 left-0 z-10 flex items-center justify-between bg-linear-to-b from-black/60 to-transparent p-4">
         <span className="truncate text-sm font-medium text-white">
           {filename}
         </span>

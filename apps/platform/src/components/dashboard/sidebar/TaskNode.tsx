@@ -65,19 +65,16 @@ export interface TaskNodeData {
 
 const statusColors = {
   todo: "bg-card border-border",
-  in_progress:
-    "bg-blue-50 dark:bg-blue-950 border-blue-400 dark:border-blue-600",
-  completed:
-    "bg-green-50 dark:bg-green-950 border-green-400 dark:border-green-600",
-  blocked: "bg-red-50 dark:bg-red-950 border-red-400 dark:border-red-600",
-  waiting:
-    "bg-amber-50 dark:bg-amber-950 border-amber-400 dark:border-amber-600",
+  in_progress: "bg-info-soft border-info-border",
+  completed: "bg-success-soft border-success-border",
+  blocked: "bg-danger-soft border-danger-border",
+  waiting: "bg-warning-soft border-warning-border",
 };
 
 const priorityColors = {
   low: "text-muted-foreground",
-  medium: "text-yellow-600 dark:text-yellow-500",
-  high: "text-red-600 dark:text-red-500",
+  medium: "text-warning",
+  high: "text-danger",
 };
 
 const priorityOptions = [
@@ -233,7 +230,7 @@ export const TaskNode = memo(({ data, id }: NodeProps) => {
                   type="button"
                   variant="ghost"
                 >
-                  <IconCheck className="h-3.5 w-3.5 text-green-600" />
+                  <IconCheck className="text-success h-3.5 w-3.5" />
                 </Button>
                 <Button
                   className="h-6 w-6 p-0"
@@ -243,7 +240,7 @@ export const TaskNode = memo(({ data, id }: NodeProps) => {
                   type="button"
                   variant="ghost"
                 >
-                  <IconX className="h-3.5 w-3.5 text-red-600" />
+                  <IconX className="text-danger h-3.5 w-3.5" />
                 </Button>
               </div>
             </div>
@@ -529,7 +526,7 @@ export const TaskNode = memo(({ data, id }: NodeProps) => {
 
         {ccpmV2 &&
           (taskData.bestDays === undefined ? (
-            <p className="text-xs text-amber-600 dark:text-amber-500">
+            <p className="text-warning text-xs">
               No estimate yet. Double-click to add one.
             </p>
           ) : (
@@ -568,16 +565,12 @@ export const TaskNode = memo(({ data, id }: NodeProps) => {
             )?.name ?? taskData.assignedTo}
           </div>
         ) : (
-          ccpmV2 && (
-            <p className="text-xs text-amber-600 dark:text-amber-500">
-              No owner yet.
-            </p>
-          )
+          ccpmV2 && <p className="text-warning text-xs">No owner yet.</p>
         )}
 
         {overlapsWith.length > 0 && (
           // w-0 + min-w-full: wrap to the card's width instead of widening it.
-          <p className="flex w-0 min-w-full gap-1 text-xs text-amber-600 dark:text-amber-500">
+          <p className="text-warning flex w-0 min-w-full gap-1 text-xs">
             <IconAlertTriangle
               aria-hidden
               className="mt-px size-3.5 shrink-0"
