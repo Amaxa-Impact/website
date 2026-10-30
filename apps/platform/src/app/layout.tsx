@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import { env } from "@/env";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
@@ -11,16 +10,6 @@ import { ThemeProvider } from "@/components/theme-provider";
 
 import { AlertDialogProvider } from "@amaxa/ui/alert-dialog-simple";
 import { ConfirmDialogProvider } from "@amaxa/ui/confirm-dialog";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: {
@@ -66,10 +55,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-background h-screen antialiased`}
-      >
-        <ThemeProvider attribute={"class"} forcedTheme="dark">
+      <body className="bg-background h-screen antialiased">
+        <ThemeProvider attribute={"class"} forcedTheme="light">
           <ConvexClientProvider>
             <ConfirmDialogProvider />
             <AlertDialogProvider />

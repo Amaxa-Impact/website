@@ -98,7 +98,7 @@ const TasksGraphInner = memo(function TasksGraphInner({
       flex: 1,
       width: "100%",
       height: "100%",
-      backgroundColor: "#ffffff",
+      backgroundColor: "var(--background)",
     }),
     [],
   );
@@ -109,7 +109,7 @@ const TasksGraphInner = memo(function TasksGraphInner({
   return (
     <div style={layoutStyle}>
       <ReactFlow
-        colorMode="dark"
+        colorMode="light"
         defaultEdgeOptions={defaultEdgeOptions}
         defaultViewport={defaultViewport}
         edges={edges}

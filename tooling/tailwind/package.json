@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "exports": {
+    "./amaxa": "./amaxa.css",
     "./theme": "./theme.css",
     "./platform": "./platform.css",
     "./postcss-config": "./postcss-config.js"
