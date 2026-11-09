@@ -10,6 +10,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 
 import { AlertDialogProvider } from "@amaxa/ui/alert-dialog-simple";
 import { ConfirmDialogProvider } from "@amaxa/ui/confirm-dialog";
+import { Toaster } from "@amaxa/ui/sonner";
 
 export const metadata: Metadata = {
   title: {
@@ -61,6 +62,7 @@ export default function RootLayout({
             <ConfirmDialogProvider />
             <AlertDialogProvider />
             <NuqsAdapter>{children}</NuqsAdapter>
+            <Toaster theme="light" />
           </ConvexClientProvider>
         </ThemeProvider>
       </body>
