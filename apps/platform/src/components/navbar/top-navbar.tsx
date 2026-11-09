@@ -2,6 +2,7 @@
 
 import { memo, useMemo } from "react";
 import Link from "next/link";
+import { Logo } from "@/components/brand/logo";
 
 import { buttonVariants } from "@amaxa/ui/button";
 import { SidebarTrigger } from "@amaxa/ui/sidebar";
@@ -37,8 +38,8 @@ export const TopNavbar = memo(function TopNavbar() {
       <div className="flex h-full items-center justify-between px-6">
         <div className="flex items-center gap-2">
           <SidebarTrigger />
-          <Link href="/" className="text-lg font-semibold">
-            Amaxa
+          <Link href="/" className="text-lg">
+            <Logo />
           </Link>
         </div>
 
