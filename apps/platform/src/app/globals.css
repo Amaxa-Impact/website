@@ -10,8 +10,6 @@
 @source "../../../../packages/ui/src/*.{ts,tsx}";
 @plugin "@tailwindcss/typography";
 
-@custom-variant dark (&:is(.dark *));
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
